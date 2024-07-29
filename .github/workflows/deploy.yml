@@ -1,0 +1,70 @@
+name: Deploy
+
+env:
+  CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+on:
+  push:
+    branches: ["main", "seewe-api", "seewe"]
+jobs:
+  pr-or-deploy:
+    environment: production
+    name: "Push into ${{ github.head_ref || github.ref_name }}"
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SUPER_GITHUB_TOKEN }}
+
+      - name: push into main
+        if: ${{ env.CURRENT_BRANCH == 'main' }} # main branch only
+        run: >
+          git config user.name seewe-bot && git config user.email seewe-bot@mail.com &&
+          git checkout -b seewe-api && git push origin seewe-api --force &&
+          git checkout -b seewe && git push origin seewe --force
+
+      - name: Install Deno
+        if: ${{ env.CURRENT_BRANCH != 'main' }}
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Configure environment
+        if: ${{ env.CURRENT_BRANCH != 'main' }}
+        run: >
+          echo "DOTENV_FILE=${{ secrets.DOTENV_FILE }}" >> .env
+
+        # deploy ui
+      - name: Install Node.js for ui building
+        if: ${{ env.CURRENT_BRANCH == 'seewe' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Build ui
+        if: ${{ env.CURRENT_BRANCH == 'seewe' }}
+        run: "npm i && npm build"
+
+      - name: Upload ui to Deno Deploy
+        if: ${{ env.CURRENT_BRANCH == 'seewe' }}
+        uses: denoland/deployctl@v1
+        with:
+          project: "seewe"
+          entrypoint: https://jsr.io/@nik-kita/spa-server/1.0.0/mod.ts
+          root: dist
+
+        # deploy api
+      - name: Upload api to Deno Deploy
+        if: ${{ env.CURRENT_BRANCH == 'seewe-api' }}
+        uses: denoland/deployctl@v1
+        with:
+          project: "seewe-api"
+          exclude: |
+            src
+            .github
+            .vscode
+            .gitignore
+          entrypoint: "api/main.ts"

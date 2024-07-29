@@ -1,0 +1,12 @@
+@layer default;
+@import "./base.css" layer(default);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer default {
+  #app {
+    height: 100%;
+  }
+}
