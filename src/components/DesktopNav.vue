@@ -24,10 +24,11 @@ const common_navigation = [
 </script>
 
 <template>
-  <DisclosurePanel class="sm:hidden">
+  <DisclosurePanel class="sm:hidden" v-slot="{ close }">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <DisclosureButton href="#" v-for="item in common_navigation" :key="item.name" as="a">
         <router-link
+          @click="close"
           :to="item.href"
           :class="[
             item.href === curr_route.path
