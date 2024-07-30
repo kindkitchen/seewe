@@ -55,13 +55,13 @@ const profile_navigation = [
         </MenuItem>
         <MenuItem as="template" v-slot="{ active }">
           <div class="flex justify-end pr-1">
-            <the-button
+            <tag-button
               @click="post_logout_query"
               v-if="auth.user"
               size="sm"
               :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']"
               :aria-current="undefined"
-              >Logout</the-button
+              >Logout</tag-button
             >
           </div>
         </MenuItem>

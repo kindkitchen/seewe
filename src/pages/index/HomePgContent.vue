@@ -2,7 +2,6 @@
 import { use_auth } from "@/stores/use_auth.store"
 import { ref, watchEffect } from "vue"
 import type { RouterLinkProps } from "vue-router"
-import TagH from "@/elements/TagH.vue"
 
 type Link = { name: string } & RouterLinkProps
 const auth = use_auth()
