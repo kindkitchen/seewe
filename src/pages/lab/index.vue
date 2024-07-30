@@ -17,7 +17,7 @@ const { data: hw_data, isLoading, error: hw_error, reload } = load_get_hello_wor
   <pre v-else-if="hw_error">{{ hw_error }}</pre>
   <pre v-else>{{ hw_data.message }}</pre>
   <hr />
-  <the-button @click="reload()">reload</the-button>
+  <tag-button @click="reload()">reload</tag-button>
   <div class="h-[200px]"></div>
   <router-link to="/lab/hero">Go to Hero Page</router-link>
   <router-link to="/lab/grid">Go to Grid Lab</router-link>

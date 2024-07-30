@@ -20,6 +20,8 @@
   "dependencies": {
     "@headlessui/tailwindcss": "^0.2.1",
     "@pinia/colada": "^0.7.0",
+    "@vueuse/components": "^10.11.0",
+    "@vueuse/core": "^10.11.0",
     "clsx": "^2.1.1",
     "md-editor-v3": "^4.17.4",
     "pinia": "^2.1.7",
