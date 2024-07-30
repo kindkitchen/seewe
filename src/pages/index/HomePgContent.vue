@@ -9,7 +9,7 @@ const client_links = [] as Link[] satisfies Link[]
 const guest_links = [
   {
     name: "See examples",
-    to: '#',
+    to: "#",
   },
   {
     name: "Build markdown CV",
@@ -17,11 +17,11 @@ const guest_links = [
   },
   {
     name: "Fill CV profile",
-    to: '#',
+    to: "#",
   },
   {
     name: "Login to get more",
-    to: '#',
+    to: "#",
   },
 ] as Link[] satisfies Link[]
 const links = ref(auth.user ? client_links : guest_links)

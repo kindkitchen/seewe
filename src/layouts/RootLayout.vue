@@ -3,7 +3,7 @@ import RootHeader from "@/components/RootHeader.vue"
 </script>
 <template>
   <div class="min-h-screen root">
-    <RootHeader> </RootHeader>
+    <RootHeader />
     <slot></slot>
   </div>
 </template>
