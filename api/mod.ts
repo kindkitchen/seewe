@@ -18,7 +18,7 @@ app.use(logger()).use(
 
 app.route("/", api_v1)
 app.route("/openapi", openapi_router)
-app.get('/wtf', (ctx) => ctx.json({config}))
+
 Deno.serve({ port: 3000 }, app.fetch)
 
 showRoutes(app)

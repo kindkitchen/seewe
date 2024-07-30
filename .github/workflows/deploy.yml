@@ -35,7 +35,7 @@ jobs:
       - name: Configure environment
         if: ${{ env.CURRENT_BRANCH != 'main' }}
         run: >
-          echo "DOTENV_FILE=${{ secrets.DOTENV_FILE }}" >> .env
+          echo """${{ secrets.DOTENV_FILE }}""" >> .env
 
         # deploy ui
       - name: Install Node.js for ui building
