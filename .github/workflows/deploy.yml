@@ -65,7 +65,6 @@ jobs:
         if: ${{ env.CURRENT_BRANCH == 'seewe-api' }}
         uses: denoland/deployctl@v1
         with:
-          root: .
           project: "seewe-api"
           exclude: |
             src

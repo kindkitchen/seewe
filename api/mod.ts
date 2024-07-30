@@ -7,10 +7,7 @@ import { showRoutes } from "hono/dev"
 import { load_env } from "./utils/load_env.util.ts"
 import { openapi_router } from "./routers/openapi/mod.openapi.tsx"
 
-const config = await load_env<DotenvFile>({
-  make_export_to_Deno_env: true,
-  envFolderPathRelatedToDenoCwd: "..",
-})
+const config = await load_env<DotenvFile>()
 const app = new OpenAPIHono()
 
 app.use(logger()).use(

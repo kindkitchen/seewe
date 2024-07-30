@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "api": "cd api && deno run -A --unstable-kv --watch mod.ts",
+    "api": "cp .env api && cd api && deno run -A --unstable-kv --watch mod.ts",
     "types:api": "curl http://localhost:3000/v1/json > api_version_one.json && npx openapi-typescript@latest ./api_version_one.json -o ./src/types/api_version_one.ts && npm run format",
     "see-bundle": "npx vite-bundle-visualizer",
     "dev": "vite",
