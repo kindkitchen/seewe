@@ -23,6 +23,7 @@ export const use_auth = defineStore("auth", () => {
     login(res: v1_.Success<"post", "/v1/auth/sign-in", 200>) {
       const { access_token, refresh_token, token_type: _, ...user } = res
       stuff.update_bearers({ access_token, refresh_token })
+      stuff.rewrite_user(user)
       network_client_state.refresh = { status: "ok" }
       u.value = user
     },
