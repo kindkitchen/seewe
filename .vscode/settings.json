@@ -1,4 +1,5 @@
 {
+  "vue.server.hybridMode": true,
   "deno.enable": true,
   "deno.enablePaths": [
     "api"
