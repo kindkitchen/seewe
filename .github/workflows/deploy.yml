@@ -65,7 +65,7 @@ jobs:
         if: ${{ env.CURRENT_BRANCH == 'seewe-api' }}
         uses: denoland/deployctl@v1
         with:
-          root: api
+          root: .
           project: "seewe-api"
           exclude: |
             src
@@ -73,4 +73,4 @@ jobs:
             .vscode
             .git
             .gitignore
-          entrypoint: "mod.ts"
+          entrypoint: "api/mod.ts"
