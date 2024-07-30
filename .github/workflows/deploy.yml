@@ -46,12 +46,16 @@ jobs:
 
       - name: Build ui
         if: ${{ env.CURRENT_BRANCH == 'seewe' }}
-        run: "npm i && npm build"
+        run: "npm i && npm run build-only"
 
       - name: Upload ui to Deno Deploy
         if: ${{ env.CURRENT_BRANCH == 'seewe' }}
         uses: denoland/deployctl@v1
         with:
+          exclude: |
+            api
+            .vscode
+            .git
           project: "seewe"
           entrypoint: https://jsr.io/@nik-kita/spa-server/1.0.0/mod.ts
           root: dist
@@ -66,5 +70,6 @@ jobs:
             src
             .github
             .vscode
+            .git
             .gitignore
-          entrypoint: "api/main.ts"
+          entrypoint: "api/mod.ts"
