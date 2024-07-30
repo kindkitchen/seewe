@@ -2,6 +2,7 @@
 import { use_auth } from "@/stores/use_auth.store"
 import { ref, watchEffect } from "vue"
 import type { RouterLinkProps } from "vue-router"
+import TagH from "@/elements/TagH.vue"
 
 type Link = { name: string } & RouterLinkProps
 const auth = use_auth()
@@ -110,9 +111,7 @@ const stats = [
     </div>
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
-        <h2 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-          Build and share your CV as web page in seconds
-        </h2>
+        <TagH> Build and share your CV as web page in seconds </TagH>
         <p class="mt-6 text-lg leading-8 text-gray-300">
           You can build your CV and download as pdf file (pressing ctr+p)
         </p>
