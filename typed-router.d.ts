@@ -20,6 +20,7 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '//home.[[nik]]': RouteRecordInfo<'//home.[[nik]]', '/home/:nik?', { nik?: ParamValueZeroOrOne<true> }, { nik?: ParamValueZeroOrOne<false> }>,
     '/md//[[name]]': RouteRecordInfo<'/md//[[name]]', '/md/:name?', { name?: ParamValueZeroOrOne<true> }, { name?: ParamValueZeroOrOne<false> }>,
+    '/md/editor': RouteRecordInfo<'/md/editor', '/md/editor', Record<never, never>, Record<never, never>>,
     '/md/examples': RouteRecordInfo<'/md/examples', '/md/examples', Record<never, never>, Record<never, never>>,
     '/md_[id].[[nik]]': RouteRecordInfo<'/md_[id].[[nik]]', '/md_:id/:nik?', { id: ParamValue<true>, nik?: ParamValueZeroOrOne<true> }, { id: ParamValue<false>, nik?: ParamValueZeroOrOne<false> }>,
     '/my/dashboard': RouteRecordInfo<'/my/dashboard', '/my/dashboard', Record<never, never>, Record<never, never>>,

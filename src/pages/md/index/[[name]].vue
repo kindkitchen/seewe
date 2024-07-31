@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic"
 import { my_fetch } from "@/my_fetch"
+import { watchOnce } from '@vueuse/core'
 
 const get_example_md_content = defineBasicLoader("/md//[[name]]", async (to) => {
   const example = await my_fetch({
@@ -21,13 +22,11 @@ import "md-editor-v3/lib/style.css"
 import { ref, watchEffect } from "vue"
 import { MdEditor, MdPreview } from "md-editor-v3"
 
-const is_mobile = window.innerWidth < 500
 const text = ref("")
-const { data, isLoading } = get_example_md_content()
-const example_md = data
+const { data: example_md, isLoading } = get_example_md_content()
 
-watchEffect(() => {
-  if (data.value) {
+watchOnce(example_md, () => {
+  if (example_md.value) {
     text.value = example_md.value
   }
 })
@@ -35,21 +34,15 @@ watchEffect(() => {
 
 <template>
   <div ref="root_el">
-    <tag-h>Update this CV with your info!</tag-h>
-    <router-link to="/md/examples"><tag-h size="sm">See more examples</tag-h></router-link>
-    <MdPreview v-show="!isLoading && example_md" v-if="is_mobile" :model-value="text" />
-    <MdEditor
-      v-show="!isLoading && example_md"
-      :toolbars="['pageFullscreen', 'unorderedList', 'title', 'table', 'revoke', 'previewOnly']"
-      :preview="!is_mobile"
-      v-model="text"
-      language="en-US"
-      preview-theme="vuepress"
-      no-mermaid
-      no-katex
-      :show-toolbar-name="false"
-      :showCodeRowNumber="false"
-    >
-    </MdEditor>
+    <router-link to="/md/editor">
+      <tag-button>Build CV From Scratch</tag-button>
+    </router-link>
+    <router-link to="/md/editor">
+      <tag-button>Continue To Modfify This</tag-button>
+    </router-link>
+    <router-link to="/md/examples">
+      <tag-button>Choose Another Example For Start</tag-button>
+    </router-link>
+    <MdPreview v-show="!isLoading && example_md" :model-value="text" />
   </div>
 </template>
