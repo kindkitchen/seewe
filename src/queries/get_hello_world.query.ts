@@ -21,6 +21,7 @@ export const get_hello_world_query = async (
   return my_fetch({
     path: "/v1/hello-world",
     method: "get",
+    res_as: "text/html",
     is_public_api: true,
   })
 }

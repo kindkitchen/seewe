@@ -39,7 +39,7 @@ export function get_example_str(name: string) {
     "ryan-dahl": `
 # Ryan Dahl
 
-![Avatar](https://upload.wikimedia.org/wikipedia/commons/6/67/Ryan_Dahl.jpg)
+![Avatar](https://raw.githubusercontent.com/nik-kita/any/main/ryan-dahl.avatar.png)
 
 ## Contact Information
 - **Email:** ryan@deno.com

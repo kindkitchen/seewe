@@ -9,6 +9,7 @@ export const post_logout_query = async () => {
     const res = await my_fetch({
       method: "post",
       path: "/v1/auth/logout",
+      res_as: "none",
       is_public_api: false,
     })
 

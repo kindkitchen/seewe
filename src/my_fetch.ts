@@ -10,6 +10,7 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
   params,
   is_public_api,
   method,
+  res_as,
   ...rest
 }: ApiCallPayload<M, P>): ApiCallRes<M, P> {
   const api_call = async () => {
@@ -65,6 +66,7 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
                 const refresh_res = await my_fetch({
                   path: "/v1/auth/refresh",
                   method: "post",
+                  res_as: "application/json",
                   body: {
                     refresh_token,
                   },
@@ -97,8 +99,13 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
     }
   }
 
-  if (res.status === 204) {
+  if (res_as === "none") {
     return undefined as unknown as ApiCallRes<M, P>
+  } else if (res_as === "text/plain") {
+    return res.text().catch(() => {
+      console.error("res.text() failed")
+      throw res
+    }) as ApiCallRes<M, P>
   }
 
   return res.json().catch(() => {

@@ -6,6 +6,7 @@ export const post_sign_in = async (gres: ImplicitFlowSuccessResponse) => {
   const res = await my_fetch({
     method: "post",
     path: "/v1/auth/sign-in",
+    res_as: "application/json",
     body: {
       auth_provider: "google",
       code: gres.code,
