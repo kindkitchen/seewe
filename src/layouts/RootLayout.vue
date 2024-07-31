@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RootHeader from "@/components/RootHeader.vue"
+import RootHeader from "@/components/root-header/RootHeader.vue"
 </script>
 <template>
   <div class="min-h-screen root">

@@ -3,7 +3,7 @@ import { post_sign_in } from "@/queries/post_sign_in.query"
 import { use_auth } from "@/stores/use_auth.store"
 import { Disclosure } from "@headlessui/vue"
 import DesktopNav from "./DesktopNav.vue"
-import LoginWithGoogleBtn from "./LoginWithGoogleBtn.vue"
+import LoginWithGoogleBtn from "../LoginWithGoogleBtn.vue"
 import MobileNav from "./MobileNav.vue"
 import ProfileDropdown from "./ProfileDropdown.vue"
 
