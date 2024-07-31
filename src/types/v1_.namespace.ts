@@ -4,19 +4,55 @@ import type { paths } from "./api_version_one"
 export namespace v1_ {
   export type Path = keyof paths
   export type Method = "get" | "post" | "put" | "delete"
-  export type Req<M extends Method, P extends Path> = (paths[P][M] extends infer Operation extends {
-    requestBody: {
-      content: {
-        "application/json": Record<string, unknown>
+  export type Req<M extends Method, P extends Path> = (paths[P][M] extends infer Res200 extends {
+    responses: Record<
+      200,
+      {
+        content: Record<string, unknown>
       }
-    }
+    >
   }
     ? {
-        body: Operation["requestBody"]["content"]["application/json"]
+        res_as: keyof Res200["responses"][200]["content"]
       }
-    : {
-        body?: never
-      }) &
+    : paths[P][M] extends infer Res201 extends {
+          responses: Record<
+            201,
+            {
+              content: Record<string, unknown>
+            }
+          >
+        }
+      ? {
+          res_as: keyof Res201["responses"][201]["content"]
+        }
+      : paths[P][M] extends infer Res204 extends {
+            responses: Record<
+              204,
+              {
+                content: Record<string, unknown>
+              }
+            >
+          }
+        ? {
+            res_as: keyof Res204["responses"][204]["content"]
+          }
+        : {
+            res_as: "none"
+          }) &
+    (paths[P][M] extends infer Operation extends {
+      requestBody: {
+        content: {
+          "application/json": Record<string, unknown>
+        }
+      }
+    }
+      ? {
+          body: Operation["requestBody"]["content"]["application/json"]
+        }
+      : {
+          body?: never
+        }) &
     (paths[P][M] extends infer Operation extends {
       parameters: {
         header?: Record<string, unknown>
@@ -61,15 +97,19 @@ export namespace v1_ {
   const Pub: v1_.Req<"post", "/v1/auth/refresh"> = {
     method: "post",
     path: "/v1/auth/refresh",
-    headers: undefined,
     body: { refresh_token: "ok" },
+    headers: undefined,
+    res_as: "application/json",
   }
 
   const Priv: v1_.Req<"post", "/v1/auth/logout"> = {
     method: "post",
     path: "/v1/auth/logout",
     headers: {},
+    res_as: "none",
   }
+  Pub
+  Priv
   export type Success<
     M extends Method,
     P extends Path,
@@ -78,9 +118,7 @@ export namespace v1_ {
     responses: Record<N, any>
   }
     ? paths[P][M]["responses"][N]["content"]["application/json"]
-    : {
-        ERROR: `${M} ${P} => RES ${N} DOES NOT EXIST!!!`
-      }
+    : unknown
   export type Fail<
     M extends Method,
     P extends Path,
@@ -89,7 +127,5 @@ export namespace v1_ {
     responses: Record<N, any>
   }
     ? paths[P][M]["responses"][N]["content"]["application/json"]
-    : {
-        ERROR: `${M} ${P} => RES ${N} DOES NOT EXIST!!!`
-      }
+    : unknown
 }

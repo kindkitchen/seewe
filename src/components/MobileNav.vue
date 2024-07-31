@@ -21,10 +21,6 @@ const common_navigation = [
     name: "Examples",
     href: "/md/examples",
   },
-  {
-    name: "__Lab__ DANGER ZONE! (for Pro Developers only!)",
-    href: "/lab",
-  },
 ]
 </script>
 

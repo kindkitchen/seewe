@@ -4,6 +4,43 @@
  */
 
 export interface paths {
+  "/v1/content/md-example/:name": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          name: string
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Return markdown string of example CV for some cool person */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "text/plain": unknown
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/v1/auth/sign-in": {
     parameters: {
       query?: never
