@@ -2,11 +2,13 @@ import { OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
 import { auth_router } from "./routers/auth/auth_router.ts"
 import { users_router } from "./routers/users_router.ts"
+import { content_router } from "./routers/content/content_router.ts"
 
 const app = new OpenAPIHono()
 
 export const api_v1 = app
   .basePath("/v1")
+  .route("/content", content_router)
   .route("/auth", auth_router)
   .route("/users", users_router)
   .openapi(
