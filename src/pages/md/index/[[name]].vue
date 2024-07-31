@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic"
 import { my_fetch } from "@/my_fetch"
-import { watchOnce } from '@vueuse/core'
+import { watchOnce } from "@vueuse/core"
 
 const get_example_md_content = defineBasicLoader("/md//[[name]]", async (to) => {
   const example = await my_fetch({
