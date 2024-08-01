@@ -7,7 +7,7 @@ import { users_service } from "../services/users_service.ts"
 
 export const append_user = createMiddleware<{
   Variables: {
-    user: User & Required<Pick<User, "id">>
+    user: User & Required<Pick<User, "_id">>
   }
 }>(async (ctx, next) => {
   const authorization = ctx.req.header("Authorization")
@@ -29,7 +29,7 @@ export const append_user = createMiddleware<{
     })
   }
 
-  const result = await users_service.find_by_id(verified.sub!)
+  const result = await users_service.find_by_id(+verified.sub!)
 
   if (!result.ok) {
     throw new HTTPException(500, { message: "User not found" })

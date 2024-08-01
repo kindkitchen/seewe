@@ -35,7 +35,9 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
         authorization: `Bearer ${access_token}`,
       }
     }
-    const endpoint = params ? url_param_replacer(path, params as Record<string, string>) : path
+    const endpoint = params
+      ? url_param_replacer.after_colon(path, params as Record<string, string>)
+      : path
     const _rest = rest as Partial<RequestInit>
     req_init.headers = {
       "content-type": "application/json",
@@ -127,8 +129,8 @@ type ApiCallPayload<M extends v1_.Method, P extends v1_.Path> = v1_.Req<M, P>["h
           string,
           never
         >
-      ? Omit<v1_.Req<M, P>, "headers"> & { is_public_api: false }
-      : v1_.Req<M, P> & { is_public_api: false }
+      ? Omit<v1_.Req<M, P>, "headers"> & { is_public_api?: false }
+      : v1_.Req<M, P> & { is_public_api?: false }
 
 type ApiCallRes<M extends v1_.Method, P extends v1_.Path> = Promise<
   v1_.Success<M, P, 200> extends Omit<Record<string, unknown>, "ERROR">

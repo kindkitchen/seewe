@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router/auto"
 import { routes } from "vue-router/auto-routes"
 
 export const router = createRouter({
-  linkActiveClass: "opacity-80",
-  linkExactActiveClass: "opacity-50",
+  linkActiveClass: "link-active",
+  linkExactActiveClass: "link-exact-active",
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     ...routes,

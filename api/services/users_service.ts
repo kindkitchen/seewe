@@ -1,16 +1,15 @@
 // deno-lint-ignore-file require-await
 import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
-import { User } from "../dto/user.dto.ts"
+import { User, UserEntity } from "../dto/user.dto.ts"
+import { db } from "../db.ts"
 
-const MOCK_DB = new Map<string, Map<string, User>>([
-  ["id", new Map()],
-  ["email", new Map()],
-])
+const find_by = async <T extends ("_id" | "email")>(
+  by: T,
+  value: T extends "_id" ? number : string,
+) => {
+  const find_result = await db._dev_users.findByPrimaryIndex(by, value as any)
 
-const find_by = async (by: "id" | "email", value: string) => {
-  const user = MOCK_DB.get(by)?.get(value)
-
-  if (!user) {
+  if (!find_result?.id) {
     return {
       ok: false,
       data: null,
@@ -19,66 +18,83 @@ const find_by = async (by: "id" | "email", value: string) => {
 
   return {
     ok: true,
-    data: user as InsertedUser,
+    data: find_result.value as UserEntity,
   } as const
 }
 
 const insert = async (user: User) => {
-  const id = unique_incremental_timestamp()
-  const id_str = id.toString()
+  const _id = unique_incremental_timestamp()
   const full_user = {
     ...user,
-    id,
+    _id,
   }
-  MOCK_DB.get("id")?.set(id_str, full_user)
-  MOCK_DB.get("email")?.set(user.email, full_user)
+  const add_result = db._dev_users.add(full_user)
+
+  if (!(await add_result).ok) {
+    return {
+      ok: false,
+      data: null,
+    } as const
+  }
 
   return {
     ok: true,
-    data: id,
+    data: _id,
   } as const
 }
 
-const update = async (id: number, user: User) => {
-  const prev = MOCK_DB.get("id")?.get(id.toString())
+const update = async (_id: number, user: User) => {
+  const update_result = await db._dev_users.updateByPrimaryIndex(
+    "_id",
+    _id,
+    user,
+  )
 
-  if (!prev) {
-    return { ok: false, data: null } as const
+  if (!update_result.ok) {
+    return {
+      ok: false,
+      data: null,
+    } as const
   }
 
-  MOCK_DB.get("id")?.set(id.toString(), {
-    ...prev,
-    ...user,
-  })
-
-  return { ok: true, data: null } as const
+  return {
+    ok: true,
+    data: null,
+  } as const
 }
 
 const list = async () => {
-  const users = MOCK_DB.get("id") || new Map()
-  return Array.from(users.values())
+  const users = [] as UserEntity[]
+  await db._dev_users.forEach((u) => users.push(u.value as UserEntity))
+
+  return {
+    ok: true,
+    data: users,
+  } as const
 }
 
-type InsertedUser = User & Required<Pick<User, "id">>
 export const users_service = {
-  find_by_id: (id: string) => find_by("id", id),
+  find_by_id: (_id: number) => find_by("_id", _id),
   find_by_email: (email: string) => find_by("email", email),
   insert,
   update,
   upsert: async (user: User) => {
-    if (user.id) {
-      return update(user.id, user)
+    if (user._id) {
+      return update(user._id, user)
     }
 
     return insert(user)
   },
   finsert_by_email: async (
     user: User,
-  ): Promise<{ ok: true; data: InsertedUser } | { ok: false; data: null }> => {
+  ) => {
     const found = await users_service.find_by_email(user.email)
 
     if (found.ok) {
-      return found as { ok: true; data: InsertedUser }
+      return {
+        ok: true,
+        data: found.data as UserEntity,
+      }
     }
 
     const inserted = await users_service.insert(user)
@@ -88,15 +104,15 @@ export const users_service = {
         ok: true,
         data: {
           ...user,
-          id: inserted.data,
-        },
-      } as { ok: true; data: InsertedUser }
+          _id: inserted.data,
+        } as UserEntity,
+      } as const
     }
 
     return {
       ok: false,
       data: null,
-    }
+    } as const
   },
   list,
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
+<script lang="ts"></script>
 <template>
-  <TagH>Examples of CV builded in markdown editor</TagH>
-  <p>Fill free to continue edit updated any with your actual profile info!</p>
+  <tag-button>// TODO</tag-button>
 </template>

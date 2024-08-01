@@ -1,5 +1,4 @@
 import { createRoute } from "@hono/zod-openapi"
-import { z } from "zod"
 import { AuthSchema, SuccessSignInSchema } from "../../dto/auth.dto.ts"
 
 export const post_sign_in = createRoute({
@@ -10,9 +9,7 @@ export const post_sign_in = createRoute({
       required: true,
       content: {
         "application/json": {
-          schema: AuthSchema.extend({
-            __redirect_uri__: z.string().optional(), // TODO: rm me!
-          }),
+          schema: AuthSchema,
         },
       },
     },

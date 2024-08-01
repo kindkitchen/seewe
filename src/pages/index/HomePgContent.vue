@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { use_auth } from "@/stores/use_auth.store"
 import { ref, watchEffect } from "vue"
-import type { RouterLinkProps } from "vue-router"
 
-type Link = { name: string } & RouterLinkProps
 const auth = use_auth()
-const client_links = [] as Link[] satisfies Link[]
-const guest_links = [
+const common_links = [
   {
     name: "See examples",
     to: "#",
@@ -15,20 +12,25 @@ const guest_links = [
     name: "Build markdown CV",
     to: "/md",
   },
+]
+const client_links = [
   {
-    name: "Fill CV profile",
+    name: "My Dashboard",
     to: "#",
   },
   {
-    name: "Login to get more",
+    name: "Update CV profile",
     to: "#",
   },
-] as Link[] satisfies Link[]
+].concat(common_links)
+const guest_links = common_links.concat([])
 const links = ref(auth.user ? client_links : guest_links)
 
 watchEffect(() => {
   if (auth.user) {
-    links.value
+    links.value = client_links
+  } else {
+    links.value = guest_links
   }
 })
 
@@ -123,8 +125,8 @@ const stats = [
         <div
           class="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10"
         >
-          <router-link v-for="link in links" :key="link.name" :to="link.to"
-            >{{ link.name }} <span aria-hidden="true">&rarr;</span></router-link
+          <tag-link v-for="link in links" :key="link.name" :to="link.to"
+            >{{ link.name }} <span aria-hidden="true">&rarr;</span></tag-link
           >
         </div>
         <dl class="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">

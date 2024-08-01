@@ -2,16 +2,35 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "jsr:@olli/kvdex": "jsr:@olli/kvdex@1.0.2",
+      "jsr:@std/bytes@^0.220.0": "jsr:@std/bytes@0.220.1",
+      "jsr:@std/collections@^0.220.0": "jsr:@std/collections@0.220.1",
       "jsr:@std/dotenv@^0.225.0": "jsr:@std/dotenv@0.225.0",
       "jsr:@std/encoding@^0.221.0": "jsr:@std/encoding@0.221.0",
       "jsr:@std/path@^1.0.1": "jsr:@std/path@1.0.2",
+      "jsr:@std/ulid@^0.220.0": "jsr:@std/ulid@0.220.1",
       "jsr:@wok/djwt@^3.0.2": "jsr:@wok/djwt@3.0.2",
       "npm:@hono/swagger-ui@^0.4.0": "npm:@hono/swagger-ui@0.4.0_hono@4.5.3",
       "npm:@hono/zod-openapi@^0.15.1": "npm:@hono/zod-openapi@0.15.1_hono@4.5.3_zod@3.23.8",
+      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:hono@^4.5.1": "npm:hono@4.5.3",
       "npm:zod@^3.23.8": "npm:zod@3.23.8"
     },
     "jsr": {
+      "@olli/kvdex@1.0.2": {
+        "integrity": "c89ca0b1228183b2ce82ff543278ca5b354e55f9956e7f92800bb792025e22d6",
+        "dependencies": [
+          "jsr:@std/bytes@^0.220.0",
+          "jsr:@std/collections@^0.220.0",
+          "jsr:@std/ulid@^0.220.0"
+        ]
+      },
+      "@std/bytes@0.220.1": {
+        "integrity": "e522cdc7c152cfc8a09bd618618cbc710dcf57003ab6fab3a6c37ff4c88aa3db"
+      },
+      "@std/collections@0.220.1": {
+        "integrity": "5820a8d7f69ef93af6807249dfa4be5b97ebf8654c587826612744cf7ae57ef2"
+      },
       "@std/dotenv@0.225.0": {
         "integrity": "44db32932c67df82790a3e6847d7007befb6cc22d71f2f3ee7b7d00e1f0d6c94"
       },
@@ -20,6 +39,9 @@
       },
       "@std/path@1.0.2": {
         "integrity": "a452174603f8c620bd278a380c596437a9eef50c891c64b85812f735245d9ec7"
+      },
+      "@std/ulid@0.220.1": {
+        "integrity": "e61b7cc36b8aab1a90cae0958b169a79bb71ded3cda039ba722fdc09191a5537"
       },
       "@wok/djwt@3.0.2": {
         "integrity": "e1c8afe6e321941edda40d91b089e93738469b994d53f41f82e0e7fcd7dde259",
@@ -58,6 +80,10 @@
           "zod": "zod@3.23.8"
         }
       },
+      "@types/node@18.16.19": {
+        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
+        "dependencies": {}
+      },
       "hono@4.5.3": {
         "integrity": "sha512-r26WwwbKD3BAYdfB294knNnegNda7VfV1tVn66D9Kvl9WQTdrR+5eKdoeaQNHQcC3Gr0KBikzAtjd6VsRGVSaw==",
         "dependencies": {}
@@ -81,6 +107,7 @@
   "remote": {},
   "workspace": {
     "dependencies": [
+      "jsr:@olli/kvdex@^1.0.2",
       "jsr:@std/dotenv@^0.225.0",
       "jsr:@std/path@^1.0.1",
       "jsr:@wok/djwt@^3.0.2",

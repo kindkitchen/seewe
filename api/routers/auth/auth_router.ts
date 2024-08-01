@@ -13,7 +13,7 @@ import {
 } from "../../utils/google_auth.ts"
 import { get_origin_of_the_req_sender } from "../../utils/get_origin_of_the_req_sender.util.ts"
 import { decode_jwt, verify_jwt } from "../../utils/jwt.util.ts"
-import { user_ } from "../../types/ui/types/user_namespace.ts"
+import { UserEntity } from "../../dto/user.dto.ts"
 
 const router = new OpenAPIHono()
 
@@ -45,7 +45,7 @@ router
     }
 
     const user = finsert_result.data
-    const { access_token, refresh_token } = await generate_token_pair(user.id)
+    const { access_token, refresh_token } = await generate_token_pair(user._id)
 
     return ctx.json({
       ...user,
@@ -67,14 +67,14 @@ router
       })
     }
 
-    const result = await users_service.find_by_id(verified.sub!)
+    const result = await users_service.find_by_id(+verified.sub!)
 
     if (!result.ok) {
       throw new HTTPException(500, { message: "User not found" })
     }
 
     const user = result.data
-    const { access_token, refresh_token } = await generate_token_pair(user.id)
+    const { access_token, refresh_token } = await generate_token_pair(user._id)
 
     return ctx.json({
       ...user,
@@ -85,7 +85,7 @@ router
   })
 
 router.use(append_user)
-;(router as OpenAPIHono<{ Variables: { user: user_.Entity } }>).openapi(
+;(router as OpenAPIHono<{ Variables: { user: UserEntity } }>).openapi(
   post_logout,
   async (ctx) => {
     const user = ctx.get("user")
