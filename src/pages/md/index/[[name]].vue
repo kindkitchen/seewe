@@ -1,6 +1,7 @@
 <script lang="ts">
 import { my_fetch } from "@/my_fetch"
 import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic"
+import { use_md } from "@/stores/use_md.store"
 
 let prev_name = "ryan-dahl"
 const get_example_md_content = defineBasicLoader("/md//[[name]]", async (to) => {
@@ -24,8 +25,12 @@ import "md-editor-v3/lib/style.css"
 import { MdPreview } from "md-editor-v3"
 import { ref, watchEffect } from "vue"
 
+const md = use_md()
 const text = ref("")
 const { data: example_md, isLoading } = get_example_md_content()
+const add_to_editor = () => {
+  md.edited_str = text.value
+}
 
 watchEffect(() => {
   if (example_md.value) {
@@ -37,7 +42,7 @@ watchEffect(() => {
 <template>
   <div class="flex flex-col items-center sm:items-start">
     <tag-link to="/md/editor"> Build CV From Scratch </tag-link>
-    <tag-link to="/md/editor"> Continue To Modfify This </tag-link>
+    <tag-link to="/md/editor" @click="add_to_editor"> Continue To Modfify This </tag-link>
     <tag-link to="/md/examples"> Choose Another Example For Start </tag-link>
   </div>
   <div class="sm:px-[20%]">

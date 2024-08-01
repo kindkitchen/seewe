@@ -28,7 +28,7 @@ const { isReady, login } = useCodeClient({
 <template>
   <div @click="login">
     <slot v-bind="{ isReady }">
-      <button>Login with Google</button>
+      <tag-button>Login with Google</tag-button>
     </slot>
   </div>
 </template>
