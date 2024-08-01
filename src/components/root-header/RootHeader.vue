@@ -17,10 +17,6 @@ const common_navigation = [
     name: "Markdown CV",
     href: "/md",
   },
-  {
-    name: "Examples",
-    href: "/md/examples",
-  },
 ]
 </script>
 
