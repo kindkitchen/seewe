@@ -4,6 +4,7 @@ import { UserEntity } from "../../dto/user.dto.ts"
 import { mdCv_service } from "../../services/md-cv_service.ts"
 import { post_mdCv } from "./post_md-cv.ts"
 import { get_published_mdCv } from "./get_published_md-cv.ts"
+import { authenticated_only_wrapper } from "../../middlewares/authenticated_only.wrapper.ts"
 
 export const mdCv_router = new OpenAPIHono<{
   Variables: {
@@ -16,7 +17,7 @@ export const mdCv_router = new OpenAPIHono<{
 
     return ctx.text(cv.data?.html || "ooops... something went wrong")
   })
-  .openapi(post_mdCv, async (ctx) => {
+  .openapi(authenticated_only_wrapper(post_mdCv), async (ctx) => {
     const user = ctx.get("user")
     const data = ctx.req.valid("json")
     const result = await mdCv_service.insert({

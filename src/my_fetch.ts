@@ -70,7 +70,7 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
                   method: "post",
                   res_as: "application/json",
                   body: {
-                    refresh_token,
+                    refresh_token: `Bearer ${refresh_token}`,
                   },
                   is_public_api: true,
                 })
