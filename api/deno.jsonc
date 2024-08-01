@@ -2,6 +2,7 @@
   "imports": {
     "@hono/swagger-ui": "npm:@hono/swagger-ui@^0.4.0",
     "@hono/zod-openapi": "npm:@hono/zod-openapi@^0.15.1",
+    "@olli/kvdex": "jsr:@olli/kvdex@^1.0.2",
     "@std/dotenv": "jsr:@std/dotenv@^0.225.0",
     "@std/path": "jsr:@std/path@^1.0.1",
     "@wok/djwt": "jsr:@wok/djwt@^3.0.2",

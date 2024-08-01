@@ -4,7 +4,10 @@ import RootLayout from "./layouts/RootLayout.vue"
 </script>
 
 <template>
-  <RootLayout>
-    <RouterView />
-  </RootLayout>
+  <RouterView v-slot="{ Component, route }">
+    <component v-if="route.name === '/cv/[[cv_slug]]'" :is="Component" />
+    <RootLayout v-else>
+      <component :is="Component" />
+    </RootLayout>
+  </RouterView>
 </template>

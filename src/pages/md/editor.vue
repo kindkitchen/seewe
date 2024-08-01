@@ -16,13 +16,15 @@ const text = ref(md.edited_str)
 const handle_save = () => {
   md.update_str(text.value)
 }
-const handle_publish = () => {}
+const handle_publish = () => {
+  md.update_str(text.value)
+}
 const is_propose_login_show = ref(false)
 watchEffect(() => {
   if (auth.user && is_propose_login_show.value) is_propose_login_show.value = false
 })
 const handle_pseudo_publish = () => {
-  console.log(is_propose_login_show.value)
+  md.update_str(text.value)
   is_propose_login_show.value = true
 }
 </script>
@@ -31,7 +33,7 @@ const handle_pseudo_publish = () => {
   <div>
     <tag-button @click="handle_save">Save</tag-button>
     <div v-if="auth.user">
-      <!-- <tag-button v-if="auth.user" @click="handle_publish">Publish</tag-button> -->
+      <tag-button v-if="auth.user" @click="handle_publish">Publish</tag-button>
     </div>
     <div v-else>
       <ModalWindow :open="is_propose_login_show">

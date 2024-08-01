@@ -10,9 +10,7 @@ export const post_sign_in = createRoute({
       required: true,
       content: {
         "application/json": {
-          schema: AuthSchema.extend({
-            __redirect_uri__: z.string().optional(), // TODO: rm me!
-          }),
+          schema: AuthSchema,
         },
       },
     },
