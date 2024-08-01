@@ -129,8 +129,8 @@ type ApiCallPayload<M extends v1_.Method, P extends v1_.Path> = v1_.Req<M, P>["h
           string,
           never
         >
-      ? Omit<v1_.Req<M, P>, "headers"> & { is_public_api: false }
-      : v1_.Req<M, P> & { is_public_api: false }
+      ? Omit<v1_.Req<M, P>, "headers"> & { is_public_api?: false }
+      : v1_.Req<M, P> & { is_public_api?: false }
 
 type ApiCallRes<M extends v1_.Method, P extends v1_.Path> = Promise<
   v1_.Success<M, P, 200> extends Omit<Record<string, unknown>, "ERROR">

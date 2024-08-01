@@ -53,11 +53,13 @@ export interface paths {
     post: {
       parameters: {
         query?: never
-        header?: never
+        header?: {
+          authorization?: string
+        }
         path?: never
         cookie?: never
       }
-      requestBody?: {
+      requestBody: {
         content: {
           "application/json": {
             user_id: number

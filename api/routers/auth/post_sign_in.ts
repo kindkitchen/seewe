@@ -1,5 +1,4 @@
 import { createRoute } from "@hono/zod-openapi"
-import { z } from "zod"
 import { AuthSchema, SuccessSignInSchema } from "../../dto/auth.dto.ts"
 
 export const post_sign_in = createRoute({

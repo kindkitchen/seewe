@@ -12,9 +12,9 @@ export const mdCv_router = new OpenAPIHono<{
 }>()
   .openapi(get_published_mdCv, async (ctx) => {
     const slug = ctx.req.valid("param").slug
-    console.log(slug)
+    const cv = await mdCv_service.find_by_id(+slug)
 
-    return ctx.text(`<h1>CV: ${slug}</h1>`)
+    return ctx.text(cv.data?.html || "ooops... something went wrong")
   })
   .openapi(post_mdCv, async (ctx) => {
     const user = ctx.get("user")

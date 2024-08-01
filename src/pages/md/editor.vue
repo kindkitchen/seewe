@@ -8,30 +8,48 @@ import { use_auth } from "@/stores/use_auth.store"
 import ModalWindow from "@/components/modal-window/ModalWindow.vue"
 import { post_sign_in } from "@/queries/post_sign_in.query"
 import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
+import { my_fetch } from "@/my_fetch"
 
 const auth = use_auth()
 const is_mobile = window.innerWidth < 500
 const md = use_md()
 const text = ref(md.edited_str)
-const handle_save = () => {
-  md.update_str(text.value)
-}
-const handle_publish = () => {
-  md.update_str(text.value)
+const html = ref("")
+const preview_slug = ref("")
+const handle_publish = async () => {
+  const res = await my_fetch({
+    method: "post",
+    path: "/v1/md-cv",
+    res_as: "application/json",
+    body: {
+      html: html.value,
+      is_published: true,
+      md: text.value,
+      user_id: auth.user!._id,
+    },
+  })
+  preview_slug.value = res._id.toString()
 }
 const is_propose_login_show = ref(false)
 watchEffect(() => {
   if (auth.user && is_propose_login_show.value) is_propose_login_show.value = false
 })
-const handle_pseudo_publish = () => {
+watchEffect(() => {
   md.update_str(text.value)
+})
+const handle_pseudo_publish = () => {
   is_propose_login_show.value = true
 }
 </script>
 
 <template>
   <div>
-    <tag-button @click="handle_save">Save</tag-button>
+    <div v-if="preview_slug">
+      <tag-h size="sm">Preview CV</tag-h>
+      <tag-button v-if="preview_slug">
+        <a :href="`/cv/${preview_slug}`">{{ `/cv/${preview_slug}` }}</a>
+      </tag-button>
+    </div>
     <div v-if="auth.user">
       <tag-button v-if="auth.user" @click="handle_publish">Publish</tag-button>
     </div>
@@ -52,6 +70,11 @@ const handle_pseudo_publish = () => {
       <tag-button @click="handle_pseudo_publish">Publish</tag-button>
     </div>
     <MdEditor
+      :on-html-changed="
+        (html_str) => {
+          html = html_str
+        }
+      "
       :toolbars="['pageFullscreen', 'unorderedList', 'title', 'table', 'revoke', 'previewOnly']"
       :preview="!is_mobile"
       v-model="text"

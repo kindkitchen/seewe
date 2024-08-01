@@ -7,10 +7,12 @@ import { MdCvDto } from "../../dto/md-cv.dto.ts"
 export const post_mdCv = createRoute({
   path: "/",
   method: "post",
-  ...authenticated_only,
+  security: authenticated_only.security,
   middleware: [append_user],
   request: {
+    ...authenticated_only.request,
     body: {
+      required: true,
       content: {
         "application/json": {
           schema: MdCvDto,

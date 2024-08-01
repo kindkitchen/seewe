@@ -26,7 +26,7 @@ const restore_user = () => {
   try {
     const candidate_str = localStorage.getItem("user")
     const candidate = candidate_str ? JSON.parse(candidate_str) : undefined
-    if (typeof candidate?.id === "number") {
+    if (typeof (candidate as user_.Optional)?._id === "number") {
       return candidate as user_.Entity
     }
     return undefined

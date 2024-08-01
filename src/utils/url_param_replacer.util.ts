@@ -10,7 +10,6 @@ const between_curly = (url: string, params: Record<string, string>): string => {
 
 const after_colon = (url: string, params: Record<string, string>): string => {
   return url.replace(AFTER_COLON_REGEX, (match) => {
-    console.log(match)
     const key = match.slice(1)
     return params[key] || match
   })

@@ -5,7 +5,7 @@ import RootLayout from "./layouts/RootLayout.vue"
 
 <template>
   <RouterView v-slot="{ Component, route }">
-    <component v-if="route.name === '/cv/[[cv_slug]]'" :is="Component" />
+    <component v-if="route.name === '/cv/[cv_slug]'" :is="Component" />
     <RootLayout v-else>
       <component :is="Component" />
     </RootLayout>

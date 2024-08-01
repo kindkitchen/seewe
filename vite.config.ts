@@ -12,7 +12,8 @@ export default defineConfig({
   plugins: [
     VueRouter({
       // skip any UpperCase.vue component
-      filePatterns: '**/[^A-Z]*'
+      filePatterns: '**/[^A-Z]*',
+      importMode: 'async',
     }),
     vue(),
     vueJsx(),

@@ -15,7 +15,7 @@ export const db = kvdex(kv, {
   _dev_md_cv: collection(MdCvDto, {
     indices: {
       _id: "primary",
-      user_id: "primary",
+      user_id: "secondary",
       is_published: "secondary",
       publish_slug: "primary",
     },
