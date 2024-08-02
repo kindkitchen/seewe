@@ -1,5 +1,9 @@
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
+import { load_env } from "../../utils/load_env.util.ts"
+import { DotenvFile } from "../../env.d.ts"
+
+const config = await load_env<DotenvFile>()
 
 export const example_names = [
   "ryan-dahl",
@@ -30,7 +34,22 @@ export const content_router = new OpenAPIHono().openapi(
   (ctx) => {
     const { name } = ctx.req.valid("param")
 
-    return ctx.text(get_example_str(name))
+    return ctx.text(
+      get_example_str(name) || `
+# Unknown Name
+_...interesting_
+### The Name "${name}" is not listed in our examples
+
+but try the default one with __[\`Ryan Dahl\`](${
+        config.UI_URL.split(" ").at(0)
+      }/md/with/ryan-dahl)__
+* but as you can see
+* the full simple but incredible power of __markdown__
+* is ready to serve you
+
+> _Write your CV and get the job of your dream!_
+`,
+    )
   },
 )
 
@@ -248,5 +267,5 @@ Ryan Dahl is a visionary software engineer renowned for creating Node.js and Den
 
 ---
     `,
-  }[example_names.includes(name) ? name : example_names.at(0)!]!
+  }[name]
 }
