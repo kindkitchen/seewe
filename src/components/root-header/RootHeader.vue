@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { post_sign_in } from "@/queries/post_sign_in.query"
 import { use_auth } from "@/stores/use_auth.store"
 import { Disclosure } from "@headlessui/vue"
 import DesktopNav from "./DesktopNav.vue"
-import LoginWithGoogleBtn from "../LoginWithGoogleBtn.vue"
 import MobileNav from "./MobileNav.vue"
 import ProfileDropdown from "./ProfileDropdown.vue"
 
@@ -15,7 +13,7 @@ const common_navigation = [
   },
   {
     name: "Markdown CV",
-    href: "/md",
+    href: "/md/with",
   },
 ]
 </script>
@@ -28,11 +26,7 @@ const common_navigation = [
         <div
           class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
-          <LoginWithGoogleBtn v-if="!auth.user" @success="post_sign_in" @fail="console.error">
-            <tag-button>Login with Google</tag-button>
-          </LoginWithGoogleBtn>
-
-          <ProfileDropdown />
+          <ProfileDropdown v-if="auth.user" />
         </div>
       </div>
     </div>

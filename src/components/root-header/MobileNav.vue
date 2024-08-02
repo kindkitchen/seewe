@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { DisclosureButton } from "@headlessui/vue"
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline"
-import { useRoute } from "vue-router"
+import LoginLogoutPair from "./LoginLogoutPair.vue"
 
 defineProps<{
   open: boolean
   common_navigation: { name: string; href: string }[]
 }>()
-
-const curr_route = useRoute()
 </script>
 
 <template>
@@ -26,13 +24,10 @@ const curr_route = useRoute()
   <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
     <div class="hidden sm:ml-6 sm:block">
       <div class="flex space-x-4">
-        <tag-link
-          v-for="item in common_navigation"
-          :to="item.href"
-          :key="item.name"
-          :aria-current="item.href === curr_route.path ? 'page' : undefined"
-          >{{ item.name }}</tag-link
-        >
+        <tag-link v-for="item in common_navigation" :to="item.href" :key="item.name">{{
+          item.name
+        }}</tag-link>
+        <LoginLogoutPair />
       </div>
     </div>
   </div>

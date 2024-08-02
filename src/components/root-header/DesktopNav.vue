@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DisclosureButton, DisclosurePanel } from "@headlessui/vue"
+import LoginLogoutPair from "./LoginLogoutPair.vue"
 
 defineProps<{
   common_navigation: { name: string; href: string }[]
@@ -14,6 +15,7 @@ defineProps<{
           {{ item.name }}
         </tag-link>
       </DisclosureButton>
+      <LoginLogoutPair />
     </div>
   </DisclosurePanel>
 </template>
