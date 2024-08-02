@@ -4,7 +4,7 @@
     "ts"
   ],
   "deno.enable": true,
-  "vue.server.hybridMode": true,
+  "vue.server.hybridMode": false,
   "deno.enablePaths": [
     "api"
   ],
