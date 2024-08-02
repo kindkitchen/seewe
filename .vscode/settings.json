@@ -1,7 +1,14 @@
 {
-  "vue.server.hybridMode": true,
+  "vue.server.includeLanguages": [
+    "vue",
+    "ts"
+  ],
   "deno.enable": true,
+  "vue.server.hybridMode": false,
   "deno.enablePaths": [
     "api"
   ],
+  "deno.disablePaths": [
+    "src"
+  ]
 }

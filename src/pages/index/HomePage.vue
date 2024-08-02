@@ -6,11 +6,11 @@ const auth = use_auth()
 const common_links = [
   {
     name: "See examples",
-    to: "#",
+    to: "/md/examples",
   },
   {
     name: "Build markdown CV",
-    to: "/md",
+    to: "/md/editor",
   },
 ]
 const client_links = [

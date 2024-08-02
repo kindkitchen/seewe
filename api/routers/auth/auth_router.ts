@@ -1,19 +1,19 @@
 import { OpenAPIHono } from "@hono/zod-openapi"
 import { HTTPException } from "hono/http-exception"
+import { UserEntity } from "../../dto/user.dto.ts"
+import { authenticated_only_wrapper } from "../../middlewares/authenticated_only.wrapper.ts"
 import { generate_token_pair } from "../../services/auth_service.ts"
 import { users_service } from "../../services/users_service.ts"
-import { post_sign_in } from "./post_sign_in.ts"
-import { post_refresh } from "./post_refresh.ts"
-import { append_user } from "../../middlewares/append_user.middleware.ts"
-import { post_logout } from "./post_logout.ts"
+import { get_origin_of_the_req_sender } from "../../utils/get_origin_of_the_req_sender.util.ts"
 import {
   google_access_token_from_code,
   GoogleAccessTokenFromCodePayload,
   GoogleAuthJwtPayload,
 } from "../../utils/google_auth.ts"
-import { get_origin_of_the_req_sender } from "../../utils/get_origin_of_the_req_sender.util.ts"
 import { decode_jwt, verify_jwt } from "../../utils/jwt.util.ts"
-import { UserEntity } from "../../dto/user.dto.ts"
+import { post_logout } from "./post_logout.ts"
+import { post_refresh } from "./post_refresh.ts"
+import { post_sign_in } from "./post_sign_in.ts"
 
 const router = new OpenAPIHono()
 
@@ -83,10 +83,8 @@ router
       refresh_token,
     })
   })
-
-router.use(append_user)
 ;(router as OpenAPIHono<{ Variables: { user: UserEntity } }>).openapi(
-  post_logout,
+  authenticated_only_wrapper(post_logout),
   async (ctx) => {
     const user = ctx.get("user")
 

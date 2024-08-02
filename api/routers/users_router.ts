@@ -4,12 +4,11 @@ import { append_user } from "../middlewares/append_user.middleware.ts"
 import { users_service } from "../services/users_service.ts"
 import { UserDto } from "../dto/user.dto.ts"
 import { HTTPException } from "hono/http-exception"
-import { authenticated_only } from "../middlewares/authenticated_only.spread.ts"
+import { authenticated_only_wrapper } from "../middlewares/authenticated_only.wrapper.ts"
 
 const get_list = createRoute({
   method: "get",
   path: "/",
-  ...authenticated_only,
   request: {},
   middleware: [append_user],
   responses: {
@@ -28,7 +27,7 @@ const get_list = createRoute({
 
 const router = new OpenAPIHono()
 
-router.openapi(get_list, async (ctx) => {
+router.openapi(authenticated_only_wrapper(get_list), async (ctx) => {
   const result = await users_service.list()
 
   if (!result.ok) {
@@ -39,7 +38,5 @@ router.openapi(get_list, async (ctx) => {
     users: result.data,
   })
 })
-
-router.use(append_user)
 
 export const users_router = router

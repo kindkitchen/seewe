@@ -4,7 +4,7 @@ import { defineBasicLoader } from "unplugin-vue-router/data-loaders/basic"
 import { use_md } from "@/stores/use_md.store"
 
 let prev_name = "ryan-dahl"
-const get_example_md_content = defineBasicLoader("/md//[[name]]", async (to) => {
+const get_example_md_content = defineBasicLoader("/md/with.[[name]]", async (to) => {
   const name = to.params.name || prev_name
   prev_name = name
   const example = await my_fetch({
@@ -31,6 +31,9 @@ const { data: example_md, isLoading } = get_example_md_content()
 const add_to_editor = () => {
   md.edited_str = text.value
 }
+const clean_editor = () => {
+  md.edited_str = ""
+}
 
 watchEffect(() => {
   if (example_md.value) {
@@ -41,7 +44,7 @@ watchEffect(() => {
 
 <template>
   <div class="flex flex-col items-center sm:items-start">
-    <tag-link to="/md/editor"> Build CV From Scratch </tag-link>
+    <tag-link to="/md/editor" @click="clean_editor"> Build CV From Scratch </tag-link>
     <tag-link to="/md/editor" @click="add_to_editor"> Continue To Modfify This </tag-link>
     <tag-link to="/md/examples"> Choose Another Example For Start </tag-link>
   </div>

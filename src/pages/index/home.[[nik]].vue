@@ -1,7 +1,7 @@
 <script setup>
-import HomePgContent from "./HomePgContent.vue"
+import HomePage from "./HomePage.vue"
 </script>
 
 <template>
-  <HomePgContent />
+  <HomePage />
 </template>
