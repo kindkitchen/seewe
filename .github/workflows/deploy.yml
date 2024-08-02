@@ -34,7 +34,7 @@ jobs:
           node-version: lts/*
 
       - name: Build ui
-        run: "npm i && npm run build && mv dist api/dist"
+        run: "npm i && npm run build"
 
       - name: Upload api to Deno Deploy
         uses: denoland/deployctl@v1
