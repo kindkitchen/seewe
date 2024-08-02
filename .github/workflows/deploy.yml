@@ -4,7 +4,7 @@ env:
   CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
 on:
   push:
-    branches: ["main", "seewe-api", "seewe"]
+    branches: ["seewe-lab"]
 jobs:
   pr-or-deploy:
     environment: production
@@ -19,53 +19,27 @@ jobs:
         with:
           token: ${{ secrets.SUPER_GITHUB_TOKEN }}
 
-      - name: push into main
-        if: ${{ env.CURRENT_BRANCH == 'main' }} # main branch only
-        run: >
-          git config user.name seewe-bot && git config user.email seewe-bot@mail.com &&
-          git checkout -b seewe-api && git push origin seewe-api --force &&
-          git checkout -b seewe && git push origin seewe --force
-
       - name: Install Deno
-        if: ${{ env.CURRENT_BRANCH != 'main' }}
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
 
       - name: Configure environment
-        if: ${{ env.CURRENT_BRANCH != 'main' }}
         run: >
           echo """${{ secrets.DOTENV_FILE }}""" >> .env
 
-        # deploy ui
       - name: Install Node.js for ui building
-        if: ${{ env.CURRENT_BRANCH == 'seewe' }}
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
 
       - name: Build ui
-        if: ${{ env.CURRENT_BRANCH == 'seewe' }}
-        run: "npm i && npm run build-only"
+        run: "npm i && npm run build && mv dist api/dist"
 
-      - name: Upload ui to Deno Deploy
-        if: ${{ env.CURRENT_BRANCH == 'seewe' }}
-        uses: denoland/deployctl@v1
-        with:
-          exclude: |
-            api
-            .vscode
-            .git
-          project: "seewe"
-          entrypoint: https://jsr.io/@nik-kita/spa-server/1.0.0/mod.ts
-          root: dist
-
-        # deploy api
       - name: Upload api to Deno Deploy
-        if: ${{ env.CURRENT_BRANCH == 'seewe-api' }}
         uses: denoland/deployctl@v1
         with:
-          project: "seewe-api"
+          project: "seewe-lab"
           exclude: |
             src
             .github
