@@ -2,10 +2,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue"
 import { WrenchScrewdriverIcon } from "@heroicons/vue/24/outline"
 import { useRoute } from "vue-router"
-import { post_logout_query } from "@/queries/post_logout.query"
-import { use_auth } from "@/stores/use_auth.store"
 
-const auth = use_auth()
 const curr_route = useRoute()
 const profile_navigation = [
   {
@@ -52,18 +49,6 @@ const profile_navigation = [
             :aria-current="item.href === curr_route.path ? 'page' : undefined"
             >{{ item.name }}</router-link
           >
-        </MenuItem>
-        <MenuItem as="template" v-slot="{ active }">
-          <div class="flex justify-end pr-1">
-            <tag-button
-              @click="post_logout_query"
-              v-if="auth.user"
-              size="sm"
-              :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']"
-              :aria-current="undefined"
-              >Logout</tag-button
-            >
-          </div>
         </MenuItem>
       </MenuItems>
     </transition>

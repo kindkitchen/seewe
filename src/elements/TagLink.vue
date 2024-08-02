@@ -7,10 +7,10 @@ defineProps<{
 </script>
 
 <template>
-  <router-link
-    :to
-    class="block rounded-sm px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-  >
+  <a v-if="to === '#' || (typeof to === 'string' && to.startsWith('http'))" class="my-link">
+    <slot></slot>
+  </a>
+  <router-link v-else aria-current="page" :to class="my-link">
     <slot></slot>
   </router-link>
 </template>
