@@ -23,18 +23,18 @@ app.route("/openapi", openapi_router)
  * @description
  * UI serving goes below
  */
-app.get("/*", async (ctx) => {
+app.get("*", async (ctx) => {
+  const fsRoot =  "./dist"
   const req = ctx.req.raw
   const url = new URL(req.url)
   let isIndex = url.pathname === "/" || url.pathname === "/index.html"
-
-  let res = await serveDir(req, { fsRoot: "./dist" })
+  let res = await serveDir(req, { fsRoot })
 
   if (res.status == 404) {
     const index = new URL(req.url)
     index.pathname = "index.html"
     isIndex = true
-    res = await serveDir(new Request(index, req))
+    res = await serveDir(new Request(index, req), { fsRoot })
   }
 
   if (isIndex) {
