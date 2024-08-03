@@ -6,6 +6,7 @@ import type { DotenvFile } from "./env.d.ts"
 import { openapi_router } from "./routers/openapi/mod.openapi.tsx"
 import { spa_subserver } from "./spa_subserver.tsx"
 import { load_env } from "./utils/load_env.util.ts"
+import { serve_static } from "./utils/serve_static.ts"
 import { api_v1 } from "./v1.ts"
 
 const config = await load_env<DotenvFile>()
@@ -20,6 +21,7 @@ app.use(logger()).use(
 app.route("/", api_v1)
 app.route("/openapi", openapi_router)
 app.route("/", spa_subserver)
+app.notFound(serve_static)
 
 Deno.serve({ port: 3000 }, app.fetch)
 
