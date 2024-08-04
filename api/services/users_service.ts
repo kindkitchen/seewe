@@ -80,7 +80,7 @@ const add_nik = async (nik: string, user: UserEntity) => {
   if (user.nik) {
     return {
       ok: false,
-      data: null,
+      data: "User already has nik",
     } as const
   }
 
@@ -89,7 +89,7 @@ const add_nik = async (nik: string, user: UserEntity) => {
   if (already?.value) {
     return {
       ok: false,
-      data: null,
+      data: "This nik is already taken",
     } as const
   }
 

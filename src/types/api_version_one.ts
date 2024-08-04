@@ -311,6 +311,52 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/v1/users/nik": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          "application/json": {
+            nik: string
+          }
+        }
+      }
+      responses: {
+        /** @description Successfully added nik to user to extend his possibilities */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "application/json": {
+              ok: boolean
+              data: unknown
+            }
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/v1/hello-world": {
     parameters: {
       query?: never

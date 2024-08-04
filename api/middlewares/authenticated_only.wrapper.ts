@@ -1,7 +1,9 @@
 import { createRoute } from "@hono/zod-openapi"
 import { z, ZodObject, ZodRawShape } from "zod"
 import { append_user } from "./append_user.middleware.ts"
+import { UserEntity } from "../dto/user.dto.ts"
 
+export type AuthenticatedHono = { Variables: { user: UserEntity } }
 export const authenticated_only_wrapper = <
   T extends ReturnType<typeof createRoute>,
 >(route_definition: T): T => {
