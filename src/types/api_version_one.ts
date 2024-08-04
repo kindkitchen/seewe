@@ -68,6 +68,9 @@ export interface paths {
             _id?: number
             is_published: boolean
             name?: string
+            as_default_by_user_id?: number
+            as_default_by_username?: string
+            as_regulary_by_name_username?: string[]
           }
         }
       }
@@ -302,51 +305,6 @@ export interface paths {
         }
       }
     }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/v1/users": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: {
-      parameters: {
-        query?: never
-        header?: {
-          authorization?: string
-        }
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description Return a list of users */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            "application/json": {
-              users: {
-                _id?: number
-                /** Format: email */
-                email: string
-                name?: string
-                nik?: string
-              }[]
-            }
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
     delete?: never
     options?: never
     head?: never

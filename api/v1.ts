@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
 import { auth_router } from "./routers/auth/auth_router.ts"
-import { users_router } from "./routers/users_router.ts"
+import { users_router } from "./routers/users/users_router.ts"
 import { content_router } from "./routers/content/content_router.ts"
 import { mdCv_router } from "./routers/md-cv/md-cv_router.ts"
 
