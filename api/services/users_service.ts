@@ -1,7 +1,7 @@
 // deno-lint-ignore-file require-await
-import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
-import { User, UserEntity } from "../dto/user.dto.ts"
 import { db } from "../db.ts"
+import { User, UserEntity } from "../dto/user.dto.ts"
+import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
 
 const find_by = async <T extends ("_id" | "email")>(
   by: T,
@@ -43,7 +43,10 @@ const insert = async (user: User) => {
   } as const
 }
 
-const update = async (_id: number, user: User) => {
+const update = async (
+  _id: number,
+  user: Omit<User, keyof Pick<User, "nik">>,
+) => {
   const update_result = await db._dev_users.updateByPrimaryIndex(
     "_id",
     _id,
@@ -73,12 +76,53 @@ const list = async () => {
   } as const
 }
 
+const add_nik = async (nik: string, user: UserEntity) => {
+  if (user.nik) {
+    return {
+      ok: false,
+      data: null,
+    } as const
+  }
+
+  const already = await db._dev_users.findByPrimaryIndex("nik", nik)
+
+  if (already?.value) {
+    return {
+      ok: false,
+      data: null,
+    } as const
+  }
+
+  const db_res = await db._dev_users.updateByPrimaryIndex("_id", user._id, {
+    nik,
+  })
+
+  if (db_res.ok) {
+    // assume it can be only one or zero cv, because without nik user can't have more
+    await db._dev_md_cv.updateBySecondaryIndex("user_id", user._id, {
+      as_default_by_user_id: user._id,
+      as_default_by_username: nik,
+    })
+
+    return {
+      ok: true,
+      data: null,
+    } as const
+  }
+
+  return {
+    ok: false,
+    data: null,
+  } as const
+}
+
 export const users_service = {
+  add_nik,
   find_by_id: (_id: number) => find_by("_id", _id),
   find_by_email: (email: string) => find_by("email", email),
   insert,
   update,
-  upsert: async (user: User) => {
+  upsert: async (user: Omit<User, keyof Pick<User, "nik">>) => {
     if (user._id) {
       return update(user._id, user)
     }
