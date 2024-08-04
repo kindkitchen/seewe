@@ -17,6 +17,9 @@ export const db = kvdex(kv, {
       _id: "primary",
       user_id: "secondary",
       is_published: "secondary",
+      as_default_by_user_id: 'primary',
+      as_default_by_username: 'primary',
+      as_regulary_by_name_username: 'primary',
     },
   }),
 })
