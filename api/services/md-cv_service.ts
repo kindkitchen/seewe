@@ -2,11 +2,10 @@ import { db } from "../db.ts"
 import { MdCv, MdCvEntity } from "../dto/md-cv.dto.ts"
 import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
 
-const find_by = async <T extends ("_id" | "publish_slug")>(
-  by: T,
-  value: T extends ("_id") ? number : string,
+const find_by_id = async (
+  _id: number,
 ) => {
-  const find_result = await db._dev_md_cv.findByPrimaryIndex(by, value as any)
+  const find_result = await db._dev_md_cv.findByPrimaryIndex("_id", _id)
   if (!find_result?.id) {
     return {
       ok: false,
@@ -59,8 +58,7 @@ const update = async (_id: number, mdCv: MdCv) => {
 }
 
 export const mdCv_service = {
-  find_by_id: (_id: number) => find_by("_id", _id),
-  fund_by_slug: (slug: string) => find_by("publish_slug", slug),
+  find_by_id,
   insert,
   update,
 }

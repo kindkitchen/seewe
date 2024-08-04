@@ -68,7 +68,6 @@ export interface paths {
             _id?: number
             is_published: boolean
             name?: string
-            publish_slug?: string
           }
         }
       }

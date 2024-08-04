@@ -7,7 +7,6 @@ export const MdCvDto = z.object({
   _id: z.number().optional(),
   is_published: z.boolean(),
   name: z.string().optional(),
-  publish_slug: z.string().optional(),
 })
 
 export const MdCvEntityDto = MdCvDto.omit({ _id: true }).extend({
