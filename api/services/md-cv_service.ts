@@ -1,52 +1,24 @@
-import { number } from "zod"
 import { db } from "../db.ts"
 import { MdCv, MdCvEntity } from "../dto/md-cv.dto.ts"
 import { UserEntity } from "../dto/user.dto.ts"
 import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
 
-const find_by_id = async (
+const update = async (
   _id: number,
+  mdCv: Omit<
+    MdCv,
+    keyof Pick<
+      MdCv,
+      "as_default_by_user_id" | "as_default_by_username" | "_id" | "user_id"
+    >
+  >,
 ) => {
-  const find_result = await db._dev_md_cv.findByPrimaryIndex("_id", _id)
-  if (!find_result?.id) {
-    return {
-      ok: false,
-      data: null,
-    } as const
-  }
-
-  return {
-    ok: true,
-    data: find_result.value as MdCvEntity,
-  } as const
-}
-
-const insert = async (mdCv: MdCv) => {
-  const _id = unique_incremental_timestamp()
-  const full_mdCv = {
-    ...mdCv,
-    _id,
-  }
-  const add_result = await db._dev_md_cv.add(full_mdCv)
-  if (!add_result.ok) {
-    return {
-      ok: false,
-      data: null,
-    } as const
-  }
-  return {
-    ok: true,
-    data: _id,
-  } as const
-}
-
-const update = async (_id: number, mdCv: MdCv) => {
-  const update_result = await db._dev_md_cv.updateByPrimaryIndex(
+  const db_res = await db._dev_md_cv.updateByPrimaryIndex(
     "_id",
     _id,
     mdCv,
   )
-  if (!update_result.ok) {
+  if (!db_res.ok) {
     return {
       ok: false,
       data: null,
@@ -173,10 +145,41 @@ const toggle_default = async (is_default: boolean, {
   }
 }
 
+const save = async (mdcv: MdCv, user: UserEntity) => {
+  if (user.nik) {
+    if (!mdcv.name) {
+      return {
+        ok: false,
+        data: null,
+      } as const
+    }
+
+    const _id = unique_incremental_timestamp()
+    const db_res = await db._dev_md_cv.add({
+      ...mdcv,
+      _id,
+      as_regulary_by_name_username: [user.nik, mdcv.name],
+    })
+
+    if (db_res.ok) {
+      return {
+        ok: true,
+        data: null,
+      } as const
+    } else {
+      return {
+        ok: false,
+        data: null,
+      } as const
+    }
+  }
+
+  return save_as_default(mdcv, user)
+}
+
 export const mdCv_service = {
-  toggle_default,
   save_as_default,
-  find_by_id,
-  insert,
+  toggle_default,
   update,
+  save,
 }
