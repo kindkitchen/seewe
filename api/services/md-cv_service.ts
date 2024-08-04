@@ -1,3 +1,4 @@
+import { number } from "zod"
 import { db } from "../db.ts"
 import { MdCv, MdCvEntity } from "../dto/md-cv.dto.ts"
 import { UserEntity } from "../dto/user.dto.ts"
@@ -121,7 +122,59 @@ const save_as_default = async (mdcv: MdCv, user: UserEntity) => {
   }
 }
 
+const toggle_default = async (is_default: boolean, {
+  mdcv_id,
+  user,
+}: {
+  mdcv_id: number
+  user: UserEntity
+}) => {
+  const target_res = await db._dev_md_cv.findByPrimaryIndex("_id", mdcv_id)
+  if (!target_res?.id || target_res.value.user_id !== user._id) {
+    return {
+      ok: false,
+      data: null,
+    } as const
+  }
+  const target = target_res.value as MdCvEntity
+
+  if (is_default) {
+    if (!target.as_default_by_user_id) {
+      void await db._dev_md_cv.updateByPrimaryIndex(
+        "as_default_by_user_id",
+        user._id,
+        {
+          as_default_by_user_id: undefined,
+          as_default_by_username: undefined,
+        },
+      )
+    } else {
+      return {
+        ok: true,
+        data: null,
+      }
+    }
+  }
+  const db_res = await db._dev_md_cv.updateByPrimaryIndex("_id", mdcv_id, {
+    as_default_by_user_id: is_default ? user._id : undefined,
+    as_default_by_username: is_default ? user.name : undefined,
+  })
+
+  if (db_res.ok) {
+    return {
+      ok: true,
+      data: null,
+    } as const
+  } else {
+    return {
+      ok: false,
+      data: null,
+    } as const
+  }
+}
+
 export const mdCv_service = {
+  toggle_default,
   save_as_default,
   find_by_id,
   insert,
