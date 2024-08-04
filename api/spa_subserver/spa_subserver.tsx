@@ -1,8 +1,8 @@
 // deno-lint-ignore-file require-await
-import { createRoute, OpenAPIHono } from "@hono/zod-openapi"
+import { OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
-import { users_service } from "./services/users_service.ts"
-import { serve_static } from "./utils/serve_static.ts"
+import { users_service } from "../services/users_service.ts"
+import { serve_static } from "../utils/serve_static.ts"
 
 export const spa_subserver = new OpenAPIHono()
   .get("/id/:user_id", async (ctx) => {
