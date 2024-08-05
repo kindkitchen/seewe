@@ -49,14 +49,14 @@
 </template>
 
 <script setup lang="ts">
+import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
+import ModalWindow from "@/components/modal-window/ModalWindow.vue"
+import { my_fetch } from "@/my_fetch"
+import { post_sign_in } from "@/queries/post_sign_in.query"
+import { use_auth } from "@/stores/use_auth.store"
 import { use_md } from "@/stores/use_md.store"
 import { MdEditor } from "md-editor-v3"
 import { ref, watchEffect } from "vue"
-import { use_auth } from "@/stores/use_auth.store"
-import ModalWindow from "@/components/modal-window/ModalWindow.vue"
-import { post_sign_in } from "@/queries/post_sign_in.query"
-import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
-import { my_fetch } from "@/my_fetch"
 
 const auth = use_auth()
 const is_mobile = window.innerWidth < 500
@@ -67,13 +67,14 @@ const preview_slug = ref("")
 const handle_publish = async () => {
   const res = await my_fetch({
     method: "post",
-    path: "/v1/md-cv",
+    path: "/v1/mdcv",
     res_as: "application/json",
+
     body: {
       html: html.value,
       is_published: true,
       md: text.value,
-      user_id: auth.user!._id,
+      make_default: true,
     },
   })
   preview_slug.value = res._id.toString()

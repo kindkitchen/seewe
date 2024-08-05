@@ -221,6 +221,161 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/v1/mdcv": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          "application/json": {
+            md: string
+            html: string
+            is_published: boolean
+            name?: string
+            make_default: boolean
+          }
+        }
+      }
+      responses: {
+        /** @description CV created */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "application/json": {
+              _id: number
+            }
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/v1/mdcv/:mdcv_id": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path: {
+          mdcv_id: string
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description CV for owner */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "application/json": {
+              user_id: number
+              md: string
+              html: string
+              is_published: boolean
+              name?: string
+              as_default_by_user_id?: number
+              as_default_by_username?: string
+              as_regulary_by_name_username?: string[]
+              _id: number
+            }
+          }
+        }
+      }
+    }
+    put: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path: {
+          mdcv_id: string
+        }
+        cookie?: never
+      }
+      requestBody?: {
+        content: {
+          "application/json": {
+            md?: string
+            html?: string
+            is_published?: boolean
+            name?: string
+            make_default?: boolean
+          }
+        }
+      }
+      responses: {
+        /** @description CV updated */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "application/json": {
+              ok: boolean
+              data: unknown | string | unknown
+            }
+          }
+        }
+      }
+    }
+    post?: never
+    delete: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path: {
+          mdcv_id: string
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description CV deleted (no content) */
+        204: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+      }
+    }
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/v1/users/nik": {
     parameters: {
       query?: never

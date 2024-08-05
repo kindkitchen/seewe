@@ -8,6 +8,7 @@ export const post_mdcv = authenticated_only_wrapper(createRoute({
   path: "/",
   request: {
     body: {
+      required: true,
       content: {
         "application/json": {
           schema: MdCvDto.omit({
