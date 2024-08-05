@@ -8,10 +8,7 @@ const is_open = ref(false)
 </script>
 <template>
   <div :class="tw('inline-flex flex-col sm:flex-row sticky gap-2', attrs.class as any)">
-    <div :class="[{ hidden: !is_open }, 'sm:block']">
-      <slot v-bind="{ is_open }"></slot>
-    </div>
-    <tag-link
+    <tag-button
       @click="() => (is_open = !is_open)"
       :class="
         tw(
@@ -20,10 +17,13 @@ const is_open = ref(false)
             'bg-gray-600 text-gray-300': is_open,
             'text-gray-200 bg-gray-900': !is_open,
           },
-          'sm:hidden',
+          'sm:hidden relative top-[7rem]',
         )
       "
-      >{{ is_open ? "-" : "+" }}</tag-link
+      >{{ is_open ? "-" : "+" }}</tag-button
     >
+    <div :class="[{ hidden: !is_open }, 'sm:block']">
+      <slot v-bind="{ is_open }"></slot>
+    </div>
   </div>
 </template>
