@@ -284,7 +284,7 @@ export interface paths {
           authorization?: string
         }
         path: {
-          mdcv_id: string
+          mdcv_id: number | null
         }
         cookie?: never
       }
@@ -318,11 +318,11 @@ export interface paths {
           authorization?: string
         }
         path: {
-          mdcv_id: string
+          mdcv_id: number | null
         }
         cookie?: never
       }
-      requestBody?: {
+      requestBody: {
         content: {
           "application/json": {
             md?: string
@@ -356,7 +356,7 @@ export interface paths {
           authorization?: string
         }
         path: {
-          mdcv_id: string
+          mdcv_id: number | null
         }
         cookie?: never
       }

@@ -8,7 +8,7 @@ export const get_mdcv = authenticated_only_wrapper(createRoute({
   path: "/:mdcv_id",
   request: {
     params: z.object({
-      mdcv_id: z.string().transform(Number),
+      mdcv_id: z.number({ coerce: true }),
     }),
   },
   responses: {

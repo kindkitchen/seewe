@@ -49,8 +49,7 @@ export const spa_subserver = new OpenAPIHono()
           dangerouslySetInnerHTML={{
             __html: cv.html,
           }}
-        >
-        </div>
+        />
       </html>,
     )
   })
@@ -88,8 +87,7 @@ export const spa_subserver = new OpenAPIHono()
             dangerouslySetInnerHTML={{
               __html: happy.html,
             }}
-          >
-          </div>
+          />
         </html>,
       )
     }
