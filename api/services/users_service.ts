@@ -3,11 +3,13 @@ import { db } from "../db.ts"
 import { User, UserEntity } from "../dto/user.dto.ts"
 import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
 
-const find_by = async <T extends ("_id" | "email")>(
+const find_by = async <T extends ("_id" | "email" | "nik")>(
   by: T,
   value: T extends "_id" ? number : string,
 ) => {
-  const find_result = await db._dev_users.findByPrimaryIndex(by, value as any)
+  const find_result = await db._dev_users.findByPrimaryIndex(
+    ...([by, value] as ["email" | "nik", string]),
+  )
 
   if (!find_result?.id) {
     return {
@@ -118,6 +120,7 @@ const add_nik = async (nik: string, user: UserEntity) => {
 
 export const users_service = {
   add_nik,
+  find_by_nik: (nik: string) => find_by("nik", nik),
   find_by_id: (_id: number) => find_by("_id", _id),
   find_by_email: (email: string) => find_by("email", email),
   insert,
