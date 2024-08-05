@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { tw } from "@/utils/tw.util"
+import { useAttrs } from "vue"
 import { ref } from "vue"
 
+const attrs = useAttrs()
 const is_open = ref(false)
 </script>
 <template>
-  <div class="inline-flex flex-col sm:flex-row sticky gap-2">
+  <div :class="tw('inline-flex flex-col sm:flex-row sticky gap-2', attrs.class as any)">
     <tag-button
       @click="() => (is_open = !is_open)"
       :class="
