@@ -44,6 +44,7 @@ watchEffect(() => {
 
 <template>
   <div class="flex flex-col items-center sm:items-start">
+    <tag-link v-if="md.edited_str.length > 0" to="/md/editor"> Continue from where I stopped </tag-link>
     <tag-link to="/md/editor" @click="clean_editor"> Build CV From Scratch </tag-link>
     <tag-link to="/md/editor" @click="add_to_editor"> Continue To Modfify This </tag-link>
     <tag-link to="/md/examples"> Choose Another Example For Start </tag-link>
