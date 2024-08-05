@@ -12,56 +12,104 @@ const auth = use_auth()
 const is_mobile = window.innerWidth < 500
 const md = use_md()
 const text = ref(md.edited_str)
-const html = ref("")
+let html = ""
 const name = ref<string | undefined>(auth.user?.nik ? "" : undefined)
-const handle_publish = async () => {
+const handle_update = async (
+  mdcv_id: number,
+  data_to_update: {
+    md?: string
+    html?: string
+    is_published?: boolean
+    name?: string
+    make_default?: boolean
+  },
+) => {
+  const res = await my_fetch({
+    method: "put",
+    path: "/v1/mdcv/:mdcv_id",
+    params: {
+      mdcv_id,
+    },
+    body: data_to_update,
+    res_as: "application/json",
+  })
+}
+const handle_create_new = async () => {
   const res = await my_fetch({
     method: "post",
     path: "/v1/mdcv",
     res_as: "application/json",
-
     body: {
-      html: html.value,
-      is_published: true,
+      html,
+      is_published: false,
       md: text.value,
       make_default: true,
       name: name.value || undefined,
     },
   })
+  md.set_edited_medcv_id(res._id)
+}
+let on_success_sign_in_after_proposition: () => void
+const propose_sign_in = (next: typeof on_success_sign_in_after_proposition) => {
+  is_propose_login_show.value = true
+  on_success_sign_in_after_proposition = next
 }
 const is_propose_login_show = ref(false)
 watchEffect(() => {
   if (auth.user && is_propose_login_show.value) is_propose_login_show.value = false
 })
-
-const handle_pseudo_publish = () => {
-  is_propose_login_show.value = true
+const handle_save_click = () => {
+  md.update_str(text.value)
 }
+const handle_discard_click = () => {
+  text.value = md.edited_str
+}
+const is_default = ref(auth.user?.nik ? false : true)
 </script>
 
 <template>
   <div>
     <tag-speed-dial class="fixed bottom-4 right-4 z-10">
-      <div class="flex flex-col sm:flex-row gap-2">
-        <tag-button class="border-green-400" size="sm" v-show="text !== md.edited_str"
-          >SAVE</tag-button
+      <div class="flex flex-col gap-2 bg-gradient-to-tl from-gray-500 to-black p-3 rounded-lg">
+        <tag-button
+          @click="handle_save_click"
+          class="border-green-400"
+          size="sm"
+          v-show="text !== md.edited_str"
+          >Save</tag-button
         >
-        <tag-button class="border-yellow-400" size="sm" v-show="text !== md.edited_str"
-          >DISCARD</tag-button
+        <tag-button
+          @click="handle_discard_click"
+          class="border-yellow-400"
+          size="sm"
+          v-show="text !== md.edited_str"
+          >Discard Changes</tag-button
         >
-        <tag-button :class="[auth.user ? 'border-purple-400' : 'border-transparent']" size="sm"
-          >UPLOAD TO SERVER</tag-button
+        <tag-button
+          @click="
+            auth.user?.nik && md.edited_mdcv_id_assumption
+              ? () => handle_update
+              : auth.user
+                ? handle_create_new
+                : () => propose_sign_in(handle_create_new)
+          "
+          :class="[auth.user ? 'border-purple-400' : 'border-transparent']"
+          size="md"
+          >Update on server</tag-button
         >
-        <tag-button :class="[auth.user ? 'border-blue-400' : 'border-transparent']" size="sm"
-          >PUBLISH AS WEB PAGE</tag-button
+        <tag-button
+          @click="auth.user ? handle_create_new : () => propose_sign_in(handle_create_new)"
+          :class="[auth.user ? 'border-blue-400' : 'border-transparent']"
+          size="lg"
+          >publish as web page</tag-button
         >
-        <tag-toggle>
-          <span>DEFAULT CV</span>
+        <tag-toggle v-model="is_default">
+          <span>Default</span>
         </tag-toggle>
       </div>
     </tag-speed-dial>
     <div v-if="auth.user">
-      <tag-button v-if="auth.user" @click="handle_publish">Publish</tag-button>
+      <tag-button v-if="auth.user" @click="handle_create_new">Publish</tag-button>
     </div>
     <div v-else>
       <ModalWindow :open="is_propose_login_show">
@@ -73,7 +121,13 @@ const handle_pseudo_publish = () => {
         <template #buttons>
           <LoginWithGoogleBtn
             v-if="!auth.user"
-            @success="(res) => post_sign_in(res).then(handle_publish)"
+            @success="
+              (res) =>
+                post_sign_in(res).then(
+                  on_success_sign_in_after_proposition ||
+                    (() => console.error('on_success_sign_in_after_proposition is not defined')),
+                )
+            "
             @fail="console.error"
           >
             <tag-button>Login with Google</tag-button>
@@ -81,7 +135,6 @@ const handle_pseudo_publish = () => {
           <tag-button @click="() => (is_propose_login_show = false)">Cancel</tag-button>
         </template>
       </ModalWindow>
-      <tag-button @click="handle_pseudo_publish">Publish</tag-button>
     </div>
     <MdEditor
       :style="{ height: 'fit-content' }"
