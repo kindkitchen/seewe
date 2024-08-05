@@ -11,7 +11,7 @@ const is_open = ref(false)
     <div :class="[{ hidden: !is_open }, 'sm:block']">
       <slot v-bind="{ is_open }"></slot>
     </div>
-    <tag-button
+    <tag-link
       @click="() => (is_open = !is_open)"
       :class="
         tw(
@@ -23,7 +23,7 @@ const is_open = ref(false)
           'sm:hidden',
         )
       "
-      >{{ is_open ? "-" : "+" }}</tag-button
+      >{{ is_open ? "-" : "+" }}</tag-link
     >
   </div>
 </template>

@@ -4,6 +4,8 @@ import { Disclosure } from "@headlessui/vue"
 import DesktopNav from "./DesktopNav.vue"
 import MobileNav from "./MobileNav.vue"
 import ProfileDropdown from "./ProfileDropdown.vue"
+import { post_sign_in } from "@/queries/post_sign_in.query"
+import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
 
 const auth = use_auth()
 const common_navigation = [
@@ -12,8 +14,16 @@ const common_navigation = [
     href: "/home",
   },
   {
-    name: "Markdown CV",
-    href: "/md",
+    name: "CV editor",
+    href: "/md/editor",
+  },
+  {
+    name: "Markdown Examples",
+    href: "/md/examples",
+  },
+  {
+    name: "About",
+    href: "/about",
   },
 ]
 </script>
@@ -24,10 +34,14 @@ const common_navigation = [
       <div class="relative flex h-16 items-center justify-between">
         <MobileNav :common_navigation :open />
         <div
+          v-if="auth.user"
           class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
-          <ProfileDropdown v-if="auth.user" />
+          <ProfileDropdown />
         </div>
+        <LoginWithGoogleBtn v-else @success="post_sign_in" @fail="console.error">
+          <tag-link to="#">Login with Google</tag-link>
+        </LoginWithGoogleBtn>
       </div>
     </div>
     <DesktopNav :common_navigation />

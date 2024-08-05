@@ -8,12 +8,6 @@ export const router = createRouter({
   routes: [
     ...routes,
     {
-      path: "/md",
-      redirect: {
-        name: "/md/with.[[name]]",
-      },
-    },
-    {
       path: "/:pathMatch(.*)*",
       redirect: "/home",
     },

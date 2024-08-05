@@ -14,7 +14,7 @@
       />
     </div>
   </div>
-  <pre v-else>
+  <pre class="text-gray-100 text-2xl font-mono" v-else>
     ...loading
   </pre>
 </template>

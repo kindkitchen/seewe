@@ -17,9 +17,9 @@ export const register_global_components = (app: App<Element>): App => {
 
 declare module "vue" {
   export interface GlobalComponents {
-    TagButton: typeof TagButton
+    TagLink: typeof TagButton
     TagH: typeof TagH
-    TagLink: typeof TagLink
+    TagButton: typeof TagButton
     TagSpeedDial: typeof TagSpeedDial
     TagToggle: typeof TagToggle
   }
