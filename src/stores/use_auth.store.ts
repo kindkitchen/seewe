@@ -1,16 +1,16 @@
+import { network_client_state } from "@/network_client.state"
 import { stuff } from "@/stuff"
+import type { user_ } from "@/types/user_namespace"
 import { type v1_ } from "@/types/v1_.namespace"
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import { network_client_state } from "@/network_client.state"
-import type { user_ } from "@/types/user_namespace"
 
 export const use_auth = defineStore("auth", () => {
   const u = ref<user_.Entity | undefined>(stuff.restore_user())
 
   return {
     user: u,
-    logout() {
+    async logout() {
       network_client_state.refresh = { status: "none" }
       stuff.update_bearers(null)
       stuff.rewrite_user(null)

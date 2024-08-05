@@ -12,11 +12,10 @@ export const post_logout_query = async () => {
       res_as: "none",
       is_public_api: false,
     })
-
+    auth.logout()
     return res
   } catch (err) {
-    throw new UiException("*", "logout", err)
-  } finally {
     auth.logout()
+    throw new UiException("*", "logout", err)
   }
 }

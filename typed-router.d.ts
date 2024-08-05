@@ -23,7 +23,6 @@ declare module 'vue-router/auto-routes' {
     '/md/': RouteRecordInfo<'/md/', '/md', Record<never, never>, Record<never, never>>,
     '/md/editor/': RouteRecordInfo<'/md/editor/', '/md/editor', Record<never, never>, Record<never, never>>,
     '/md/examples': RouteRecordInfo<'/md/examples', '/md/examples', Record<never, never>, Record<never, never>>,
-    '/md_[id].[[nik]]': RouteRecordInfo<'/md_[id].[[nik]]', '/md_:id/:nik?', { id: ParamValue<true>, nik?: ParamValueZeroOrOne<true> }, { id: ParamValue<false>, nik?: ParamValueZeroOrOne<false> }>,
     '/my/dashboard': RouteRecordInfo<'/my/dashboard', '/my/dashboard', Record<never, never>, Record<never, never>>,
     '/my/settings': RouteRecordInfo<'/my/settings', '/my/settings', Record<never, never>, Record<never, never>>,
   }
