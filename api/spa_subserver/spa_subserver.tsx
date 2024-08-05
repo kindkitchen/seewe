@@ -62,16 +62,7 @@ export const spa_subserver = new OpenAPIHono()
     )
 
     if (happy_path_result?.value) {
-      return ctx.html(
-        <html>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: happy_path_result.value.html,
-            }}
-          >
-          </div>
-        </html>,
-      )
+      return ctx.html(happy_path_result.value.html)
     }
 
     const db_user_res = await users_service.find_by_nik(username)
