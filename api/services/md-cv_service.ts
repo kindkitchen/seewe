@@ -5,11 +5,13 @@ import { unique_incremental_timestamp } from "../utils/ui/utils/random.util.ts"
 
 const update = async (
   _id: number,
-  mdCv: Omit<
-    MdCv,
-    keyof Pick<
+  mdCv: Partial<
+    Omit<
       MdCv,
-      "as_default_by_user_id" | "as_default_by_username" | "_id" | "user_id"
+      keyof Pick<
+        MdCv,
+        "as_default_by_user_id" | "as_default_by_username" | "_id" | "user_id"
+      >
     >
   >,
 ) => {
@@ -56,7 +58,7 @@ const save_as_default = async (mdcv: MdCv, user: UserEntity) => {
     if (db_res.ok) {
       return {
         ok: true,
-        data: null,
+        data: _id,
       } as const
     } else {
       return {
@@ -83,7 +85,7 @@ const save_as_default = async (mdcv: MdCv, user: UserEntity) => {
     if (db_res.ok) {
       return {
         ok: true,
-        data: default_for_nemo,
+        data: _id,
       } as const
     } else {
       return {
@@ -164,7 +166,7 @@ const save = async (mdcv: MdCv, user: UserEntity) => {
     if (db_res.ok) {
       return {
         ok: true,
-        data: null,
+        data: _id,
       } as const
     } else {
       return {
