@@ -13,7 +13,7 @@ const common_navigation = [
   },
   {
     name: "Markdown CV",
-    href: "/md/with",
+    href: "/md",
   },
 ]
 </script>

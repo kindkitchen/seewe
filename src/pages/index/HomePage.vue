@@ -10,7 +10,7 @@ const common_links = [
   },
   {
     name: "Build markdown CV",
-    to: "/md/editor",
+    to: "/md",
   },
 ]
 const client_links = [

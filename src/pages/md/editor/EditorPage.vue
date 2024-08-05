@@ -6,11 +6,16 @@
     <div v-else>
       <ModalWindow :open="is_propose_login_show">
         <template #title>Please Login First</template>
-        <template #message>Do this in 1 click with Google! It also open you some other features because we will have
-          possibility to indentitify you in future.</template>
+        <template #message
+          >Do this in 1 click with Google! It also open you some other features because we will have
+          possibility to indentitify you in future.</template
+        >
         <template #buttons>
-          <LoginWithGoogleBtn v-if="!auth.user" @success="(res) => post_sign_in(res).then(handle_publish)"
-            @fail="console.error">
+          <LoginWithGoogleBtn
+            v-if="!auth.user"
+            @success="(res) => post_sign_in(res).then(handle_publish)"
+            @fail="console.error"
+          >
             <tag-button>Login with Google</tag-button>
           </LoginWithGoogleBtn>
           <tag-button @click="() => (is_propose_login_show = false)">Cancel</tag-button>
@@ -18,12 +23,22 @@
       </ModalWindow>
       <tag-button @click="handle_pseudo_publish">Publish</tag-button>
     </div>
-    <MdEditor :on-html-changed="(html_str) => {
-      html = html_str
-    }
-      " :toolbars="['pageFullscreen', 'unorderedList', 'title', 'table', 'revoke', 'previewOnly']"
-      :preview="!is_mobile" v-model="text" language="en-US" preview-theme="vuepress" no-mermaid no-katex
-      :show-toolbar-name="false" :showCodeRowNumber="false" />
+    <MdEditor
+      :on-html-changed="
+        (html_str) => {
+          html = html_str
+        }
+      "
+      :toolbars="['pageFullscreen', 'unorderedList', 'title', 'table', 'revoke', 'previewOnly']"
+      :preview="!is_mobile"
+      v-model="text"
+      language="en-US"
+      preview-theme="vuepress"
+      no-mermaid
+      no-katex
+      :show-toolbar-name="false"
+      :showCodeRowNumber="false"
+    />
   </div>
 </template>
 
