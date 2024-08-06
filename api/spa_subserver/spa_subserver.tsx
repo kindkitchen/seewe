@@ -43,8 +43,10 @@ export const spa_subserver = new OpenAPIHono()
       return ctx.redirect("/" + cv.as_default_by_username)
     }
 
+    const { html, md, ...rest } = cv
     return ctx.html(
       <html>
+        <pre>{JSON.stringify(rest, null, 2)}</pre>
         <div
           dangerouslySetInnerHTML={{
             __html: cv.html,

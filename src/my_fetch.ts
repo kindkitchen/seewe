@@ -49,7 +49,7 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
     }
     return fetch(import.meta.env.VITE_API_URL + endpoint, req_init)
   }
-  const res = await api_call()
+  let res = await api_call()
   if (!res.ok) {
     if ([401, 403].includes(res.status) && !is_public_api) {
       if (network_client_state.refresh.status === "ok") {
@@ -86,12 +86,12 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
             refresh_api_call()
           }),
         }
-        api_call()
+        res = await api_call()
       } else if (network_client_state.refresh.status === "none") {
         throw new UiException("login_is_required", "second none")
       } else if (network_client_state.refresh.status === "processing") {
         if (await network_client_state.refresh.result) {
-          api_call()
+          res = await api_call()
         }
         throw new UiException("login_is_required", "awaited failed refresh result")
       }

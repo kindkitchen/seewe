@@ -13,13 +13,11 @@ export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
   .openapi(post_mdcv, async (ctx) => {
     const user = ctx.get("user")
     const mdcv = ctx.req.valid("json")
-
     if (mdcv.make_default) {
       const res = await mdCv_service.save_as_default({
         ...mdcv,
         user_id: user._id,
       }, user)
-
       if (res.ok) {
         return ctx.json({
           _id: res.data,

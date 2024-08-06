@@ -45,14 +45,15 @@ const save_as_default = async (mdcv: MdCv, user: UserEntity) => {
       },
     )
     const default_for_user = {
-      ...mdcv,
       _id,
+      ...mdcv,
       as_default_by_username: user.nik,
       as_default_by_user_id: user._id,
     }
+    const { _id: _, ...update } = default_for_user
     const db_res = await db._dev_md_cv.upsertByPrimaryIndex({
-      index: ["_id", mdcv._id],
-      update: default_for_user,
+      index: ["_id", mdcv._id || _id],
+      update,
       set: default_for_user,
     })
     if (db_res.ok) {
@@ -76,9 +77,13 @@ const save_as_default = async (mdcv: MdCv, user: UserEntity) => {
       name: undefined,
       user_id: user._id,
     }
+    const {
+      as_default_by_user_id: _,
+      ...update
+    } = default_for_nemo
     const db_res = await db._dev_md_cv.upsertByPrimaryIndex({
       index: ["as_default_by_user_id", user._id],
-      update: default_for_nemo,
+      update,
       set: default_for_nemo,
     })
 

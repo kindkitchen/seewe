@@ -8,6 +8,7 @@ import { tw } from "@/utils/tw.util"
 import ModalWindow from "@/components/modal-window/ModalWindow.vue"
 import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
 import { post_sign_in } from "@/queries/post_sign_in.query"
+import { my_fetch } from "@/my_fetch"
 
 const is_mobile = window.innerWidth < 500
 const auth = use_auth()
@@ -31,7 +32,20 @@ const handle_discard = () => {
  * @description It can be create new or update
  */
 const upload_as_default = ref(auth.user?.nik ? false : true)
-const handle_upload_to_server_as_new = async () => {}
+const handle_upload_to_server_as_new = async () => {
+  const res = await my_fetch({
+    path: "/v1/mdcv",
+    method: "post",
+    res_as: "application/json",
+    body: {
+      html: html_str,
+      md: md_str.value,
+      is_published: false,
+      make_default: upload_as_default.value,
+    },
+  })
+  md.edited_mdcv_id = res._id
+}
 const handle_upload_to_server_as_update = async () => {
   if (md.edited_mdcv_id) {
     // TODO
