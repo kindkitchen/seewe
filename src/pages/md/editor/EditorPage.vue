@@ -23,29 +23,90 @@ const handle_discard = () => {
   md_str.value = md.edited_str
 }
 // ===========================
+/**
+ * @name Upload_to_server
+ * @description It can be create new or update
+ */
+const upload_as_default = ref(auth.user?.nik ? false : true)
+const handle_upload_to_server_as_new = async () => {}
+const handle_upload_to_server_as_update = async () => {
+  if (md.edited_mdcv_id) {
+    // TODO
+  } else {
+    console.warn("Unable to update current CV because _id is unknown")
+    return
+  }
+}
+// ===========================
 </script>
 <template>
   <div>
     <tag-speed-dial :class="tw('z-10 fixed right-10 top-80')">
-      <div class="flex flex-col gap-2">
-        <!-- Save/Discard -->
-        <div class="flex flex-row flex-nowrap gap-0">
-          <tag-button
-            size="lg"
-            v-show="is_changed"
-            class="relative left-6 top-7 mx-0 bg-green-100 text-black"
-            @click="handle_save"
-            >Save changes</tag-button
-          >
-          <tag-button
-            size="sm"
-            v-show="is_changed"
-            class="mx-0 bg-yellow-100 text-black"
-            @click="handle_discard"
-            >Discard</tag-button
-          >
+      <template #default>
+        <div class="flex flex-col gap-2">
+          <!-- Save/Discard -->
+          <div class="flex flex-row flex-nowrap gap-0">
+            <tag-button
+              size="lg"
+              :active="is_changed"
+              class="relative left-6 top-7 mx-0 bg-green-100 text-black"
+              @click="handle_save"
+              >Save changes</tag-button
+            >
+            <tag-button
+              size="sm"
+              :active="is_changed"
+              class="mx-0 bg-yellow-100 text-black"
+              @click="handle_discard"
+              >Discard</tag-button
+            >
+          </div>
+          <div class="h-[50px]"></div>
+          <!-- Upload to server -->
+          <tag-dropdown class="z-10" :v-model="false">
+            <template #title>
+              <tag-button class="bg-blue-100 text-black" size="lg">Upload to server</tag-button>
+            </template>
+            <template #default="{ set_is_open }">
+              <div class="bg-sky-200/50 p-2 rounded-sm flex flex-col">
+                <tag-button
+                  size="sm"
+                  class="bg-slate-800 text-slate-300 w-fit self-end"
+                  @click="() => set_is_open(false)"
+                  >x</tag-button
+                >
+                <tag-toggle v-model="upload_as_default">
+                  <p
+                    :class="
+                      tw('text-white bg-black  p-2 rounded-lg', {
+                        'bg-blue-800': upload_as_default,
+                        'bg-gray-600': !upload_as_default,
+                      })
+                    "
+                  >
+                    DEFAULT
+                  </p>
+                </tag-toggle>
+                <div class="flex flex-row flex-nowrap gap-0">
+                  <tag-button
+                    size="lg"
+                    class="relative left-6 top-7 mx-0 bg-green-100 text-black"
+                    @click="handle_upload_to_server_as_new"
+                    >Upload as new CV</tag-button
+                  >
+                  <tag-button
+                    size="sm"
+                    :active="is_changed"
+                    class="mx-0 bg-yellow-100 text-black"
+                    @click="handle_upload_to_server_as_update"
+                    >Update existed</tag-button
+                  >
+                </div>
+              </div>
+            </template>
+          </tag-dropdown>
         </div>
-      </div>
+      </template>
     </tag-speed-dial>
     <MdEditor
       :style="{ height: 'fit-content' }"

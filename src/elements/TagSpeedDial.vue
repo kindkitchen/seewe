@@ -20,10 +20,16 @@ const is_open = ref(false)
           'sm:hidden relative top-[7rem]',
         )
       "
-      >{{ is_open ? "-" : "+" }}</tag-button
     >
+      <span v-show="is_open">
+        <slot name="open_icon">-</slot>
+      </span>
+      <span v-show="!is_open">
+        <slot name="close_icon">+</slot>
+      </span>
+    </tag-button>
     <div :class="[{ hidden: !is_open }, 'sm:block']">
-      <slot v-bind="{ is_open }"></slot>
+      <slot v-bind="{ is_open }" name="default"></slot>
     </div>
   </div>
 </template>
