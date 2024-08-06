@@ -5,6 +5,9 @@ import { ref } from "vue"
 import { MdEditor } from "md-editor-v3"
 import { computed } from "vue"
 import { tw } from "@/utils/tw.util"
+import ModalWindow from "@/components/modal-window/ModalWindow.vue"
+import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
+import { post_sign_in } from "@/queries/post_sign_in.query"
 
 const is_mobile = window.innerWidth < 500
 const auth = use_auth()
@@ -38,6 +41,18 @@ const handle_upload_to_server_as_update = async () => {
   }
 }
 // ===========================
+/**
+ * @name propose_to_sign_in
+ */
+const show_modal = ref(false)
+let after_success_login: () => void
+const propose_login = (after: () => void) => {
+  after_success_login = () => {
+    after()
+    show_modal.value = false
+  }
+  show_modal.value = true
+}
 </script>
 <template>
   <div>
@@ -91,7 +106,15 @@ const handle_upload_to_server_as_update = async () => {
                   <tag-button
                     size="lg"
                     class="relative left-6 top-7 mx-0 bg-green-100 text-black"
-                    @click="handle_upload_to_server_as_new"
+                    @click="
+                      () => {
+                        if (auth.user) {
+                          handle_upload_to_server_as_new()
+                        } else {
+                          propose_login(handle_upload_to_server_as_new)
+                        }
+                      }
+                    "
                     >Upload as new CV</tag-button
                   >
                   <tag-button
@@ -128,4 +151,31 @@ const handle_upload_to_server_as_update = async () => {
     >
     </MdEditor>
   </div>
+
+  <!-- Modal Window -->
+  <ModalWindow :open="show_modal">
+    <template #title>
+      <h1 class="text-2xl">Please sign in first</h1>
+    </template>
+    <template #message>
+      <p>
+        We can't provide you some features without possibility to know who you are next time you
+        visit our service.
+      </p>
+    </template>
+    <template #buttons>
+      <LoginWithGoogleBtn
+        @success="
+          (res) => {
+            post_sign_in(res)
+            after_success_login()
+          }
+        "
+      >
+        <tag-button>Sign in with google</tag-button>
+      </LoginWithGoogleBtn>
+      <tag-button @click="() => (show_modal = false)">Cancel</tag-button>
+    </template>
+  </ModalWindow>
+  <!-- =========== -->
 </template>
