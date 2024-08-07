@@ -6,10 +6,10 @@ import { generate_token_pair } from "../../services/auth_service.ts"
 import { users_service } from "../../services/users_service.ts"
 import { get_origin_of_the_req_sender } from "../../utils/get_origin_of_the_req_sender.util.ts"
 import {
-  google_access_token_from_code,
   GoogleAccessTokenFromCodePayload,
   GoogleAuthJwtPayload,
 } from "../../utils/google_auth.ts"
+import { bricks } from "../../bricks.ts"
 import { decode_jwt, verify_jwt } from "../../utils/jwt.util.ts"
 import { post_logout } from "./post_logout.ts"
 import { post_refresh } from "./post_refresh.ts"
@@ -29,7 +29,7 @@ router
       grant_type: "authorization_code",
       redirect_uri: get_origin_of_the_req_sender(ctx.req.raw),
     }
-    const g_res = await google_access_token_from_code(g_payload)
+    const g_res = await bricks.google_access_token_from_code(g_payload)
     const { payload } = decode_jwt<GoogleAuthJwtPayload>(g_res.id_token)
 
     const finsert_result = await users_service.finsert_by_email({

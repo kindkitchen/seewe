@@ -21,7 +21,7 @@ export const sign_jwt = async ({
 }): Promise<{ token: string }> => {
   const header: Header = {
     alg: "RS256",
-    typ: "JWT",
+    // typ: "JWT",
   }
 
   const nowInSeconds = Math.floor(Date.now() / 1000)

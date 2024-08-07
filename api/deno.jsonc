@@ -1,6 +1,7 @@
 {
   "version": "1.1.0",
   "imports": {
+    "@nik-kita/brickyard": "jsr:@nik-kita/brickyard@^0.3.1",
     "@hono/swagger-ui": "npm:@hono/swagger-ui@^0.4.0",
     "@hono/zod-openapi": "npm:@hono/zod-openapi@^0.15.1",
     "@olli/kvdex": "jsr:@olli/kvdex@^1.0.2",
