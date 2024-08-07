@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "api": "npm run build && deno run -A --unstable-kv --watch api/mod.ts",
+    "types:api": "curl http://localhost:3000/v1/json > api_version_one.json && npx openapi-typescript@latest ./api_version_one.json -o ./src/types/api_version_one.ts && npm run format",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
@@ -12,7 +14,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "npx eslint . --fix --ignore-path .gitignore && cd api && deno fmt",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "see-bundle": "npx vite-bundle-visualizer"
   },
   "dependencies": {
     "pinia": "^2.1.7",
@@ -36,6 +39,7 @@
     "eslint-plugin-vue": "^9.23.0",
     "jsdom": "^24.1.0",
     "npm-run-all2": "^6.2.0",
+    "openapi-typescript": "^7.3.0",
     "prettier": "^3.2.5",
     "typescript": "~5.4.0",
     "unplugin-vue-router": "^0.10.2",

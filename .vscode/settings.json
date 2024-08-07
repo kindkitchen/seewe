@@ -1,1 +1,10 @@
-{}
+{
+  "deno.enable": true,
+  "vue.server.hybridMode": true,
+  "deno.enablePaths": [
+    "api"
+  ],
+  "deno.disablePaths": [
+    "src"
+  ]
+}
