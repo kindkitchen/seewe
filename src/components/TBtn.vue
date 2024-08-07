@@ -7,7 +7,7 @@ import { FormKit } from "@formkit/vue"
     type="button"
     ignore
     :classes="{
-      input: 'active:border-transparent',
+      input: 'active:border-transparent py-[4px] text-nowrap',
     }"
   >
     <slot></slot>

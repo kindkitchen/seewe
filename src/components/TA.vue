@@ -12,21 +12,20 @@ withDefaults(
 </script>
 
 <template>
-  <a v-if="typeof to === 'string' && to.startsWith('http')" :href="to" class="my-link">
-    <slot></slot>
+  <a v-if="typeof to === 'string' && to.startsWith('http')" :href="to" class="my-link block">
+    <t-btn>
+      <slot></slot>
+    </t-btn>
   </a>
-  <router-link v-else :to class="my-link">
-    <slot></slot>
+  <router-link v-else :to>
+    <t-btn>
+      <slot></slot>
+    </t-btn>
   </router-link>
 </template>
 
 <style>
-.my-link {
-  @apply text-nowrap active:bg-gray-800 cursor-pointer block rounded-sm px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white;
-}
-
-.link-exact-active,
-.link-active {
-  @apply bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium;
+.link-exact-active {
+  @apply [&_button]:bg-emerald-200 hover:[&_button]:bg-emerald-200 [&_button]:text-emerald-600;
 }
 </style>

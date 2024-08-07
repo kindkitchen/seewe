@@ -29,7 +29,7 @@ const { isReady, login } = useCodeClient({
 <template>
   <div @click="login">
     <slot v-bind="{ isReady }">
-      <a to="#">Login with Google</a>
+      <t-btn>Login with Google</t-btn>
     </slot>
   </div>
 </template>

@@ -21,7 +21,7 @@ const profile_navigation = [
   <Menu as="div" class="relative ml-3">
     <div>
       <MenuButton
-        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+        class="relative inline-flex items-center justify-center p-2 text-emerald-100 hover:bg-emerald-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
       >
         <span class="sr-only">Open user menu</span>
         <WrenchScrewdriverIcon class="block h-6 w-6" aria-hidden="true" />
@@ -35,16 +35,12 @@ const profile_navigation = [
       leave-from-class="transform opacity-100 scale-100"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <MenuItems
-        class="absolute right-0 z-10 mt-2 w-fit origin-top-right rounded-md bg-gray-600 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-      >
+      <MenuItems class="absolute right-0 z-10 w-fit bg-transparent items-end flex flex-col">
         <MenuItem as="template" v-for="item in profile_navigation" :key="item.name">
           <t-a :to="item.href">{{ item.name }}</t-a>
         </MenuItem>
         <MenuItem as="template">
-          <div>
-            <t-a to="#" @click="post_logout_query" v-if="auth.user">Logout</t-a>
-          </div>
+          <t-btn @click="post_logout_query" v-if="auth.user">Logout</t-btn>
         </MenuItem>
       </MenuItems>
     </transition>
