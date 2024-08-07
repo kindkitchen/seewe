@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { FormKit } from "@formkit/vue"
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <t-h>Dev (t-h)</t-h>
@@ -10,5 +8,5 @@ import { FormKit } from "@formkit/vue"
   <t-a :to="{ path: '/home' }">Link to Home page (t-a :to="{ path: '/home' }")</t-a>
   <t-a>Mock link (t-a)</t-a>
   <hr />
-  <FormKit type="button">Submit</FormKit>
+  <t-btn type="button">Submit</t-btn>
 </template>

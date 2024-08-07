@@ -11,6 +11,7 @@ import { bricks } from "./bricks"
 import TH from "./components/TH.vue"
 import TA from "./components/TA.vue"
 import { genesisIcons } from "@formkit/icons"
+import TBtn from "./components/TBtn.vue"
 
 const app = createApp(App).use(createPinia()).use(DataLoaderPlugin, { router }).use(router)
 
@@ -29,12 +30,13 @@ app.use(
 
 app.component("t-h", TH)
 app.component("t-a", TA)
-
+app.component("t-btn", TBtn)
 app.mount("#app")
 
 declare module "vue" {
   export interface GlobalComponents {
     TH: typeof TH
     TA: typeof TA
+    TBtn: typeof TBtn
   }
 }
