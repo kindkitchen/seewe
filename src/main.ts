@@ -6,9 +6,18 @@ import { router } from "./router/mod.router"
 import { createApp } from "vue"
 import App from "./App.vue"
 import { bricks } from "./bricks"
+import TH from "./components/TH.vue"
 
 const app = createApp(App).use(createPinia()).use(DataLoaderPlugin, { router }).use(router)
 
 app.use(...bricks.google_sign_in_plugin())
 
+app.component("t-h", TH)
+
 app.mount("#app")
+
+declare module "vue" {
+  export interface GlobalComponents {
+    TH: typeof TH
+  }
+}
