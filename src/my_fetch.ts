@@ -92,12 +92,13 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
       } else if (network_client_state.refresh.status === "processing") {
         if (await network_client_state.refresh.result) {
           res = await api_call()
+        } else {
+          throw new UiException("login_is_required", "awaited failed refresh result")
         }
-        throw new UiException("login_is_required", "awaited failed refresh result")
       }
     } else {
       console.error(res.status, res.statusText)
-      throw res.json().catch(() => res)
+      throw res.json().catch(() => res.text()).catch(() => res)
     }
   }
 
