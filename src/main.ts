@@ -14,6 +14,7 @@ import TH from "./components/TH.vue"
 import { rootClasses } from "./formkit.theme"
 import { router } from "./router/mod.router"
 import Aura from "@primevue/themes/aura"
+import ToastService from "primevue/toastservice"
 
 const app = createApp(App).use(createPinia()).use(DataLoaderPlugin, { router }).use(router)
 
@@ -24,6 +25,7 @@ app.use(PrimeVue, {
     preset: Aura,
   },
 })
+app.use(ToastService)
 app.use(
   fkPlugin,
   fkConfig({

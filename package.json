@@ -21,6 +21,7 @@
     "@formkit/vue": "^1.6.5",
     "@headlessui/tailwindcss": "^0.2.1",
     "@headlessui/vue": "^1.7.22",
+    "@heroicons/vue": "^2.1.5",
     "@nik-kita/brickyard": "npm:@jsr/nik-kita__brickyard@^0.3.1",
     "@primevue/themes": "^4.0.4",
     "clsx": "^2.1.1",
