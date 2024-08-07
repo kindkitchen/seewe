@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Button from "primevue/button"
+</script>
 
 <template>
   <t-h>Dev (t-h)</t-h>
@@ -9,4 +11,5 @@
   <t-a>Mock link (t-a)</t-a>
   <hr />
   <t-btn type="button">Submit</t-btn>
+  <Button>Primeve</Button>
 </template>

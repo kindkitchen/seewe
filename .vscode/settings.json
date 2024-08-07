@@ -6,5 +6,15 @@
   ],
   "deno.disablePaths": [
     "src"
+  ],
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "class:list",
+    "pt:root",
   ]
 }

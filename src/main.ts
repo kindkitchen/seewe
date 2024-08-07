@@ -1,21 +1,29 @@
 import "./assets/main.css"
 // ----------------------------------------------
-import { createPinia } from "pinia"
-import { DataLoaderPlugin } from "unplugin-vue-router/data-loaders"
-import { router } from "./router/mod.router"
-import { createApp } from "vue"
-import { rootClasses } from "./formkit.theme"
+import { genesisIcons } from "@formkit/icons"
 import { defaultConfig as fkConfig, plugin as fkPlugin } from "@formkit/vue"
+import { createPinia } from "pinia"
+import PrimeVue from "primevue/config"
+import { DataLoaderPlugin } from "unplugin-vue-router/data-loaders"
+import { createApp } from "vue"
 import App from "./App.vue"
 import { bricks } from "./bricks"
-import TH from "./components/TH.vue"
 import TA from "./components/TA.vue"
-import { genesisIcons } from "@formkit/icons"
 import TBtn from "./components/TBtn.vue"
+import TH from "./components/TH.vue"
+import { rootClasses } from "./formkit.theme"
+import { router } from "./router/mod.router"
+import Aura from "@primevue/themes/aura"
 
 const app = createApp(App).use(createPinia()).use(DataLoaderPlugin, { router }).use(router)
 
 app.use(...bricks.google_sign_in_plugin())
+app.use(PrimeVue, {
+  ripple: true,
+  theme: {
+    preset: Aura,
+  },
+})
 app.use(
   fkPlugin,
   fkConfig({
