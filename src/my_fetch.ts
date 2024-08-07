@@ -98,7 +98,10 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
       }
     } else {
       console.error(res.status, res.statusText)
-      throw res.json().catch(() => res.text()).catch(() => res)
+      throw res
+        .json()
+        .catch(() => res.text())
+        .catch(() => res)
     }
   }
 
