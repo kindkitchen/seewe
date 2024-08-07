@@ -12,7 +12,7 @@ withDefaults(
 </script>
 
 <template>
-  <a v-if="typeof to === 'string' && to.startsWith('http')" :href="to" class="my-link block">
+  <a v-if="typeof to === 'string' && to.startsWith('http')" :href="to" class="block">
     <t-btn>
       <slot></slot>
     </t-btn>
