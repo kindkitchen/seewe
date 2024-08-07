@@ -7,6 +7,7 @@ const handle_submit = async ({ nik }: { nik: string }) => {
 }
 </script>
 <template>
+  <t-h>Settings</t-h>
   <FormKit type="form" @submit="handle_submit">
     <FormKit type="text" name="nik"></FormKit>
   </FormKit>

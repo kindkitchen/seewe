@@ -15,8 +15,8 @@ defineProps<{
     >
       <span class="absolute -inset-0.5"></span>
       <span class="sr-only">Open main menu</span>
-      <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-      <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+      <Bars3Icon v-if="!open" class="block h-5 w-5" aria-hidden="true" />
+      <XMarkIcon v-else class="block h-5 w-5" aria-hidden="true" />
     </DisclosureButton>
   </div>
   <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">

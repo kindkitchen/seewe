@@ -3,13 +3,7 @@ import { FormKit } from "@formkit/vue"
 </script>
 
 <template>
-  <FormKit
-    type="button"
-    ignore
-    :classes="{
-      input: 'active:border-transparent py-[4px] text-nowrap',
-    }"
-  >
+  <FormKit type="button" ignore :classes="{}">
     <slot></slot>
   </FormKit>
 </template>

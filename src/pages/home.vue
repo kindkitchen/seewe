@@ -22,6 +22,5 @@ const handle_success_google_sign_in = async (res: ImplicitFlowSuccessResponse) =
 </script>
 
 <template>
-  <LoginWithGoogleBtn @success="handle_success_google_sign_in" />
-  <pre>{{ dev }}</pre>
+  <t-h>Home</t-h>
 </template>
