@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { post_add_nik } from "@/queries/post_add_nik.query"
-import { FormKit, setErrors } from "@formkit/vue"
+import { use_auth } from "@/stores/use_auth.store"
 import type { FormKitNode } from "@formkit/core"
-import { ZodError } from "zod"
-import { use_auth } from "@/stores/use_auth.store";
+import { FormKit, setErrors } from "@formkit/vue"
 
 const handle_submit = async ({ nik }: { nik: string }, node: FormKitNode) => {
   try {

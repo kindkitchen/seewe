@@ -6,6 +6,7 @@ import MobileNav from "./MobileNav.vue"
 import ProfileDropdown from "./ProfileDropdown.vue"
 import { post_sign_in } from "@/queries/post_sign_in.query"
 import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
+import type { RouterLinkProps, RouterOptions } from "vue-router"
 
 const auth = use_auth()
 const common_navigation = [
@@ -13,7 +14,11 @@ const common_navigation = [
     name: "Home",
     href: "/home",
   },
-]
+  {
+    name: "Markdown CV",
+    href: "/md-cv",
+  },
+] satisfies { href: RouterLinkProps["to"]; name: string }[]
 </script>
 
 <template>
