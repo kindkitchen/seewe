@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import ModalCmp from "@/components/ModalCmp.vue";
-import { DocumentArrowUpIcon } from "@heroicons/vue/24/solid";
-import MainForm from "./MainForm.vue";
+import ModalCmp from "@/components/ModalCmp.vue"
+import { DocumentArrowUpIcon } from "@heroicons/vue/24/solid"
+import MainForm from "./MainForm.vue"
 
 const show = defineModel<boolean>()
-
 </script>
 <template>
   <ModalCmp v-model="show">

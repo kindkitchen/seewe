@@ -14,6 +14,8 @@ export const primePlugin = [
 ] as const
 
 export const ToastServicePlugin = ToastService
+
+export default {}
 </script>
 
 <style>

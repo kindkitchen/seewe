@@ -12,7 +12,6 @@ const toast = useToast()
 const is_mobile = window.innerWidth < 500
 const md = use_md()
 const auth = use_auth()
-let html_str = ""
 const is_upload_form_open = ref(false)
 </script>
 
@@ -33,7 +32,7 @@ const is_upload_form_open = ref(false)
     :no-mermaid="true"
     :on-html-changed="
       (html) => {
-        html_str = html
+        md.html_str = html
       }
     "
     :on-change="
