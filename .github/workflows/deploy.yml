@@ -1,0 +1,49 @@
+name: Deploy
+
+env:
+  CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+on:
+  push:
+    branches: ["seewe"]
+jobs:
+  pr-or-deploy:
+    environment: production
+    name: "Push into ${{ github.head_ref || github.ref_name }}"
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SUPER_GITHUB_TOKEN }}
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Configure environment
+        run: >
+          echo """${{ secrets.DOTENV_FILE }}""" >> .env
+
+      - name: Install Node.js for ui building
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Build ui
+        run: "npm i && npm run build"
+
+      - name: Upload to Deno Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: "seewe"
+          exclude: |
+            src
+            .github
+            .vscode
+            .git
+            .gitignore
+          entrypoint: "api/mod.ts"
