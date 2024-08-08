@@ -14,7 +14,7 @@ import { useToast } from "primevue/usetoast"
 definePage({
   meta: {
     private: true,
-  }
+  },
 })
 const { add } = useToast()
 const auth = use_auth()
@@ -57,14 +57,22 @@ const handle_submit_add_nik = async ({ nik }: { nik: string }, node: FormKitNode
           <FormKit id="settings::add_nik" type="form" @submit="handle_submit_add_nik">
             <FormKit type="text" name="nik" :value="auth.user?.nik" />
           </FormKit>
-          <Panel header="What benefits the 'username' is give me?" toggleable :collapsed="!!auth.user?.nik">
+          <Panel
+            header="What benefits the 'username' is give me?"
+            toggleable
+            :collapsed="!!auth.user?.nik"
+          >
             <p>
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui facilis quos asperiores
               perspiciatis quidem quibusdam sequi error consequatur minima minus necessitatibus, a
               quasi exercitationem ducimus dignissimos hic? Id, consequuntur maxime.
             </p>
           </Panel>
-          <Panel header="The real power of combining 'username' and CV 'name'" toggleable :collapsed="!auth.user?.nik">
+          <Panel
+            header="The real power of combining 'username' and CV 'name'"
+            toggleable
+            :collapsed="!auth.user?.nik"
+          >
             <p>
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui facilis quos asperiores
               perspiciatis quidem quibusdam sequi error consequatur minima minus necessitatibus, a
@@ -78,7 +86,11 @@ const handle_submit_add_nik = async ({ nik }: { nik: string }, node: FormKitNode
               quasi exercitationem ducimus dignissimos hic? Id, consequuntur maxime.
             </p>
           </Panel>
-          <Panel header="What I should to know before deleting or changing my username?" toggleable collapsed>
+          <Panel
+            header="What I should to know before deleting or changing my username?"
+            toggleable
+            collapsed
+          >
             <p>
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui facilis quos asperiores
               perspiciatis quidem quibusdam sequi error consequatur minima minus necessitatibus, a
@@ -88,11 +100,19 @@ const handle_submit_add_nik = async ({ nik }: { nik: string }, node: FormKitNode
         </TabPanel>
         <TabPanel value="cv-visibility-options">
           <t-h :n="5">Visibility options</t-h>
-          <FormKit type="form" id="settings::visibility-options" #default="{ value }"
-            @submit="handle_submit_visibility_options">
-            <FormKit type="checkbox" label="Make all my public CV visible"
+          <FormKit
+            type="form"
+            id="settings::visibility-options"
+            #default="{ value }"
+            @submit="handle_submit_visibility_options"
+          >
+            <FormKit
+              type="checkbox"
+              label="Make all my public CV visible"
               help="When you stop your job researches it is very simple to make your CV invisible to everyone in one click"
-              name="public-are-public" :value="true" />
+              name="public-are-public"
+              :value="true"
+            />
           </FormKit>
           <Panel header="What is this?" toggleable>
             <p>

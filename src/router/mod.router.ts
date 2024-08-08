@@ -17,7 +17,7 @@ export const router = createRouter({
 
 router.beforeEach((to, from) => {
   if (to.meta.private && !use_auth().user) {
-    return '/home'
+    return "/home"
   }
 })
 
