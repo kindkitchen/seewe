@@ -6,7 +6,7 @@ import { MdEditor } from "md-editor-v3"
 import Button from "primevue/button"
 import { useToast } from "primevue/usetoast"
 import { ref } from "vue"
-import UploadMdCvForm from "../../forms/UploadMdCvForm.vue"
+import UploadMdCvForm from "../../forms/upload_mdcv/UploadMdCvForm.vue"
 
 const toast = useToast()
 const is_mobile = window.innerWidth < 500
@@ -29,7 +29,7 @@ const is_upload_form_open = ref(false)
     />
   </div>
   <MdEditor
-    :style="{ height: 'fit-content' }"
+    :style="{ minHeight: '400px', height: 'fit-content' }"
     :no-mermaid="true"
     :on-html-changed="
       (html) => {

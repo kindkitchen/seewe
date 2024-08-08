@@ -56,7 +56,7 @@ const open = defineModel<boolean>()
                   </div>
                 </div>
               </div>
-              <div class="bg-gray-50 px-4 py-3 sm:flex justify-center sm:px-6">
+              <div class="bg-gray-50 px-4 py-3 flex flex-col sm:px-6">
                 <slot name="buttons"></slot>
               </div>
             </DialogPanel>

@@ -1,1 +1,6 @@
 @import "./base.css";
+
+html {
+  scrollbar-color: none;
+  scrollbar-width: none;
+}
