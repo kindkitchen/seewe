@@ -98,10 +98,9 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
       }
     } else {
       console.error(res.status, res.statusText)
-      throw res
-        .json()
-        .catch(() => res.text())
-        .catch(() => res)
+      const err_text = await res.text()
+
+      throw err_text
     }
   }
 
@@ -114,9 +113,12 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
     }) as ApiCallRes<M, P>
   }
 
-  return res.json().catch(() => {
+  return res.json().catch(async () => {
     console.error("res.json() failed")
-    throw res
+    const err_text = await res.text()
+    console.warn(err_text)
+
+    throw err_text
   })
 }
 
