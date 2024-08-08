@@ -61,14 +61,6 @@ const items = ref([
 
 <template>
   <t-h>Markdown CV</t-h>
-  <SpeedDial
-    type="semi-circle"
-    :radius="80"
-    :model="items"
-    direction="left"
-    mask
-    style="position: fixed; top: calc(80% - 2rem); right: 1rem"
-  />
   <MdEditor
     :style="{ height: 'fit-content' }"
     :no-mermaid="true"
@@ -88,14 +80,11 @@ const items = ref([
     :showCodeRowNumber="false"
   >
   </MdEditor>
+  <SpeedDial
+    type="semi-circle"
+    :radius="80"
+    :model="items"
+    direction="left"
+    style="position: fixed; top: calc(80% - 2rem); right: 1rem"
+  />
 </template>
-
-<style>
-.p-speeddial {
-  @apply z-20;
-}
-
-.p-speeddial-mask {
-  @apply z-10;
-}
-</style>
