@@ -10,6 +10,7 @@ import TabPanel from "primevue/tabpanel"
 import TabPanels from "primevue/tabpanels"
 import Tabs from "primevue/tabs"
 import { useToast } from "primevue/usetoast"
+import AddNikForm from "@/forms/AddNikForm.vue"
 
 definePage({
   meta: {
@@ -19,28 +20,12 @@ definePage({
 const { add } = useToast()
 const auth = use_auth()
 const handle_submit_visibility_options = async (value: unknown, node: FormKitNode) => {
-  console.log(value)
   add({
     severity: "warn",
     summary: "Not implemented yet",
     detail: "This feature is not implemented yet",
     life: 2000,
   })
-}
-const handle_submit_add_nik = async ({ nik }: { nik: string }, node: FormKitNode) => {
-  try {
-    await post_add_nik(nik)
-    add({ severity: "success", detail: `Hi there! ${nik}!`, summary: "Cool!", life: 2000 })
-  } catch (err: any) {
-    console.log(err)
-    setErrors("settings::add_nik", err)
-    add({
-      severity: "warn",
-      summary: "Unable to set username",
-      detail: "See error messages",
-      life: 2000,
-    })
-  }
 }
 </script>
 <template>
@@ -54,9 +39,7 @@ const handle_submit_add_nik = async ({ nik }: { nik: string }, node: FormKitNode
       <TabPanels>
         <TabPanel value="username">
           <t-h :n="5">Username</t-h>
-          <FormKit id="settings::add_nik" type="form" @submit="handle_submit_add_nik">
-            <FormKit type="text" name="nik" :value="auth.user?.nik" />
-          </FormKit>
+          <AddNikForm />
           <Panel
             header="What benefits the 'username' is give me?"
             toggleable

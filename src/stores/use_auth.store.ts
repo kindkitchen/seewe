@@ -8,6 +8,7 @@ import { useRouter } from "vue-router"
 
 export const use_auth = defineStore("auth", () => {
   const u = ref<user_.Entity | undefined>(stuff.restore_user())
+  const router = useRouter()
 
   return {
     user: u,
@@ -16,8 +17,7 @@ export const use_auth = defineStore("auth", () => {
       stuff.update_bearers(null)
       stuff.rewrite_user(null)
       u.value = undefined
-      const router = useRouter()
-      await router.push("/home") // TODO: don't work (in Profile dropdown)
+      await router.push("/home")
     },
     upsert_user(user: user_.Entity) {
       stuff.rewrite_user(user)
@@ -29,6 +29,7 @@ export const use_auth = defineStore("auth", () => {
       stuff.rewrite_user(user)
       network_client_state.refresh = { status: "ok" }
       u.value = user
+      await router.push("/dashboard")
     },
   }
 })

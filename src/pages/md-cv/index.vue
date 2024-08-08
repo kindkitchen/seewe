@@ -1,55 +1,31 @@
 <script setup lang="ts">
 import { use_auth } from "@/stores/use_auth.store"
 import { use_md } from "@/stores/use_md.store"
+import { tw } from "@/utils/tw.util"
 import { MdEditor } from "md-editor-v3"
 import Button from "primevue/button"
-import SpeedDial from "primevue/speeddial"
 import { useToast } from "primevue/usetoast"
-import { ref, watchEffect } from "vue"
+import { ref } from "vue"
+import UploadMdCvForm from "../../forms/UploadMdCvForm.vue"
 
 const toast = useToast()
 const is_mobile = window.innerWidth < 500
 const md = use_md()
 const auth = use_auth()
 let html_str = ""
-const md_str = ref(md.edited_str)
-watchEffect(() => {
-  md.update_str(md_str.value)
-})
-const items = ref([
-  {
-    label: "Upload changes",
-    icon: "pi pi-upload",
-    command: () => {
-      toast.add({
-        severity: "success",
-        summary: "Uploaded",
-        detail: "See by this link!",
-        life: 3000,
-      })
-    },
-  },
-  {
-    label: "Add name",
-    icon: "pi pi-wrench",
-    command: () => {
-      toast.add({ severity: "info", summary: "Added", detail: "Name added!", life: 3000 })
-    },
-  },
-])
+const is_upload_form_open = ref(false)
 </script>
 
 <template>
   <t-h>Markdown CV</t-h>
-  <div v-if="!is_mobile" class="flex justify-between sticky top-2 z-10">
+  <div :class="tw('flex justify-between sticky top-2 z-10')">
     <Button
-      size="small"
-      v-for="item of items"
-      :key="item.label"
-      :icon="item.icon"
+      @click="() => (is_upload_form_open = !is_upload_form_open)"
+      :size="is_mobile ? 'small' : 'large'"
+      icon="pi pi-upload"
       icon-pos="left"
-      :label="item.label"
-      :pt:button.primary.background="'red'"
+      :label="is_mobile ? undefined : 'Upload changes'"
+      :rounded="is_mobile"
     />
   </div>
   <MdEditor
@@ -58,6 +34,11 @@ const items = ref([
     :on-html-changed="
       (html) => {
         html_str = html
+      }
+    "
+    :on-change="
+      (md_str) => {
+        md.update_str(md_str)
       }
     "
     :no-upload-img="true"
@@ -71,12 +52,5 @@ const items = ref([
     :showCodeRowNumber="false"
   >
   </MdEditor>
-  <SpeedDial
-    v-if="is_mobile"
-    type="semi-circle"
-    :radius="60"
-    :model="items"
-    direction="left"
-    style="position: fixed; top: calc(80% - 2rem); right: 1rem"
-  />
+  <UploadMdCvForm v-model="is_upload_form_open" />
 </template>

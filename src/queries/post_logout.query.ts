@@ -1,7 +1,6 @@
 import { my_fetch } from "@/my_fetch"
 import { use_auth } from "@/stores/use_auth.store"
 import { UiException } from "@/utils/ui_exception"
-import { useRouter } from "vue-router"
 
 export const post_logout_query = async () => {
   const auth = use_auth()
