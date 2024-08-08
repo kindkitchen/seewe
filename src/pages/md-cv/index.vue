@@ -4,6 +4,7 @@ import { use_md } from "@/stores/use_md.store"
 import { MdEditor } from "md-editor-v3"
 import { computed, ref } from "vue"
 import SpeedDial from "primevue/speeddial"
+import SplitButton from "primevue/splitbutton"
 import { useToast } from "primevue/usetoast"
 
 const toast = useToast()
@@ -61,30 +62,17 @@ const items = ref([
 
 <template>
   <t-h>Markdown CV</t-h>
-  <MdEditor
-    :style="{ height: 'fit-content' }"
-    :no-mermaid="true"
-    :on-html-changed="
-      (html) => {
-        html_str = html
-      }
-    "
-    :no-upload-img="true"
-    :toolbars="['pageFullscreen', 'unorderedList', 'title', 'previewOnly']"
-    :preview="!is_mobile"
-    v-model="md.edited_str"
-    language="en-US"
-    preview-theme="vuepress"
-    :no-katex="true"
-    :show-toolbar-name="false"
-    :showCodeRowNumber="false"
-  >
+  <div v-if="!is_mobile">
+    <SplitButton label="Save" icon="pi pi-check" dropdownIcon="pi pi-cog" @click="handle_save" :model="items" />
+  </div>
+  <MdEditor :style="{ height: 'fit-content' }" :no-mermaid="true" :on-html-changed="(html) => {
+    html_str = html
+  }
+    " :no-upload-img="true" :toolbars="['pageFullscreen', 'unorderedList', 'title', 'previewOnly']"
+    :preview="!is_mobile" v-model="md.edited_str" language="en-US" preview-theme="vuepress" :no-katex="true"
+    :show-toolbar-name="false" :showCodeRowNumber="false">
   </MdEditor>
-  <SpeedDial
-    type="semi-circle"
-    :radius="80"
-    :model="items"
-    direction="left"
-    style="position: fixed; top: calc(80% - 2rem); right: 1rem"
-  />
+  <SpeedDial v-if="is_mobile" type="semi-circle" :radius="80" :model="items" direction="left"
+    style="position: fixed; top: calc(80% - 2rem); right: 1rem" />
+
 </template>
