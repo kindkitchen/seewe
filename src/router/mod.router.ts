@@ -1,3 +1,4 @@
+import { use_auth } from "@/stores/use_auth.store"
 import { createRouter, createWebHistory } from "vue-router"
 import { routes } from "vue-router/auto-routes"
 
@@ -12,6 +13,12 @@ export const router = createRouter({
       redirect: "/home",
     },
   ],
+})
+
+router.beforeEach((to, from) => {
+  if (to.meta.private && !use_auth().user) {
+    return '/home'
+  }
 })
 
 import.meta.hot &&
