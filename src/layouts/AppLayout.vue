@@ -3,11 +3,9 @@ import RootHeader from "./root-header/RootHeader.vue"
 import Toast from "primevue/toast"
 </script>
 <template>
-  <div class="min-h-screen bg-emerald-50">
+  <div class="min-h-screen bg-emerald-50 sm:px-[20%] [&>*]:p-1">
     <RootHeader />
-    <div class="px-1 sm:px-[25%]">
-      <slot></slot>
-    </div>
+    <slot></slot>
     <Toast />
   </div>
 </template>
