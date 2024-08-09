@@ -24,9 +24,6 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Turn off bricks
-        run: mv src/bricks.interceptor.example.ts src/bricks.interceptor.ts && mv api/bricks.interceptor.example.ts api/bricks.interceptor.ts
-
       - name: Configure environment
         run: >
           echo """${{ secrets.DOTENV_FILE }}""" >> .env
@@ -35,6 +32,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
+
+      - name: Turn off bricks
+        run: npm run brickyard:disable
 
       - name: Build ui
         run: "npm i && npm run build"
