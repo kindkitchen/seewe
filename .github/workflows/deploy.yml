@@ -33,9 +33,6 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Turn off bricks
-        run: npm run brickyard:disable
-
       - name: Build ui
         run: "npm i && npm run build"
 
