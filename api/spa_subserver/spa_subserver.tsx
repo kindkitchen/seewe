@@ -3,30 +3,12 @@ import { z } from "zod"
 import { db } from "../db.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
-import { FC } from "hono/jsx"
-
-const CvLayout: FC = (props) => {
-  return <html>
-    <head>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-        crossorigin="anonymous"
-      ></link>
-    </head>
-    <body>{props?.children}</body>
-  </html>
-}
+import { TailwindCdnLayout } from "../utils/TailwindCdnLayout.tsx"
 
 export const spa_subserver = new OpenAPIHono()
   .get("/id/:user_id", async (ctx) => {
     const user_id_param = ctx.req.param("user_id")
-    const validation = z
-      .string()
-      // .regex(/\d{4, 20}/) // TODO
-      .transform(Number)
-      .safeParse(user_id_param)
+    const validation = z.number({ coerce: true }).safeParse(user_id_param)
 
     if (validation.error) {
       return ctx.notFound()
@@ -57,13 +39,13 @@ export const spa_subserver = new OpenAPIHono()
 
     const { html, md, ...rest } = cv
     return ctx.html(
-      <CvLayout>
+      <TailwindCdnLayout>
         <div
           dangerouslySetInnerHTML={{
             __html: cv.html,
           }}
         />
-      </CvLayout>,
+      </TailwindCdnLayout>,
     )
   })
   .get("/:username/:cv_name", async (ctx) => {
@@ -74,7 +56,15 @@ export const spa_subserver = new OpenAPIHono()
     )
 
     if (happy_path_result?.value) {
-      return ctx.html(happy_path_result.value.html)
+      return ctx.html(
+        <TailwindCdnLayout>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: happy_path_result.value.html,
+            }}
+          ></div>
+        </TailwindCdnLayout>,
+      )
     }
 
     const db_user_res = await users_service.find_by_nik(username)
@@ -95,13 +85,13 @@ export const spa_subserver = new OpenAPIHono()
 
     if (happy) {
       return ctx.html(
-        <CvLayout>
+        <TailwindCdnLayout>
           <div
             dangerouslySetInnerHTML={{
               __html: happy.html,
             }}
           />
-        </CvLayout>,
+        </TailwindCdnLayout>,
       )
     }
 
@@ -119,7 +109,7 @@ export const spa_subserver = new OpenAPIHono()
 
       if (public_not_default_cv_list.length > 0) {
         return ctx.html(
-          <CvLayout>
+          <TailwindCdnLayout>
             <ul>
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
@@ -128,7 +118,7 @@ export const spa_subserver = new OpenAPIHono()
                 </li>
               ))}
             </ul>
-          </CvLayout>,
+          </TailwindCdnLayout>,
         )
       }
     }
