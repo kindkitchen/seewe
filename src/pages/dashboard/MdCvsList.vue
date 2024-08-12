@@ -34,13 +34,14 @@ const mdcvs = data.map((d) => {
           @click="
             () => {
               md_store.edited_mdcv_id = cv._id
+              md_store.edited_str = cv.md
             }
           "
           >Select</t-a
         >
         <t-btn
           @click="
-            () => {
+            ;async () => {
               my_fetch({
                 method: 'delete',
                 path: '/v1/mdcv/:mdcv_id',
@@ -48,6 +49,8 @@ const mdcvs = data.map((d) => {
                 res_as: 'none',
               })
             }
+            md_store.edited_mdcv_id === cv._id && (md_store.edited_str = '')
+            md_store.edited_mdcv_id = undefined
           "
           >Delete</t-btn
         >
