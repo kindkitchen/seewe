@@ -116,7 +116,7 @@ export const spa_subserver = new OpenAPIHono()
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
                   <a
-                    href={config.VITE_API_URL + "/" + target_user.name! + "/" + (value.name || "")}
+                    href={config.VITE_API_URL + "/" + target_user.nik! + "/" + (value.name || "")}
                   >
                     <h4>
                       {"CV"}{" "}
