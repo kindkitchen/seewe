@@ -21,7 +21,13 @@ const show = defineModel<boolean>()
       eveniet sit asperiores fuga? Asperiores?
     </template>
     <template #buttons>
-      <MainForm />
+      <MainForm
+        @done="
+          (ok) => {
+            if (ok) show = false
+          }
+        "
+      />
       <t-btn @click="() => (show = false)">Cancel</t-btn>
     </template>
   </ModalCmp>
