@@ -3,6 +3,21 @@ import { z } from "zod"
 import { db } from "../db.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
+import { FC } from "hono/jsx"
+
+const CvLayout: FC = (props) => {
+  return <html>
+    <head>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous"
+      ></link>
+    </head>
+    <body>{props?.children}</body>
+  </html>
+}
 
 export const spa_subserver = new OpenAPIHono()
   .get("/id/:user_id", async (ctx) => {
@@ -18,10 +33,7 @@ export const spa_subserver = new OpenAPIHono()
     }
     const user_id = validation.data
 
-    const db_result = await db._dev_md_cv.findByPrimaryIndex(
-      "as_default_by_user_id",
-      user_id,
-    )
+    const db_result = await db._dev_md_cv.findByPrimaryIndex("as_default_by_user_id", user_id)
     const cv = db_result?.value
 
     // cv not found
@@ -45,14 +57,13 @@ export const spa_subserver = new OpenAPIHono()
 
     const { html, md, ...rest } = cv
     return ctx.html(
-      <html>
-        <pre>{JSON.stringify(rest, null, 2)}</pre>
+      <CvLayout>
         <div
           dangerouslySetInnerHTML={{
             __html: cv.html,
           }}
         />
-      </html>,
+      </CvLayout>,
     )
   })
   .get("/:username/:cv_name", async (ctx) => {
@@ -84,34 +95,31 @@ export const spa_subserver = new OpenAPIHono()
 
     if (happy) {
       return ctx.html(
-        <html>
+        <CvLayout>
           <div
             dangerouslySetInnerHTML={{
               __html: happy.html,
             }}
           />
-        </html>,
+        </CvLayout>,
       )
     }
 
-    const db_user_res = await users_service.find_by_nik(
-      ctx.req.param("username"),
-    )
+    const db_user_res = await users_service.find_by_nik(ctx.req.param("username"))
     const target_user = db_user_res.data
 
     if (target_user) {
-      const { result: public_not_default_cv_list } = await db._dev_md_cv
-        .findBySecondaryIndex(
-          "user_id",
-          target_user._id,
-          {
-            filter: ({ value }) => value.is_published,
-          },
-        )
+      const { result: public_not_default_cv_list } = await db._dev_md_cv.findBySecondaryIndex(
+        "user_id",
+        target_user._id,
+        {
+          filter: ({ value }) => value.is_published,
+        },
+      )
 
       if (public_not_default_cv_list.length > 0) {
         return ctx.html(
-          <html>
+          <CvLayout>
             <ul>
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
@@ -120,7 +128,7 @@ export const spa_subserver = new OpenAPIHono()
                 </li>
               ))}
             </ul>
-          </html>,
+          </CvLayout>,
         )
       }
     }
