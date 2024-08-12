@@ -228,7 +228,40 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    get?: never
+    get: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description All CVs for owner */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "application/json": {
+              items: {
+                user_id: number
+                md: string
+                html: string
+                is_published: boolean
+                name?: string
+                as_default_by_user_id?: number
+                as_default_by_username?: string
+                as_regulary_by_name_username?: string[]
+                _id: number
+              }[]
+            }
+          }
+        }
+      }
+    }
     put?: never
     post: {
       parameters: {
