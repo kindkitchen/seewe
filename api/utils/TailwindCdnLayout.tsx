@@ -4,19 +4,27 @@ export const TailwindCdnLayout: FC = (props) => {
   return (
     <html>
       <head>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous"
+        ></link>
         <style>
           {`\
-p, ul, ol, li, h3, h4, h5, h6 {
+p, ul, ol, li, h4, h5, h6 {
+  
   break-inside: avoid-page;
   break-before: avoid-page;
 }
 
-p, ul, ol, li, h1, h2, h3, h4, h5, h6 {
+p, ul, ol, li, h1, h2, h4, h5, h6 {
   break-after: avoid-page;
 }
 
-h1, h2 {
+h1, h2, h3 {
+  text-align: center;
+  text-wrap: pretty;
   break-before: auto;
 }
 
@@ -26,12 +34,24 @@ hr {
   break-after: auto;
   background-color: magenta;
 }
+
+.water-mark {
+  position: fixed;
+  right: 2rem;
+  top: 2rem;
+}
 \
 `}
         </style>
       </head>
-      <body class="min-h-screen flex flex-col pl-4">{props.children}
-        <a class={'fixed top-2 right-2 italic px-4 bg-neutral-50 text-neutral-600'} href="https://seewe.deno.dev">seewe.deno.dev</a>
+      <body>
+        {props.children}
+        <a
+          class={"water-mark"}
+          href="https://seewe.deno.dev"
+        >
+          seewe.deno.dev
+        </a>
       </body>
     </html>
   )
