@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FormKit } from "@formkit/vue"
 import { useAttrs } from "vue"
+import { tw } from "@/utils/tw.util"
 
 const attrs = useAttrs()
 </script>
@@ -8,7 +9,7 @@ const attrs = useAttrs()
 <template>
   <FormKit
     :classes="{
-      input: attrs.class as any,
+      input: tw(attrs.class as any),
     }"
     type="button"
     ignore
