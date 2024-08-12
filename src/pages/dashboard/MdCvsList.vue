@@ -29,31 +29,22 @@ const mdcvs = data.map((d) => {
       <h4>{{ cv.md.substring(0, 20) }}</h4>
       <t-a v-show="cv.to" :to="cv.to">{{ cv.to }}</t-a>
       <div class="flex flex-row gap-2">
-        <t-a
-          to="/md-cv"
-          @click="
-            () => {
-              md_store.edited_mdcv_id = cv._id
-              md_store.edited_str = cv.md
-            }
-          "
-          >Select</t-a
-        >
-        <t-btn
-          @click="
-            ;async () => {
-              my_fetch({
-                method: 'delete',
-                path: '/v1/mdcv/:mdcv_id',
-                params: { mdcv_id: cv._id },
-                res_as: 'none',
-              })
-            }
-            md_store.edited_mdcv_id === cv._id && (md_store.edited_str = '')
-            md_store.edited_mdcv_id = undefined
-          "
-          >Delete</t-btn
-        >
+        <t-a to="/md-cv" @click="() => {
+          md_store.edited_mdcv_id = cv._id
+          md_store.edited_str = cv.md
+        }
+          ">Select</t-a>
+        <t-btn @click="async () => {
+          my_fetch({
+            method: 'delete',
+            path: '/v1/mdcv/:mdcv_id',
+            params: { mdcv_id: cv._id },
+            res_as: 'none',
+          })
+        }
+        md_store.edited_mdcv_id === cv._id && (md_store.edited_str = '')
+        md_store.edited_mdcv_id = undefined
+          ">Delete</t-btn>
       </div>
     </li>
   </ol>
