@@ -18,10 +18,10 @@ const is_upload_form_open = ref(false)
 
 <template>
   <t-h>Markdown CV</t-h>
-  <div :class="tw('flex justify-end gap-3 scale-75 sticky top-2 z-10')">
+  <div :class="tw('flex justify-end gap-3 sticky top-2 z-10')">
     <Button
       @click="() => (is_upload_form_open = !is_upload_form_open)"
-      :size="is_mobile ? 'small' : 'large'"
+      size="large"
       icon="pi pi-file-plus"
       icon-pos="left"
       :label="is_mobile ? undefined : 'Upload as new CV'"
@@ -40,7 +40,7 @@ const is_upload_form_open = ref(false)
           })
         }
       "
-      :size="is_mobile ? 'small' : 'large'"
+      size="large"
       icon="pi pi-file-edit"
       icon-pos="left"
       :label="is_mobile ? undefined : 'Upload changes'"
