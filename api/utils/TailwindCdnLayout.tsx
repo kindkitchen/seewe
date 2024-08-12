@@ -12,18 +12,20 @@ export const TailwindCdnLayout: FC = (props) => {
         ></link>
         <style>
           {`\
-p, ul, ol, li, h4, h5, h6 {
-  
+p, ul, ol, li, h2, h3, h4, h5, h6 {
   break-inside: avoid-page;
   break-before: avoid-page;
 }
 
-p, ul, ol, li, h1, h2, h4, h5, h6 {
+p, ul, ol, li, h1, h2, h3, h4, h5, h6 {
   break-after: avoid-page;
 }
 
-h1, h2, h3 {
+h1 {
   text-align: center;
+}
+
+h2, h3 {
   text-wrap: pretty;
   break-before: auto;
 }
