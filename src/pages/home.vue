@@ -1,26 +1,25 @@
-<script setup lang="ts">
-import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
-import { my_fetch } from "@/my_fetch"
-import { ref } from "vue"
-import type { ImplicitFlowSuccessResponse } from "vue3-google-signin"
-const dev = ref("")
-const handle_success_google_sign_in = async (res: ImplicitFlowSuccessResponse) => {
-  const server_res = await my_fetch({
-    method: "post",
-    path: "/v1/auth/sign-in",
-    is_public_api: true,
-    body: {
-      auth_provider: "google",
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      code: res.code,
-    },
-    res_as: "application/json",
-  })
-
-  dev.value = JSON.stringify(server_res)
-}
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <t-h>Home</t-h>
+  <t-h :n="1"> Build Your Professional CV with Markdown </t-h>
+  <p class="text-lg md:text-2xl">
+    Fast, Simple, and Customizable. Create, download, and share your CVs effortlessly.
+  </p>
+  <div class="flex flex-col items-start">
+    <t-a to="/md-cv"> Get Started Free </t-a>
+    <t-a to="/about"> Learn More </t-a>
+  </div>
+  <t-h :n="2"> Why Choose Our CV Builder? </t-h>
+  <t-h :n="4"> Markdown Simplicity </t-h>
+  <p>
+    Write your CV in plain Markdown, and we'll handle the rest. Enjoy a straightforward and
+    distraction-free experience.
+  </p>
+  <t-h :n="4"> Download as PDF </t-h>
+  <p>Convert your Markdown CV into a polished PDF with just one click. No extra tools needed.</p>
+  <t-h :n="4"> Share with Cool Links </t-h>
+  <p>
+    Authorize and create personalized links to share your CV online. Have multiple CVs? Manage them
+    all under your username.
+  </p>
 </template>

@@ -42,7 +42,7 @@ const handle_delete = async (id: number) => {
 <template>
   <ol>
     <li v-for="cv of mdcvs" :key="cv._id">
-      <h4>{{ cv.md.substring(0, 20) }}</h4>
+      <t-h :n="4">{{ cv.md.substring(0, 20) }}</t-h>
       <t-a v-show="cv.to" :to="cv.to">{{ cv.to }}</t-a>
       <div class="flex flex-row gap-2">
         <t-a
@@ -53,7 +53,7 @@ const handle_delete = async (id: number) => {
               md_store.edited_str = cv.md
             }
           "
-          >Select</t-a
+          >Edit</t-a
         >
         <t-btn
           @click="
