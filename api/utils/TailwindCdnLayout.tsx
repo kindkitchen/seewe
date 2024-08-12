@@ -12,7 +12,7 @@ export const TailwindCdnLayout: FC = (props) => {
         ></link>
         <style>
           {`\
-p, ul, ol, li, h2, h3, h4, h5, h6 {
+p, ul, ol, li, h3, h4, h5, h6 {
   break-inside: avoid-page;
   break-before: avoid-page;
 }
@@ -25,7 +25,7 @@ h1 {
   text-align: center;
 }
 
-h2, h3 {
+h1, h2 {
   text-wrap: pretty;
   break-before: auto;
 }
@@ -34,13 +34,19 @@ hr {
   border: none;
   border-top: 1px dotted;
   break-after: auto;
-  background-color: magenta;
+  background-color: green;
 }
 
 .water-mark {
   position: fixed;
   right: 2rem;
   top: 2rem;
+}
+
+body {
+  color: black;
+  padding-inline: 2rem;
+  padding-top: 2rem;
 }
 \
 `}
