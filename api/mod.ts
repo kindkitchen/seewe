@@ -2,14 +2,12 @@ import { OpenAPIHono } from "@hono/zod-openapi"
 import { cors } from "hono/cors"
 import { showRoutes } from "hono/dev"
 import { logger } from "hono/logger"
-import type { DotenvFile } from "./env.d.ts"
+import { config } from "./config.ts"
 import { openapi_router } from "./routers/openapi/mod.openapi.tsx"
 import { spa_subserver } from "./spa_subserver/spa_subserver.tsx"
-import { load_env } from "./utils/load_env.util.ts"
 import { serve_static } from "./utils/serve_static.ts"
 import { api_v1 } from "./v1.ts"
 
-const config = await load_env<DotenvFile>()
 const app = new OpenAPIHono()
 
 app.use(logger()).use(

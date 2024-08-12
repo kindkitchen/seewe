@@ -1,5 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
+import { config } from "../config.ts"
 import { db } from "../db.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
@@ -110,14 +111,23 @@ export const spa_subserver = new OpenAPIHono()
       if (public_not_default_cv_list.length > 0) {
         return ctx.html(
           <TailwindCdnLayout>
-            <ul>
+            <h1>{target_user.nik || target_user.name}</h1>
+            <ol>
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
-                  <h4>{value.name || `CV ${i}`}</h4>
-                  <p>{value.md.substring(0, 20)}</p>
+                  <a
+                    href={config.VITE_API_URL + "/" + target_user.name! + "/" + (value.name || "")}
+                  >
+                    <h4>
+                      {"CV"}{" "}
+                      {value.name ||
+                        value.as_regulary_by_name_username?.join("/") ||
+                        `no. ${value._id!}`}
+                    </h4>
+                  </a>
                 </li>
               ))}
-            </ul>
+            </ol>
           </TailwindCdnLayout>,
         )
       }
