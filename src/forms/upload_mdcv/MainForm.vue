@@ -20,6 +20,7 @@ const show_add_username_form = ref(false)
 const handle_submit = async (data: v1_.Req<"post", "/v1/mdcv">["body"]) => {
   try {
     const res = await post_mdcv_query(data)
+    md.edited_mdcv_id = res._id
   } catch (err) {
     console.error(err)
     setErrors("upload-mdcv-form", String(err))
