@@ -22,7 +22,7 @@ const common_navigation = [
 </script>
 
 <template>
-  <Disclosure as="nav" class="bg-emerald-600" v-slot="{ open }">
+  <Disclosure as="nav" class="bg-emerald-600 dark:bg-emerald-950" v-slot="{ open }">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
         <MobileNav :common_navigation :open />

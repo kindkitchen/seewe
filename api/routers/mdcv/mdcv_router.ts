@@ -8,6 +8,7 @@ import { delete_mdcv } from "./delete_mdcv.ts"
 import { get_mdcv } from "./get_mdcv.ts"
 import { post_mdcv } from "./post_mdcv.ts"
 import { put_mdcv } from "./put_mdcv.ts"
+import { get_my_mdcvs } from "./get_my_mdcvs.ts"
 
 export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
   .openapi(post_mdcv, async (ctx) => {
@@ -93,4 +94,11 @@ export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
     await db._dev_md_cv.deleteByPrimaryIndex("_id", mdcv_id)
 
     return ctx.newResponse(null, 204)
+  }).openapi(get_my_mdcvs, async (ctx) => {
+    const user = ctx.get("user")
+    const mdcvs = await db._dev_md_cv.findBySecondaryIndex("user_id", user._id)
+
+    return ctx.json({
+      items: mdcvs.result.map((mdcv) => mdcv.value as MdCvEntity),
+    })
   })

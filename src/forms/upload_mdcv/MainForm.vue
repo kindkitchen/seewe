@@ -14,16 +14,21 @@ import { computed, ref } from "vue"
 const auth = use_auth()
 const md = use_md()
 const { add } = useToast()
-const is_user = computed(() => !!auth.user)
 const is_user_with_nik = computed(() => !!auth.user?.nik)
 const show_add_username_form = ref(false)
+const emit = defineEmits<{
+  done: [ok: boolean]
+}>()
 const handle_submit = async (data: v1_.Req<"post", "/v1/mdcv">["body"]) => {
   try {
     const res = await post_mdcv_query(data)
+    md.edited_mdcv_id = res._id
+    emit("done", true)
   } catch (err) {
     console.error(err)
     setErrors("upload-mdcv-form", String(err))
     add({ severity: "error", summary: "Uploading failed", detail: "Check error messages" })
+    emit("done", false)
   }
 }
 </script>

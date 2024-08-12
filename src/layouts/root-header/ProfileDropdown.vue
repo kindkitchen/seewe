@@ -24,7 +24,7 @@ const profile_navigation = [
         class="relative inline-flex items-center justify-center p-2 text-emerald-100 hover:bg-emerald-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
       >
         <span class="sr-only">Open user menu</span>
-        <WrenchScrewdriverIcon class="block h-5 w-5" aria-hidden="true" />
+        <WrenchScrewdriverIcon class="block h-10 w-10" aria-hidden="true" />
       </MenuButton>
     </div>
     <transition
@@ -35,7 +35,7 @@ const profile_navigation = [
       leave-from-class="transform opacity-100 scale-100"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <MenuItems class="absolute right-0 z-10 w-fit bg-transparent items-end flex flex-col">
+      <MenuItems class="absolute right-0 z-20 w-fit bg-transparent items-end flex flex-col">
         <MenuItem as="template" v-for="item in profile_navigation" :key="item.name">
           <t-a :to="item.href">{{ item.name }}</t-a>
         </MenuItem>

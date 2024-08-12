@@ -5,9 +5,9 @@ import { generateClasses } from "@formkit/themes"
 import { defaultConfig, plugin } from "@formkit/vue"
 
 const input = tw("active:border-transparent py-[5px] text-nowrap", {
-  "dark:text-emerald-50": true,
-  "dark:bg-emerald-950": true,
-  "dark:hover:bg-emerald-900": true,
+  "dark:text-emerald-100": true,
+  "dark:bg-emerald-700": true,
+  "dark:hover:bg-emerald-800": true,
   "text-emerald-950": true,
   "bg-emerald-50": true,
   "hover:bg-emerald-100": true,

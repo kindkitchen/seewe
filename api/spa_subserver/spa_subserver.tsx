@@ -1,27 +1,22 @@
 import { OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
+import { config } from "../config.ts"
 import { db } from "../db.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
+import { TailwindCdnLayout } from "../utils/TailwindCdnLayout.tsx"
 
 export const spa_subserver = new OpenAPIHono()
   .get("/id/:user_id", async (ctx) => {
     const user_id_param = ctx.req.param("user_id")
-    const validation = z
-      .string()
-      // .regex(/\d{4, 20}/) // TODO
-      .transform(Number)
-      .safeParse(user_id_param)
+    const validation = z.number({ coerce: true }).safeParse(user_id_param)
 
     if (validation.error) {
       return ctx.notFound()
     }
     const user_id = validation.data
 
-    const db_result = await db._dev_md_cv.findByPrimaryIndex(
-      "as_default_by_user_id",
-      user_id,
-    )
+    const db_result = await db._dev_md_cv.findByPrimaryIndex("as_default_by_user_id", user_id)
     const cv = db_result?.value
 
     // cv not found
@@ -45,14 +40,13 @@ export const spa_subserver = new OpenAPIHono()
 
     const { html, md, ...rest } = cv
     return ctx.html(
-      <html>
-        <pre>{JSON.stringify(rest, null, 2)}</pre>
+      <TailwindCdnLayout>
         <div
           dangerouslySetInnerHTML={{
             __html: cv.html,
           }}
         />
-      </html>,
+      </TailwindCdnLayout>,
     )
   })
   .get("/:username/:cv_name", async (ctx) => {
@@ -63,7 +57,15 @@ export const spa_subserver = new OpenAPIHono()
     )
 
     if (happy_path_result?.value) {
-      return ctx.html(happy_path_result.value.html)
+      return ctx.html(
+        <TailwindCdnLayout>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: happy_path_result.value.html,
+            }}
+          ></div>
+        </TailwindCdnLayout>,
+      )
     }
 
     const db_user_res = await users_service.find_by_nik(username)
@@ -84,43 +86,49 @@ export const spa_subserver = new OpenAPIHono()
 
     if (happy) {
       return ctx.html(
-        <html>
+        <TailwindCdnLayout>
           <div
             dangerouslySetInnerHTML={{
               __html: happy.html,
             }}
           />
-        </html>,
+        </TailwindCdnLayout>,
       )
     }
 
-    const db_user_res = await users_service.find_by_nik(
-      ctx.req.param("username"),
-    )
+    const db_user_res = await users_service.find_by_nik(ctx.req.param("username"))
     const target_user = db_user_res.data
 
     if (target_user) {
-      const { result: public_not_default_cv_list } = await db._dev_md_cv
-        .findBySecondaryIndex(
-          "user_id",
-          target_user._id,
-          {
-            filter: ({ value }) => value.is_published,
-          },
-        )
+      const { result: public_not_default_cv_list } = await db._dev_md_cv.findBySecondaryIndex(
+        "user_id",
+        target_user._id,
+        {
+          filter: ({ value }) => value.is_published,
+        },
+      )
 
       if (public_not_default_cv_list.length > 0) {
         return ctx.html(
-          <html>
-            <ul>
+          <TailwindCdnLayout>
+            <h1>{target_user.nik || target_user.name}</h1>
+            <ol>
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
-                  <h4>{value.name || `CV ${i}`}</h4>
-                  <p>{value.md.substring(0, 20)}</p>
+                  <a
+                    href={config.VITE_API_URL + "/" + target_user.nik! + "/" + (value.name || "")}
+                  >
+                    <h4>
+                      {"CV"}{" "}
+                      {value.name ||
+                        value.as_regulary_by_name_username?.join("/") ||
+                        `no. ${value._id!}`}
+                    </h4>
+                  </a>
                 </li>
               ))}
-            </ul>
-          </html>,
+            </ol>
+          </TailwindCdnLayout>,
         )
       }
     }
