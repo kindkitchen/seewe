@@ -1,9 +1,9 @@
-import { TailwindCdnLayout } from "../../utils/TailwindCdnLayout.tsx"
+import { SimpleLayout } from "../../utils/SimpleLayout.tsx"
 import type { FC } from "hono/jsx"
 
 export const Welcome: FC = () => {
   return (
-    <TailwindCdnLayout>
+    <SimpleLayout>
       <h1>
         Usefull links for development{" "}
         <a href="https://seewe.deno.dev">seewe.deno.dev</a> project
@@ -16,6 +16,6 @@ export const Welcome: FC = () => {
           </a>
         </li>
       </ul>
-    </TailwindCdnLayout>
+    </SimpleLayout>
   )
 }

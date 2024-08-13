@@ -1,6 +1,6 @@
 import type { FC } from "hono/jsx"
 
-export const TailwindCdnLayout: FC = (props) => {
+export const SimpleLayout: FC = (props) => {
   return (
     <html>
       <head>
@@ -31,17 +31,21 @@ hr {
   background-color: green;
 }
 
-.water-mark {
-  position: fixed;
-  right: 2rem;
-  top: 2rem;
-}
-
 body {
   color: black;
   padding-inline: 2rem;
   padding-top: 2rem;
 }
+.water-mark:hover {
+  color: green;
+}
+.water-mark {
+  color: lightgray;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
 \
 `}
         </style>

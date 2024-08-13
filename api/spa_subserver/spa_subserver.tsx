@@ -4,7 +4,7 @@ import { config } from "../config.ts"
 import { db } from "../db.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
-import { TailwindCdnLayout } from "../utils/TailwindCdnLayout.tsx"
+import { SimpleLayout } from "../utils/SimpleLayout.tsx"
 
 export const spa_subserver = new OpenAPIHono()
   .get("/id/:user_id", async (ctx) => {
@@ -40,13 +40,13 @@ export const spa_subserver = new OpenAPIHono()
 
     const { html, md, ...rest } = cv
     return ctx.html(
-      <TailwindCdnLayout>
+      <SimpleLayout>
         <div
           dangerouslySetInnerHTML={{
             __html: cv.html,
           }}
         />
-      </TailwindCdnLayout>,
+      </SimpleLayout>,
     )
   })
   .get("/:username/:cv_name", async (ctx) => {
@@ -58,13 +58,13 @@ export const spa_subserver = new OpenAPIHono()
 
     if (happy_path_result?.value) {
       return ctx.html(
-        <TailwindCdnLayout>
+        <SimpleLayout>
           <div
             dangerouslySetInnerHTML={{
               __html: happy_path_result.value.html,
             }}
           ></div>
-        </TailwindCdnLayout>,
+        </SimpleLayout>,
       )
     }
 
@@ -86,13 +86,13 @@ export const spa_subserver = new OpenAPIHono()
 
     if (happy) {
       return ctx.html(
-        <TailwindCdnLayout>
+        <SimpleLayout>
           <div
             dangerouslySetInnerHTML={{
               __html: happy.html,
             }}
           />
-        </TailwindCdnLayout>,
+        </SimpleLayout>,
       )
     }
 
@@ -110,7 +110,7 @@ export const spa_subserver = new OpenAPIHono()
 
       if (public_not_default_cv_list.length > 0) {
         return ctx.html(
-          <TailwindCdnLayout>
+          <SimpleLayout>
             <h1>{target_user.nik || target_user.name}</h1>
             <ol>
               {public_not_default_cv_list.map(({ value }, i) => (
@@ -128,7 +128,7 @@ export const spa_subserver = new OpenAPIHono()
                 </li>
               ))}
             </ol>
-          </TailwindCdnLayout>,
+          </SimpleLayout>,
         )
       }
     }
