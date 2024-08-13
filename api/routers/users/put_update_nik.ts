@@ -7,7 +7,7 @@ export const put_update_nik = authenticated_only_wrapper(createRoute({
   path: "/nik/:nik",
   request: {
     params: z.object({
-      nik: z.string().regex(/[a-z]{3,16}/),
+      nik: z.string().regex(/[\w_-]{3,16}/),
     }),
   },
   responses: {

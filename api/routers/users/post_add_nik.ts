@@ -11,7 +11,7 @@ export const post_add_nik = authenticated_only_wrapper(createRoute({
       content: {
         "application/json": {
           schema: z.object({
-            nik: z.string().regex(/[a-z]{3,16}/),
+            nik: z.string().regex(/[\w_-]{3,16}/),
           }),
         },
       },
