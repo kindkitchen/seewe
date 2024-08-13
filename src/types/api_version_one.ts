@@ -455,6 +455,48 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/v1/users/nik/:nik": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put: {
+      parameters: {
+        query?: never
+        header?: {
+          authorization?: string
+        }
+        path: {
+          nik: string
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Successfully updated nik for user */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            "application/json": {
+              ok: boolean
+              data: unknown | string | unknown
+            }
+          }
+        }
+      }
+    }
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/v1/hello-world": {
     parameters: {
       query?: never
