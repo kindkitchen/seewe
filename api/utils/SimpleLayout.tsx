@@ -1,4 +1,5 @@
 import type { FC } from "hono/jsx"
+import { html } from "hono/html"
 
 export const SimpleLayout: FC = (props) => {
   return (
@@ -50,11 +51,44 @@ body {
 `}
         </style>
       </head>
-      <body>
+      <body id="container">
+        <a href="#" id="print">
+          <button>Download as PDF</button>
+        </a>
         {props.children}
         <a class={"water-mark"} href="https://seewe.deno.dev">
           seewe.deno.dev
         </a>
+        {html`
+          <script>
+            document.addEventListener(
+              "DOMContentLoaded",
+              () => {
+                let printLink = document.getElementById("print")
+                let container = document.getElementById("container")
+
+                printLink.addEventListener(
+                  "click",
+                  (event) => {
+                    event.preventDefault()
+                    printLink.style.display = "none"
+                    window.print()
+                  },
+                  false,
+                )
+
+                container.addEventListener(
+                  "click",
+                  (event) => {
+                    printLink.style.display = "flex"
+                  },
+                  false,
+                )
+              },
+              false,
+            )
+          </script>
+        `}
       </body>
     </html>
   )
