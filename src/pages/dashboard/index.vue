@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onUnmounted, ref } from "vue"
 import MdCvsList from "./MdCvsList.vue"
-import { use_auth } from "@/stores/use_auth.store";
+import { use_auth } from "@/stores/use_auth.store"
 
 const loading_dots_count = ref(0)
 const auth = use_auth()
@@ -18,7 +18,8 @@ onUnmounted(stop_loading)
   </div>
   <Suspense :on-resolve="stop_loading">
     <template #fallback>
-      <t-h> {{ "loading" + ".".repeat(loading_dots_count) }}</t-h></template>
+      <t-h> {{ "loading" + ".".repeat(loading_dots_count) }}</t-h></template
+    >
     <MdCvsList />
   </Suspense>
   <div class="text-emerald-700 italic">

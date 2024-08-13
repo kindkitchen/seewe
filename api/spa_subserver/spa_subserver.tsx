@@ -39,8 +39,9 @@ export const spa_subserver = new OpenAPIHono()
     }
 
     const { html, md, ...rest } = cv
+    const link = config.VITE_API_URL + "/id/" + user_id
     return ctx.html(
-      <SimpleLayout>
+      <SimpleLayout link={link}>
         <div
           dangerouslySetInnerHTML={{
             __html: cv.html,
@@ -57,8 +58,9 @@ export const spa_subserver = new OpenAPIHono()
     )
 
     if (happy_path_result?.value) {
+      const link = config.VITE_API_URL + "/" + username + "/" + cv_name
       return ctx.html(
-        <SimpleLayout>
+        <SimpleLayout link={link}>
           <div
             dangerouslySetInnerHTML={{
               __html: happy_path_result.value.html,
@@ -78,15 +80,17 @@ export const spa_subserver = new OpenAPIHono()
     return ctx.notFound()
   })
   .get("/:username", async (ctx) => {
+    const username = ctx.req.param("username")
     const happy_path_result = await db._dev_md_cv.findByPrimaryIndex(
       "as_default_by_username",
-      ctx.req.param("username"),
+      username,
     )
     const happy = happy_path_result?.value
 
     if (happy) {
+      const link = config.VITE_API_URL + "/" + username
       return ctx.html(
-        <SimpleLayout>
+        <SimpleLayout link={link}>
           <div
             dangerouslySetInnerHTML={{
               __html: happy.html,
@@ -109,15 +113,14 @@ export const spa_subserver = new OpenAPIHono()
       )
 
       if (public_not_default_cv_list.length > 0) {
+        const link = config.VITE_API_URL + "/" + target_user.nik!
         return ctx.html(
-          <SimpleLayout>
+          <SimpleLayout link={link}>
             <h1>{target_user.nik || target_user.name}</h1>
             <ol>
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
-                  <a
-                    href={config.VITE_API_URL + "/" + target_user.nik! + "/" + (value.name || "")}
-                  >
+                  <a href={config.VITE_API_URL + "/" + target_user.nik! + "/" + (value.name || "")}>
                     <h4>
                       {"CV"}{" "}
                       {value.name ||

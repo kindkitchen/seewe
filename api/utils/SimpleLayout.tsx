@@ -47,18 +47,28 @@ body {
   right: 0;
 }
 
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
 \
 `}
         </style>
       </head>
       <body id="container">
-        <a href="#" id="print">
+        <a href="#" id="print" class={'no-print'}>
           <button>Download as PDF</button>
         </a>
         {props.children}
-        <a class={"water-mark"} href="https://seewe.deno.dev">
-          seewe.deno.dev
-        </a>
+        <div class={"water-mark"}>
+          {props.link && <a href={props.link}>See actual online version of this CV</a>}
+          <br />
+          <a href="https://seewe.deno.dev">Use our service at seewe.deno.dev</a>
+        </div>
         {html`
           <script>
             document.addEventListener(
