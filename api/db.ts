@@ -1,8 +1,14 @@
 import { collection, kvdex } from "jsr:@olli/kvdex"
+import { z } from "zod"
 import { MdCvDto } from "./dto/md-cv.dto.ts"
 import { UserDto } from "./dto/user.dto.ts"
 
 const kv = await Deno.openKv()
+const MdCvDtoWithPossibilityToUpdateUsernameCvNamePair = MdCvDto.omit({
+  as_regulary_by_name_username: true,
+}).merge(z.object({
+  as_regulary_by_name_username: z.array(z.string()).optional(),
+}))
 
 export const db = kvdex(kv, {
   _dev_users: collection(UserDto, {
@@ -12,7 +18,7 @@ export const db = kvdex(kv, {
       nik: "primary",
     },
   }),
-  _dev_md_cv: collection(MdCvDto, {
+  _dev_md_cv: collection(MdCvDtoWithPossibilityToUpdateUsernameCvNamePair, {
     indices: {
       _id: "primary",
       user_id: "secondary",
