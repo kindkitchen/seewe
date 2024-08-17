@@ -2,6 +2,7 @@ import type { FC } from "hono/jsx"
 import { html } from "hono/html"
 
 export const SimpleLayout: FC = (props) => {
+  const print_pdf = !!props.print_pfd
   return (
     <html>
       <head>
@@ -60,9 +61,11 @@ body {
         </style>
       </head>
       <body id="container">
-        <a href="#" id="print" class={'no-print'}>
-          <button>Download as PDF</button>
-        </a>
+        {print_pdf && (
+          <a href="#" id="print" class={"no-print"}>
+            <button>Download as PDF</button>
+          </a>
+        )}
         {props.children}
         <div class={"water-mark"}>
           {props.link && <a href={props.link}>See actual online version of this CV</a>}

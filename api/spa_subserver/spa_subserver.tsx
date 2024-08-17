@@ -115,7 +115,13 @@ export const spa_subserver = new OpenAPIHono()
       if (public_not_default_cv_list.length > 0) {
         const link = config.VITE_API_URL + "/" + target_user.nik!
         return ctx.html(
-          <SimpleLayout link={link}>
+          <SimpleLayout link={link} print_pdf={false}>
+            <p>{`This is ${target_user.nik || target_user.name} dashboard. Navigate to the site by this link:`}</p>
+            <a href="https://seewe.deno.dev/navigate/to/visit/site">
+              <h1>seewe.deno.dev</h1>
+            </a>
+            <p>Or continue explore profiles:</p>
+            <hr />
             <h1>{target_user.nik || target_user.name}</h1>
             <ol>
               {public_not_default_cv_list.map(({ value }, i) => (
