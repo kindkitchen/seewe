@@ -2,7 +2,7 @@ import type { FC } from "hono/jsx"
 import { html } from "hono/html"
 
 export const SimpleLayout: FC = (props) => {
-  const print_pdf = !!props.print_pfd
+  const print_pdf = props.print_pfd ?? true
   return (
     <html>
       <head>
