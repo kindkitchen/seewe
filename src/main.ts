@@ -15,6 +15,8 @@ import ToastService from "primevue/toastservice"
 import { DataLoaderPlugin } from "unplugin-vue-router/data-loaders"
 import { createApp } from "vue"
 
+localStorage.theme = 'light'
+
 const app = createApp(App)
   .use(createPinia())
   .use(DataLoaderPlugin, { router })
