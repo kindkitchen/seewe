@@ -1,35 +1,31 @@
 name: Deploy
 
-env:
-  CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
 on:
-  push:
-    branches: ["seewe"]
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Repository environment
+        type: environment
 jobs:
-  pr-or-deploy:
-    environment: production
-    name: "Push into ${{ github.head_ref || github.ref_name }}"
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: write
     steps:
-      - name: Clone repository
-        uses: actions/checkout@v4
+      - uses: extractions/setup-just@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.SUPER_GITHUB_TOKEN }}
-
-      - name: Install Deno
-        uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
-          deno-version: v1.x
+          deno-version: canary
 
       - name: Configure environment
         run: >
           echo """${{ secrets.DOTENV_FILE }}""" >> .env
 
-      - name: Install Node.js for ui building
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
@@ -37,16 +33,17 @@ jobs:
         run: npm run brickyard:disable
 
       - name: Build ui
-        run: "npm i && npm run build"
+        run: npm i && npm run build
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "seewe"
           exclude: |
+            e2e
             src
             .github
             .vscode
             .git
             .gitignore
-          entrypoint: "api/mod.ts"
+          entrypoint: api/mod.ts

@@ -9,5 +9,10 @@
   ],
   "tailwindCSS.experimental.classRegex": [
     "tw\\(['`\"]([^\\)]*)['\"`]\\)",
+  ],
+  "cSpell.words": [
+    "denoland",
+    "deployctl",
+    "seewe"
   ]
 }
