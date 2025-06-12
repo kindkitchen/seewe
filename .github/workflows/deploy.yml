@@ -31,7 +31,7 @@ jobs:
           node-version: lts/*
 
       - name: Turn off bricks
-        run: npm run brickyard:disable
+        run: just brickyard-disable
 
       - run: just build
 
