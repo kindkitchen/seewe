@@ -71,5 +71,9 @@ dev:
     just _dev_ui & 
     wait
 
+install:
+    npm i
+    cd api && deno install --allow-scripts
+
 build:
     npm run build
