@@ -28,6 +28,7 @@ jobs:
 
       - uses: actions/setup-node@v4
       - run: just brickyard-disable
+      - run: just install
       - run: just build
 
       - uses: denoland/deployctl@v1
