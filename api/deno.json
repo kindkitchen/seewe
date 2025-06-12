@@ -1,5 +1,5 @@
 {
-  "version": "3.0.3",
+  "version": "3.0.4",
   "tasks": {
     "start": "deno run -A mod.ts"
   },

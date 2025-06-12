@@ -70,3 +70,6 @@ dev:
     just _dev_api &
     just _dev_ui & 
     wait
+
+build:
+    npm run build
