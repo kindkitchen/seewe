@@ -1,6 +1,11 @@
-# v3.0.0
+# v3.0.1
 
-- fmt
-- update dependencies
-- justfile
-- refactor, upgrade and declare git/deploy integrations
+#### commands
+
+- `just brickyard-disable` _will generate mock default implementation for
+  brickyard interceptor_
+- `just dev` _run api and ui in parallel_
+- `just bump` will be:
+  1. build project to be sure that it is possible
+  2. ask and update version from VERSION.MD
+  3. format project

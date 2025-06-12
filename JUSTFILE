@@ -11,9 +11,10 @@ default:
 ls:
     just --choose
 
-bump: _pre_bump _bump
+bump: _pre_bump _bump fmt
 
 @_pre_bump:
+    npm run build
     echo
     echo  This version will be used: {{ BOLD + BLUE }}$(just v){{ NORMAL }}
     echo "{{ ITALIC }}(to change - modify first line in ./VERSION.MD){{ NORMAL }}"
