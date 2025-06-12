@@ -33,7 +33,7 @@ jobs:
       - name: Turn off bricks
         run: just brickyard-disable
 
-      - run: just build
+      - run: npm run build
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
