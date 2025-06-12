@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ModalCmp from "@/components/ModalCmp.vue"
-import { DocumentArrowUpIcon } from "@heroicons/vue/24/solid"
-import MainForm from "./MainForm.vue"
+import ModalCmp from "@/components/ModalCmp.vue";
+import { DocumentArrowUpIcon } from "@heroicons/vue/24/solid";
+import MainForm from "./MainForm.vue";
 
-const show = defineModel<boolean>()
+const show = defineModel<boolean>();
 </script>
 <template>
   <ModalCmp v-model="show">
@@ -16,15 +16,16 @@ const show = defineModel<boolean>()
     </template>
     <template #title> Upload CV </template>
     <template #message>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum optio amet quae, dignissimos
-      nostrum laudantium atque sapiente veniam sunt ab unde voluptatibus dicta dolor accusantium
-      eveniet sit asperiores fuga? Asperiores?
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum optio amet
+      quae, dignissimos nostrum laudantium atque sapiente veniam sunt ab unde
+      voluptatibus dicta dolor accusantium eveniet sit asperiores fuga?
+      Asperiores?
     </template>
     <template #buttons>
       <MainForm
         @done="
           (ok) => {
-            if (ok) show = false
+            if (ok) show = false;
           }
         "
       />

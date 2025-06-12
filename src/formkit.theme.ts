@@ -1,4 +1,4 @@
-import type { FormKitNode } from "@formkit/core"
+import type { FormKitNode } from "@formkit/core";
 
 /**
  * @privateRemarks
@@ -8,7 +8,7 @@ import type { FormKitNode } from "@formkit/core"
  * @checksum - 855d3164d35d243ad88989cff0312903d9397063e96ca1ce22879eb9d2542f8d
  * @variables - radius=rounded-none,accentColor=emerald,colorTemperature=stone,spacing=2.5,scale=lg,inputShadow=shadow-lg,baseColorShade=600,borderShadeLightMode=400,borderShadeDarkMode=500,inputMaxWidth=max-w-[20em],tagRadius=rounded-none,swatchRadius=rounded-none
  * @theme - regenesis
- **/
+ */
 
 /**
  * This is the theme function itself, it should be imported and used as the
@@ -24,28 +24,33 @@ import type { FormKitNode } from "@formkit/core"
  *   }
  * })
  * ```
- **/
-export function rootClasses(sectionName: string, node: FormKitNode): Record<string, boolean> {
-  const key = `${node.props.type}__${sectionName}`
-  const semanticKey = `formkit-${sectionName}`
-  const familyKey = node.props.family ? `family:${node.props.family}__${sectionName}` : ""
-  const memoKey = `${key}__${familyKey}`
+ */
+export function rootClasses(
+  sectionName: string,
+  node: FormKitNode,
+): Record<string, boolean> {
+  const key = `${node.props.type}__${sectionName}`;
+  const semanticKey = `formkit-${sectionName}`;
+  const familyKey = node.props.family
+    ? `family:${node.props.family}__${sectionName}`
+    : "";
+  const memoKey = `${key}__${familyKey}`;
   if (!(memoKey in classes)) {
-    const sectionClasses = classes[key] ?? globals[sectionName] ?? {}
-    sectionClasses[semanticKey] = true
+    const sectionClasses = classes[key] ?? globals[sectionName] ?? {};
+    sectionClasses[semanticKey] = true;
     if (familyKey in classes) {
-      classes[memoKey] = { ...classes[familyKey], ...sectionClasses }
+      classes[memoKey] = { ...classes[familyKey], ...sectionClasses };
     } else {
-      classes[memoKey] = sectionClasses
+      classes[memoKey] = sectionClasses;
     }
   }
-  return classes[memoKey] ?? { [semanticKey]: true }
+  return classes[memoKey] ?? { [semanticKey]: true };
 }
 
 /**
  * These classes have already been merged with globals using tailwind-merge
  * and are ready to be used directly in the theme.
- **/
+ */
 const classes: Record<string, Record<string, boolean>> = {
   "family:button__wrapper": {
     "group-data-[disabled=true]:grayscale": true,
@@ -860,7 +865,8 @@ const classes: Record<string, Record<string, boolean>> = {
     "[&::-webkit-slider-thumb]:focus:!ring-emerald-500": true,
     "[&::-webkit-slider-thumb]:focus:ring-offset-2": true,
     "[&::-webkit-slider-thumb]:shadow-lg": true,
-    "dark:[&::-webkit-slider-thumb]:group-data-[disabled]:!ring-stone-600": true,
+    "dark:[&::-webkit-slider-thumb]:group-data-[disabled]:!ring-stone-600":
+      true,
     "dark:[&::-webkit-slider-thumb]:focus:ring-offset-stone-700": true,
     "[&::-moz-range-track]:bg-stone-400/50": true,
     "[&::-moz-range-track]:h-[0.25]": true,
@@ -1297,18 +1303,25 @@ const classes: Record<string, Record<string, boolean>> = {
     "group-data-[inline]:shadow-lg": true,
     "group-data-[inline]:group-data-[disabled]:!cursor-not-allowed": true,
     "group-data-[inline]:group-data-[disabled]:!pointer-events-none": true,
-    "group-data-[inline]:[&:has([id^=swatches]:first-child:last-child)]:w-auto": true,
+    "group-data-[inline]:[&:has([id^=swatches]:first-child:last-child)]:w-auto":
+      true,
     "group-data-[inline]:[&:has([id^=swatches]:first-child:last-child)_[id^=swatches]>div]:w-[1.5em]":
       true,
     "dark:bg-stone-800": true,
     "dark:border-stone-500": true,
     "dark:group-data-[inline]:bg-transparent": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:!fixed": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:top-auto": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:max-w-none": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:bottom-0": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:left-0": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:rounded-none": true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:!fixed":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:top-auto":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:max-w-none":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:bottom-0":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:left-0":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:rounded-none":
+      true,
   },
   colorpicker__panelClose: {
     flex: true,
@@ -1632,13 +1645,20 @@ const classes: Record<string, Record<string, boolean>> = {
     "bg-white": true,
     "z-10": true,
     "dark:bg-stone-800": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:!fixed": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:top-auto": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:max-w-none": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:bottom-0": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:left-0": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:rounded-none": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:w-full": true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:!fixed":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:top-auto":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:max-w-none":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:bottom-0":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:left-0":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:rounded-none":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-[&:not([data-inline])]:w-full":
+      true,
   },
   datepicker__panelHeader: {
     grid: true,
@@ -1669,8 +1689,10 @@ const classes: Record<string, Record<string, boolean>> = {
     "[&_svg]:w-[1.25em]": true,
     "dark:text-stone-300": true,
     "dark:border-stone-600": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-data-[panel=time]/panel:col-start-3": true,
-    "[@media(max-width:431px)_and_(hover:none)]:group-data-[panel=month]/panel:col-start-3": true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-data-[panel=time]/panel:col-start-3":
+      true,
+    "[@media(max-width:431px)_and_(hover:none)]:group-data-[panel=month]/panel:col-start-3":
+      true,
   },
   datepicker__panel: {
     flex: true,
@@ -2433,7 +2455,8 @@ const classes: Record<string, Record<string, boolean>> = {
     "z-30": true,
     "-translate-x-1/2": true,
     "-translate-y-1/2": true,
-    "shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1),0_1px_2px_0_rgba(0,0,0,0.5)]": true,
+    "shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1),0_1px_2px_0_rgba(0,0,0,0.5)]":
+      true,
     "focus-visible:outline-0": true,
     "focus-visible:ring-2": true,
     "ring-emerald-600": true,
@@ -2685,18 +2708,27 @@ const classes: Record<string, Record<string, boolean>> = {
     "dark:aria-[pressed=true]:bg-emerald-600": true,
     "dark:aria-[pressed=true]:text-white": true,
     "group-[]/option:!rounded-none": true,
-    "group-data-[vertical=false]/options:group-first/option:!rounded-none": true,
+    "group-data-[vertical=false]/options:group-first/option:!rounded-none":
+      true,
     "group-data-[vertical=true]/options:group-first/option:!rounded-none": true,
-    "group-data-[vertical=false]/options:group-first/option:!rounded-tr-none": true,
-    "group-data-[vertical=false]/options:group-first/option:!rounded-br-none": true,
-    "group-data-[vertical=true]/options:group-first/option:!rounded-bl-none": true,
-    "group-data-[vertical=true]/options:group-first/option:!rounded-br-none": true,
+    "group-data-[vertical=false]/options:group-first/option:!rounded-tr-none":
+      true,
+    "group-data-[vertical=false]/options:group-first/option:!rounded-br-none":
+      true,
+    "group-data-[vertical=true]/options:group-first/option:!rounded-bl-none":
+      true,
+    "group-data-[vertical=true]/options:group-first/option:!rounded-br-none":
+      true,
     "group-data-[vertical=false]/options:group-last/option:!rounded-none": true,
     "group-data-[vertical=true]/options:group-last/option:!rounded-none": true,
-    "group-data-[vertical=false]/options:group-last/option:!rounded-tl-none": true,
-    "group-data-[vertical=false]/options:group-last/option:!rounded-bl-none": true,
-    "group-data-[vertical=true]/options:group-last/option:!rounded-tl-none": true,
-    "group-data-[vertical=true]/options:group-last/option:!rounded-tr-none": true,
+    "group-data-[vertical=false]/options:group-last/option:!rounded-tl-none":
+      true,
+    "group-data-[vertical=false]/options:group-last/option:!rounded-bl-none":
+      true,
+    "group-data-[vertical=true]/options:group-last/option:!rounded-tl-none":
+      true,
+    "group-data-[vertical=true]/options:group-last/option:!rounded-tr-none":
+      true,
     "group-data-[vertical=false]/options:group-[]/option:!border-r-0": true,
     "group-data-[vertical=false]/options:group-last/option:!border-r": true,
     "group-data-[vertical=false]/options:group-[]/option:aria-[pressed=true]:border-x-emerald-500":
@@ -3172,7 +3204,8 @@ const classes: Record<string, Record<string, boolean>> = {
     "group-data-[tab-style=progress]/wrapper:my-7": true,
     "group-data-[tab-style=progress]/wrapper:justify-around": true,
     "group-data-[tab-style=progress]/wrapper:overflow-visible": true,
-    "group-data-[tab-style=progress]/wrapper:group-data-[hide-labels=true]/wrapper:mb-4": true,
+    "group-data-[tab-style=progress]/wrapper:group-data-[hide-labels=true]/wrapper:mb-4":
+      true,
   },
   "multi-step__tab": {
     "group/tab": true,
@@ -3191,17 +3224,21 @@ const classes: Record<string, Record<string, boolean>> = {
     "group-data-[tab-style=tab]/wrapper:border-b": true,
     "group-data-[tab-style=tab]/wrapper:border-stone-300": true,
     "group-data-[tab-style=tab]/wrapper:last:border-r-0": true,
-    "group-data-[tab-style=tab]/wrapper:shadow-[inset_0_-0.5em_0.5em_-0.5em_rgba(0,0,0,0.1)]": true,
+    "group-data-[tab-style=tab]/wrapper:shadow-[inset_0_-0.5em_0.5em_-0.5em_rgba(0,0,0,0.1)]":
+      true,
     "group-data-[tab-style=tab]/wrapper:data-[active=true]:bg-white": true,
     "group-data-[tab-style=tab]/wrapper:data-[active=true]:font-bold": true,
-    "group-data-[tab-style=tab]/wrapper:data-[active=true]:border-b-white": true,
+    "group-data-[tab-style=tab]/wrapper:data-[active=true]:border-b-white":
+      true,
     "group-data-[tab-style=tab]/wrapper:data-[active=true]:z-10": true,
     "group-data-[tab-style=tab]/wrapper:data-[active=true]:shadow-[0_0_0.5em_0_rgba(0,0,0,0.1)]":
       true,
     "dark:group-data-[tab-style=tab]/wrapper:text-stone-300": true,
     "dark:group-data-[tab-style=tab]/wrapper:bg-stone-950/20": true,
-    "dark:group-data-[tab-style=tab]/wrapper:data-[active=true]:bg-transparent": true,
-    "dark:group-data-[tab-style=tab]/wrapper:data-[active=true]:border-b-transparent": true,
+    "dark:group-data-[tab-style=tab]/wrapper:data-[active=true]:bg-transparent":
+      true,
+    "dark:group-data-[tab-style=tab]/wrapper:data-[active=true]:border-b-transparent":
+      true,
     "dark:group-data-[tab-style=tab]/wrapper:border-stone-600": true,
     "group-data-[tab-style=progress]/wrapper:flex": true,
     "group-data-[tab-style=progress]/wrapper:flex-col": true,
@@ -3218,14 +3255,16 @@ const classes: Record<string, Record<string, boolean>> = {
     "group-data-[tab-style=progress]/wrapper:before:rounded-full": true,
     "group-data-[tab-style=progress]/wrapper:before:bg-white": true,
     "group-data-[tab-style=progress]/wrapper:before:z-10": true,
-    "dark:group-data-[tab-style=progress]/wrapper:before:border-stone-600": true,
+    "dark:group-data-[tab-style=progress]/wrapper:before:border-stone-600":
+      true,
     "dark:group-data-[tab-style=progress]/wrapper:before:bg-stone-950": true,
     "group-data-[tab-style=progress]/wrapper:after:block": true,
     "group-data-[tab-style=progress]/wrapper:after:h-1": true,
     "group-data-[tab-style=progress]/wrapper:after:w-full": true,
     "group-data-[tab-style=progress]/wrapper:after:absolute": true,
     "group-data-[tab-style=progress]/wrapper:after:top-[0.5em]": true,
-    "group-data-[tab-style=progress]/wrapper:after:left-[calc(50%+0.5em)]": true,
+    "group-data-[tab-style=progress]/wrapper:after:left-[calc(50%+0.5em)]":
+      true,
     "group-data-[tab-style=progress]/wrapper:after:bg-stone-300": true,
     "group-data-[tab-style=progress]/wrapper:data-[valid=true]:data-[visited=true]:after:bg-emerald-600":
       true,
@@ -3301,12 +3340,12 @@ const classes: Record<string, Record<string, boolean>> = {
   step__stepNext: {
     "ml-auto": true,
   },
-}
+};
 
 /**
  * Globals are merged prior to generating this file — these are included for
  * any other non-matching inputs.
- **/
+ */
 const globals: Record<string, Record<string, boolean>> = {
   outer: {
     group: true,
@@ -3416,4 +3455,4 @@ const globals: Record<string, Record<string, boolean>> = {
     "text-stone-700": true,
     "dark:text-stone-300": true,
   },
-}
+};

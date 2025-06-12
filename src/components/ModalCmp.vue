@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue"
-import { InformationCircleIcon } from "@heroicons/vue/24/outline"
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue";
+import { InformationCircleIcon } from "@heroicons/vue/24/outline";
 
-const open = defineModel<boolean>()
+const open = defineModel<boolean>();
 </script>
 <template>
   <TransitionRoot as="template" :show="open">
@@ -20,9 +26,7 @@ const open = defineModel<boolean>()
       </TransitionChild>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div
-          class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
-        >
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <TransitionChild
             as="template"
             enter="ease-out duration-300"
@@ -38,14 +42,18 @@ const open = defineModel<boolean>()
               <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                   <slot name="icon">
-                    <div
-                      class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
-                    >
-                      <InformationCircleIcon class="h-6 w-6 text-yellow-600" aria-hidden="true" />
+                    <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <InformationCircleIcon
+                        class="h-6 w-6 text-yellow-600"
+                        aria-hidden="true"
+                      />
                     </div>
                   </slot>
                   <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">
+                    <DialogTitle
+                      as="h3"
+                      class="text-base font-semibold leading-6 text-gray-900"
+                    >
                       <slot name="title"></slot>
                     </DialogTitle>
                     <div class="mt-2">

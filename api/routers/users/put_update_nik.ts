@@ -2,24 +2,17 @@ import { createRoute } from "@hono/zod-openapi"
 import { authenticated_only_wrapper } from "../../middlewares/authenticated_only.wrapper.ts"
 import { z } from "zod"
 
-export const post_add_nik = authenticated_only_wrapper(createRoute({
-  method: "post",
-  path: "/nik",
+export const put_update_nik = authenticated_only_wrapper(createRoute({
+  method: "put",
+  path: "/nik/:nik",
   request: {
-    body: {
-      required: true,
-      content: {
-        "application/json": {
-          schema: z.object({
-            nik: z.string().regex(/[\w_-]{3,32}/),
-          }),
-        },
-      },
-    },
+    params: z.object({
+      nik: z.string().regex(/[\w_-]{3,32}/),
+    }),
   },
   responses: {
     200: {
-      description: "Successfully added nik to user to extend his possibilities",
+      description: "Successfully updated nik for user",
       content: {
         "application/json": {
           schema: z.object({

@@ -1,7 +1,7 @@
 <script lang="ts">
-import Aura from "@primevue/themes/aura"
-import PrimeVue from "primevue/config"
-import ToastService from "primevue/toastservice"
+import Aura from "@primevue/themes/aura";
+import PrimeVue from "primevue/config";
+import ToastService from "primevue/toastservice";
 
 export const primePlugin = [
   PrimeVue,
@@ -11,11 +11,11 @@ export const primePlugin = [
       preset: Aura,
     },
   },
-] as const
+] as const;
 
-export const ToastServicePlugin = ToastService
+export const ToastServicePlugin = ToastService;
 
-export default {}
+export default {};
 </script>
 
 <style>

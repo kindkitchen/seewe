@@ -1,1 +1,1 @@
-export type ViewerRole = "guest" | "user" | "owner"
+export type ViewerRole = "guest" | "user" | "owner";

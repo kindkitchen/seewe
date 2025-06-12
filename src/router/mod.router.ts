@@ -1,6 +1,6 @@
-import { use_auth } from "@/stores/use_auth.store"
-import { createRouter, createWebHistory } from "vue-router"
-import { routes } from "vue-router/auto-routes"
+import { use_auth } from "@/stores/use_auth.store";
+import { createRouter, createWebHistory } from "vue-router";
+import { routes } from "vue-router/auto-routes";
 
 export const router = createRouter({
   linkActiveClass: "link-active",
@@ -13,13 +13,15 @@ export const router = createRouter({
       redirect: "/home",
     },
   ],
-})
+});
 
 router.beforeEach((to, from) => {
   if (to.meta.private && !use_auth().user) {
-    return "/home"
+    return "/home";
   }
-})
+});
 
 import.meta.hot &&
-  import("vue-router/auto-routes").then(({ handleHotUpdate }) => handleHotUpdate(router))
+  import("vue-router/auto-routes").then(({ handleHotUpdate }) =>
+    handleHotUpdate(router)
+  );

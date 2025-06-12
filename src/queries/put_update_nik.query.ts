@@ -1,11 +1,11 @@
 import { my_fetch } from "@/my_fetch";
 import { use_auth } from "@/stores/use_auth.store";
 
-export const post_add_nik = async (nik: string) => {
+export const put_update_nik = async (nik: string) => {
   const res = await my_fetch({
-    method: "post",
-    path: "/v1/users/nik",
-    body: {
+    method: "put",
+    path: "/v1/users/nik/:nik",
+    params: {
       nik,
     },
     res_as: "application/json",

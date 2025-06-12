@@ -1,21 +1,21 @@
 export const unique_incremental_timestamp: () => number = (() => {
-  let fixator = 0
-  let prev = 0
+  let fixator = 0;
+  let prev = 0;
   return () => {
-    const now = Date.now()
-    let random = now
+    const now = Date.now();
+    let random = now;
     if (now === prev) {
-      fixator++
-      random += fixator
+      fixator++;
+      random += fixator;
     } else if (prev > now) {
-      random = ++prev
-      fixator = prev - now
+      random = ++prev;
+      fixator = prev - now;
     } else {
-      fixator = 0
+      fixator = 0;
     }
 
-    prev = random
+    prev = random;
 
-    return random
-  }
-})()
+    return random;
+  };
+})();

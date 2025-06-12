@@ -4,7 +4,7 @@ export const UserDto = z.object({
   _id: z.number().int().optional(),
   email: z.string().email(),
   name: z.string().optional(),
-  nik: z.string().min(3).max(16).optional(),
+  nik: z.string().min(3).max(32).optional(),
 })
 
 export const UserEntityDto = UserDto.pick({

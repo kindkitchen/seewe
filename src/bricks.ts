@@ -1,6 +1,6 @@
-import { Brickyard } from "@nik-kita/brickyard"
-import { interceptor } from "./bricks.interceptor"
-import GoogleSignInPlugin, { useCodeClient } from "vue3-google-signin"
+import { Brickyard } from "@nik-kita/brickyard";
+import { interceptor } from "./bricks.interceptor";
+import GoogleSignInPlugin, { useCodeClient } from "vue3-google-signin";
 
 export const bricks = Brickyard.init(interceptor).enroll({
   google_sign_in_plugin: () =>
@@ -11,4 +11,4 @@ export const bricks = Brickyard.init(interceptor).enroll({
       },
     ] as const,
   useCodeClient,
-})
+});

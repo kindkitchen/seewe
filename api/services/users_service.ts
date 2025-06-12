@@ -117,9 +117,67 @@ const add_nik = async (nik: string, user: UserEntity) => {
     data: null,
   } as const
 }
+const update_nik = async (nik: string, user: UserEntity) => {
+  const prev_nik = user.nik
+  if (!prev_nik) {
+    return {
+      ok: false,
+      data: "User should create nik and then update it",
+    } as const
+  }
+
+  const already = await db._dev_users.findByPrimaryIndex("nik", nik)
+
+  if (already?.value) {
+    return {
+      ok: false,
+      data: "This nik is already taken",
+    } as const
+  }
+
+  const db_res = await db._dev_users.updateByPrimaryIndex("_id", user._id, {
+    nik,
+  })
+
+  if (db_res.ok) {
+    void await Promise.all([
+      db._dev_md_cv.updateMany({
+        as_default_by_username: nik,
+      }, {
+        filter: ({ value }) => {
+          return value.user_id === user._id &&
+            value.as_default_by_username === prev_nik
+        },
+      }),
+      db._dev_md_cv.updateMany({
+        as_regulary_by_name_username: [nik],
+      }, {
+        filter: ({ value }) => {
+          return value.user_id === user._id &&
+            value.as_regulary_by_name_username?.[0] === prev_nik
+        },
+        strategy: "merge",
+        mergeOptions: {
+          arrays: "merge",
+        },
+      }),
+    ])
+
+    return {
+      ok: true,
+      data: null,
+    } as const
+  }
+
+  return {
+    ok: false,
+    data: null,
+  } as const
+}
 
 export const users_service = {
   add_nik,
+  update_nik,
   find_by_nik: (nik: string) => find_by("nik", nik),
   find_by_id: (_id: number) => find_by("_id", _id),
   find_by_email: (email: string) => find_by("email", email),

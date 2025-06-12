@@ -6,510 +6,552 @@
 export interface paths {
   "/v1/content/md-example/:name": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     get: {
       parameters: {
-        query?: never
-        header?: never
+        query?: never;
+        header?: never;
         path: {
-          name: string
-        }
-        cookie?: never
-      }
-      requestBody?: never
+          name: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description Return markdown string of example CV for some cool person */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
-            "text/plain": unknown
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+            "text/plain": unknown;
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/content/md-example": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     get: {
       parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description Return list of example CVs */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               examples: {
-                name: string
-                md_str: string
-              }[]
-            }
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+                name: string;
+                md_str: string;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/auth/sign-in": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     post: {
       parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
       requestBody: {
         content: {
           "application/json": {
-            client_id: string
-            code: string
+            client_id: string;
+            code: string;
             /** @enum {string} */
-            auth_provider: "google"
-          }
-        }
-      }
+            auth_provider: "google";
+          };
+        };
+      };
       responses: {
         /** @description Success user upsert (auto sign-in/up) return fresh jwt token pair. */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              access_token: string
-              refresh_token: string
+              access_token: string;
+              refresh_token: string;
               /** @enum {string} */
-              token_type: "Bearer"
-              _id: number
+              token_type: "Bearer";
+              _id: number;
               /** Format: email */
-              email: string
-              name?: string
-              nik?: string
-            }
-          }
-        }
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+              email: string;
+              name?: string;
+              nik?: string;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/auth/refresh": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     post: {
       parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
       requestBody: {
         content: {
           "application/json": {
-            refresh_token: string
-          }
-        }
-      }
+            refresh_token: string;
+          };
+        };
+      };
       responses: {
         /** @description Success refresh token */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              access_token: string
-              refresh_token: string
+              access_token: string;
+              refresh_token: string;
               /** @enum {string} */
-              token_type: "Bearer"
-              _id: number
+              token_type: "Bearer";
+              _id: number;
               /** Format: email */
-              email: string
-              name?: string
-              nik?: string
-            }
-          }
-        }
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+              email: string;
+              name?: string;
+              nik?: string;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/auth/logout": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     post: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
+          authorization?: string;
+        };
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description Success logout (no content) */
         204: {
           headers: {
-            [name: string]: unknown
-          }
-          content?: never
-        }
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/mdcv": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     get: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
+          authorization?: string;
+        };
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description All CVs for owner */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
               items: {
-                user_id: number
-                md: string
-                html: string
-                is_published: boolean
-                name?: string
-                as_default_by_user_id?: number
-                as_default_by_username?: string
-                as_regulary_by_name_username?: string[]
-                _id: number
-              }[]
-            }
-          }
-        }
-      }
-    }
-    put?: never
+                user_id: number;
+                md: string;
+                html: string;
+                is_published: boolean;
+                name?: string;
+                as_default_by_user_id?: number;
+                as_default_by_username?: string;
+                as_regulary_by_name_username?: string[];
+                _id: number;
+              }[];
+            };
+          };
+        };
+      };
+    };
+    put?: never;
     post: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
-        path?: never
-        cookie?: never
-      }
+          authorization?: string;
+        };
+        path?: never;
+        cookie?: never;
+      };
       requestBody: {
         content: {
           "application/json": {
-            md: string
-            html: string
-            is_published: boolean
-            name?: string
-            make_default: boolean
-          }
-        }
-      }
+            md: string;
+            html: string;
+            is_published: boolean;
+            name?: string;
+            make_default: boolean;
+          };
+        };
+      };
       responses: {
         /** @description CV created */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              _id: number
-            }
-          }
-        }
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+              _id: number;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/mdcv/:mdcv_id": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     get: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
+          authorization?: string;
+        };
         path: {
-          mdcv_id: number | null
-        }
-        cookie?: never
-      }
-      requestBody?: never
+          mdcv_id: number | null;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description CV for owner */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              user_id: number
-              md: string
-              html: string
-              is_published: boolean
-              name?: string
-              as_default_by_user_id?: number
-              as_default_by_username?: string
-              as_regulary_by_name_username?: string[]
-              _id: number
-            }
-          }
-        }
-      }
-    }
+              user_id: number;
+              md: string;
+              html: string;
+              is_published: boolean;
+              name?: string;
+              as_default_by_user_id?: number;
+              as_default_by_username?: string;
+              as_regulary_by_name_username?: string[];
+              _id: number;
+            };
+          };
+        };
+      };
+    };
     put: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
+          authorization?: string;
+        };
         path: {
-          mdcv_id: number | null
-        }
-        cookie?: never
-      }
+          mdcv_id: number | null;
+        };
+        cookie?: never;
+      };
       requestBody: {
         content: {
           "application/json": {
-            md?: string
-            html?: string
-            is_published?: boolean
-            name?: string
-            make_default?: boolean
-          }
-        }
-      }
+            md?: string;
+            html?: string;
+            is_published?: boolean;
+            name?: string;
+            make_default?: boolean;
+          };
+        };
+      };
       responses: {
         /** @description CV updated */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              ok: boolean
-              data: unknown | string | unknown
-            }
-          }
-        }
-      }
-    }
-    post?: never
+              ok: boolean;
+              data: unknown | string | unknown;
+            };
+          };
+        };
+      };
+    };
+    post?: never;
     delete: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
+          authorization?: string;
+        };
         path: {
-          mdcv_id: number | null
-        }
-        cookie?: never
-      }
-      requestBody?: never
+          mdcv_id: number | null;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description CV deleted (no content) */
         204: {
           headers: {
-            [name: string]: unknown
-          }
-          content?: never
-        }
-      }
-    }
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/users/nik": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     post: {
       parameters: {
-        query?: never
+        query?: never;
         header?: {
-          authorization?: string
-        }
-        path?: never
-        cookie?: never
-      }
+          authorization?: string;
+        };
+        path?: never;
+        cookie?: never;
+      };
       requestBody: {
         content: {
           "application/json": {
-            nik: string
-          }
-        }
-      }
+            nik: string;
+          };
+        };
+      };
       responses: {
         /** @description Successfully added nik to user to extend his possibilities */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              ok: boolean
-              data: unknown | string | unknown
-            }
-          }
-        }
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+              ok: boolean;
+              data: unknown | string | unknown;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/users/nik/:nik": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put: {
+      parameters: {
+        query?: never;
+        header?: {
+          authorization?: string;
+        };
+        path: {
+          nik: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successfully updated nik for user */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": {
+              ok: boolean;
+              data: unknown | string | unknown;
+            };
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/hello-world": {
     parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     get: {
       parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
       responses: {
         /** @description Text response when "Accept" is not specified as "json" */
         200: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
-            "text/html": string
-          }
-        }
+            "text/html": string;
+          };
+        };
         /** @description When "Accept: application/json" is sent, it returns a JSON object */
         201: {
           headers: {
-            [name: string]: unknown
-          }
+            [name: string]: unknown;
+          };
           content: {
             "application/json": {
-              message: string
-            }
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+              message: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: never
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+  schemas: never;
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
-export type $defs = Record<string, never>
-export type operations = Record<string, never>
+export type $defs = Record<string, never>;
+export type operations = Record<string, never>;

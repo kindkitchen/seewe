@@ -1,7 +1,10 @@
 {
-  "version": "1.1.0",
+  "version": "3.0.1",
+  "tasks": {
+    "start": "deno run -A mod.ts"
+  },
   "imports": {
-    "@nik-kita/brickyard": "jsr:@nik-kita/brickyard@^0.3.1",
+    "@nik-kita/brickyard": "jsr:@nik-kita/brickyard@0.4.3",
     "@hono/swagger-ui": "npm:@hono/swagger-ui@^0.4.0",
     "@hono/zod-openapi": "npm:@hono/zod-openapi@^0.15.1",
     "@olli/kvdex": "jsr:@olli/kvdex@^1.0.2",
@@ -16,6 +19,9 @@
     "semiColons": false,
     "singleQuote": false
   },
+  "unstable": [
+    "kv"
+  ],
   "compilerOptions": {
     "jsx": "precompile",
     "jsxImportSource": "hono/jsx",
