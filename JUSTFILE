@@ -56,3 +56,16 @@ gen-types:
 brickyard-disable:
     cp src/bricks.interceptor.example.ts src/bricks.interceptor.ts
     cp api/bricks.interceptor.example.ts api/bricks.interceptor.ts
+
+_dev_api:
+    cd api && deno task start
+
+_dev_ui:
+    npm run dev
+
+[script('bash')]
+dev:
+    trap 'kill 0' SIGINT;
+    just _dev_api &
+    just _dev_ui & 
+    wait

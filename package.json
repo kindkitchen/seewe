@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "playwright test",
-    "build-only": "npm run brickyard:disable && vite build",
+    "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "npx eslint . --fix --ignore-path .gitignore && cd api && deno fmt",
     "see-bundle": "npx vite-bundle-visualizer"
