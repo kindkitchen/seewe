@@ -68,38 +68,40 @@ body {
         )}
         {props.children}
         <div class={"water-mark"}>
-          {props.link && <a href={props.link}>See actual online version of this CV</a>}
+          {props.link && (
+            <a href={props.link}>See actual online version of this CV</a>
+          )}
           <br />
           <a href="https://seewe.deno.dev">Use our service at seewe.deno.dev</a>
         </div>
         {html`
           <script>
-            document.addEventListener(
-              "DOMContentLoaded",
-              () => {
-                let printLink = document.getElementById("print")
-                let container = document.getElementById("container")
+          document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+              let printLink = document.getElementById("print")
+              let container = document.getElementById("container")
 
-                printLink.addEventListener(
-                  "click",
-                  (event) => {
-                    event.preventDefault()
-                    printLink.style.display = "none"
-                    window.print()
-                  },
-                  false,
-                )
+              printLink.addEventListener(
+                "click",
+                (event) => {
+                  event.preventDefault()
+                  printLink.style.display = "none"
+                  window.print()
+                },
+                false,
+              )
 
-                container.addEventListener(
-                  "click",
-                  (event) => {
-                    printLink.style.display = "flex"
-                  },
-                  false,
-                )
-              },
-              false,
-            )
+              container.addEventListener(
+                "click",
+                (event) => {
+                  printLink.style.display = "flex"
+                },
+                false,
+              )
+            },
+            false,
+          )
           </script>
         `}
       </body>

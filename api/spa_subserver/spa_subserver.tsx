@@ -16,7 +16,10 @@ export const spa_subserver = new OpenAPIHono()
     }
     const user_id = validation.data
 
-    const db_result = await db._dev_md_cv.findByPrimaryIndex("as_default_by_user_id", user_id)
+    const db_result = await db._dev_md_cv.findByPrimaryIndex(
+      "as_default_by_user_id",
+      user_id,
+    )
     const cv = db_result?.value
 
     // cv not found
@@ -65,7 +68,8 @@ export const spa_subserver = new OpenAPIHono()
             dangerouslySetInnerHTML={{
               __html: happy_path_result.value.html,
             }}
-          ></div>
+          >
+          </div>
         </SimpleLayout>,
       )
     }
@@ -100,23 +104,30 @@ export const spa_subserver = new OpenAPIHono()
       )
     }
 
-    const db_user_res = await users_service.find_by_nik(ctx.req.param("username"))
+    const db_user_res = await users_service.find_by_nik(
+      ctx.req.param("username"),
+    )
     const target_user = db_user_res.data
 
     if (target_user) {
-      const { result: public_not_default_cv_list } = await db._dev_md_cv.findBySecondaryIndex(
-        "user_id",
-        target_user._id,
-        {
-          filter: ({ value }) => value.is_published,
-        },
-      )
+      const { result: public_not_default_cv_list } = await db._dev_md_cv
+        .findBySecondaryIndex(
+          "user_id",
+          target_user._id,
+          {
+            filter: ({ value }) => value.is_published,
+          },
+        )
 
       if (public_not_default_cv_list.length > 0) {
         const link = config.VITE_API_URL + "/" + target_user.nik!
         return ctx.html(
           <SimpleLayout link={link} print_pdf={false}>
-            <p>{`This is ${target_user.nik || target_user.name} dashboard. Navigate to the site by this link:`}</p>
+            <p>
+              {`This is ${
+                target_user.nik || target_user.name
+              } dashboard. Navigate to the site by this link:`}
+            </p>
             <a href="https://seewe.deno.dev/navigate/to/visit/site">
               <h1>seewe.deno.dev</h1>
             </a>
@@ -126,10 +137,12 @@ export const spa_subserver = new OpenAPIHono()
             <ol>
               {public_not_default_cv_list.map(({ value }, i) => (
                 <li key={value._id!}>
-                  <a href={config.VITE_API_URL + "/" + target_user.nik! + "/" + (value.name || "")}>
+                  <a
+                    href={config.VITE_API_URL + "/" + target_user.nik! + "/" +
+                      (value.name || "")}
+                  >
                     <h4>
-                      {"CV"}{" "}
-                      {value.name ||
+                      {"CV"} {value.name ||
                         value.as_regulary_by_name_username?.join("/") ||
                         `no. ${value._id!}`}
                     </h4>

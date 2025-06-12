@@ -8,11 +8,12 @@
     "src"
   ],
   "tailwindCSS.experimental.classRegex": [
-    "tw\\(['`\"]([^\\)]*)['\"`]\\)",
+    "tw\\(['`\"]([^\\)]*)['\"`]\\)"
   ],
   "cSpell.words": [
     "denoland",
     "deployctl",
+    "justfile",
     "seewe"
   ]
 }

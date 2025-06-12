@@ -2,9 +2,13 @@ set unstable := true
 
 export JSON_FILES_WITH_VERSION := 'package.json api/deno.json'
 
+alias format := fmt
 alias v := version
 
-@default:
+default:
+    just fmt
+
+ls:
     just --choose
 
 bump: _pre_bump _bump
@@ -31,7 +35,7 @@ _bump:
 
 [script('bash')]
 version:
-    head -n 1 ./VERSION.md | awk '{               
+    head -n 1 ./VERSION.MD | awk '{               
         sub(/#*\s*v?/, "");
         sub(/\s+.*/, "");
         print
@@ -40,3 +44,15 @@ version:
 fmt:
     just --fmt --unstable
     deno fmt --unstable-component --unstable-sql
+    cd api && deno fmt
+
+[script('bash')]
+gen-types:
+    curl http://localhost:3000/v1/json > api_version_one.json
+    npx openapi-typescript@latest ./api_version_one.json -o ./src/types/api_version_one.ts
+    just fmt
+
+[script('bash')]
+brickyard-disable:
+    cp src/bricks.interceptor.example.ts src/bricks.interceptor.ts
+    cp api/bricks.interceptor.example.ts api/bricks.interceptor.ts

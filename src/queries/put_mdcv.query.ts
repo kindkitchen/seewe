@@ -1,5 +1,5 @@
-import { my_fetch } from "@/my_fetch"
-import type { v1_ } from "@/types/v1_.namespace"
+import { my_fetch } from "@/my_fetch";
+import type { v1_ } from "@/types/v1_.namespace";
 
 export const put_mdcv_query = async (
   _id: number,
@@ -13,7 +13,7 @@ export const put_mdcv_query = async (
       mdcv_id: _id,
     },
     body: payload,
-  })
+  });
 
-  return res
-}
+  return res;
+};

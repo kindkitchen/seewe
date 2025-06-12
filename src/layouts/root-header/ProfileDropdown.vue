@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { post_logout_query } from "@/queries/post_logout.query"
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue"
-import { WrenchScrewdriverIcon } from "@heroicons/vue/24/outline"
-import { use_auth } from "@/stores/use_auth.store"
+import { post_logout_query } from "@/queries/post_logout.query";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { WrenchScrewdriverIcon } from "@heroicons/vue/24/outline";
+import { use_auth } from "@/stores/use_auth.store";
 
-const auth = use_auth()
+const auth = use_auth();
 const profile_navigation = [
   {
     name: "Your Dashboard",
@@ -14,7 +14,7 @@ const profile_navigation = [
     name: "Settings",
     href: "/settings",
   },
-]
+];
 </script>
 
 <template>
@@ -35,8 +35,14 @@ const profile_navigation = [
       leave-from-class="transform opacity-100 scale-100"
       leave-to-class="transform opacity-0 scale-95"
     >
-      <MenuItems class="absolute right-0 z-20 w-fit bg-transparent items-end flex flex-col">
-        <MenuItem as="template" v-for="item in profile_navigation" :key="item.name">
+      <MenuItems
+        class="absolute right-0 z-20 w-fit bg-transparent items-end flex flex-col"
+      >
+        <MenuItem
+          as="template"
+          v-for="item in profile_navigation"
+          :key="item.name"
+        >
           <t-a :to="item.href">{{ item.name }}</t-a>
         </MenuItem>
         <MenuItem as="template">

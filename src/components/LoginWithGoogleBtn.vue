@@ -2,28 +2,28 @@
 import {
   type ImplicitFlowErrorResponse,
   type ImplicitFlowSuccessResponse,
-} from "vue3-google-signin"
-import { bricks } from "@/bricks"
+} from "vue3-google-signin";
+import { bricks } from "@/bricks";
 
-const useCodeClient = bricks.useCodeClient
+const useCodeClient = bricks.useCodeClient;
 const emit = defineEmits<{
-  success: [res: ImplicitFlowSuccessResponse]
-  fail: [res: ImplicitFlowErrorResponse]
-}>()
+  success: [res: ImplicitFlowSuccessResponse];
+  fail: [res: ImplicitFlowErrorResponse];
+}>();
 
 const handleOnSuccess = async (response: ImplicitFlowSuccessResponse) => {
-  emit("success", response)
-}
+  emit("success", response);
+};
 
 const handleOnError = (errorResponse: ImplicitFlowErrorResponse) => {
-  console.error(errorResponse)
-  emit("fail", errorResponse)
-}
+  console.error(errorResponse);
+  emit("fail", errorResponse);
+};
 
 const { isReady, login } = useCodeClient({
   onSuccess: handleOnSuccess,
   onError: handleOnError,
-})
+});
 </script>
 
 <template>

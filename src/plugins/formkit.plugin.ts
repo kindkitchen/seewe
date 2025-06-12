@@ -1,8 +1,8 @@
-import { rootClasses } from "@/formkit.theme"
-import { tw } from "@/utils/tw.util"
-import { genesisIcons } from "@formkit/icons"
-import { generateClasses } from "@formkit/themes"
-import { defaultConfig, plugin } from "@formkit/vue"
+import { rootClasses } from "@/formkit.theme";
+import { tw } from "@/utils/tw.util";
+import { genesisIcons } from "@formkit/icons";
+import { generateClasses } from "@formkit/themes";
+import { defaultConfig, plugin } from "@formkit/vue";
 
 const input = tw("active:border-transparent py-[5px] text-nowrap", {
   "dark:text-emerald-100": true,
@@ -11,7 +11,7 @@ const input = tw("active:border-transparent py-[5px] text-nowrap", {
   "text-emerald-950": true,
   "bg-emerald-50": true,
   "hover:bg-emerald-100": true,
-})
+});
 
 export const fkPlugin = [
   plugin,
@@ -36,4 +36,4 @@ export const fkPlugin = [
       ...genesisIcons,
     },
   }),
-] as const
+] as const;

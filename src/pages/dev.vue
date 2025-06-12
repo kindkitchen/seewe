@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Button from "primevue/button"
-import UploadMdCvForm from "../forms/upload_mdcv/UploadMdCvForm.vue"
-import { ref } from "vue"
-import BlurGuardCmp from "@/components/BlurGuardCmp.vue"
-import { FormKit } from "@formkit/vue"
+import Button from "primevue/button";
+import UploadMdCvForm from "../forms/upload_mdcv/UploadMdCvForm.vue";
+import { ref } from "vue";
+import BlurGuardCmp from "@/components/BlurGuardCmp.vue";
+import { FormKit } from "@formkit/vue";
 
-const is_open = ref(false)
+const is_open = ref(false);
 </script>
 
 <template>

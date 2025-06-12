@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { use_auth } from "@/stores/use_auth.store"
-import { Disclosure } from "@headlessui/vue"
-import DesktopNav from "./DesktopNav.vue"
-import MobileNav from "./MobileNav.vue"
-import ProfileDropdown from "./ProfileDropdown.vue"
-import { post_sign_in } from "@/queries/post_sign_in.query"
-import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue"
-import type { RouterLinkProps, RouterOptions } from "vue-router"
+import { use_auth } from "@/stores/use_auth.store";
+import { Disclosure } from "@headlessui/vue";
+import DesktopNav from "./DesktopNav.vue";
+import MobileNav from "./MobileNav.vue";
+import ProfileDropdown from "./ProfileDropdown.vue";
+import { post_sign_in } from "@/queries/post_sign_in.query";
+import LoginWithGoogleBtn from "@/components/LoginWithGoogleBtn.vue";
+import type { RouterLinkProps, RouterOptions } from "vue-router";
 
-const auth = use_auth()
+const auth = use_auth();
 const common_navigation = [
   {
     name: "Home",
@@ -18,11 +18,15 @@ const common_navigation = [
     name: "Markdown CV",
     href: "/md-cv",
   },
-] satisfies { href: RouterLinkProps["to"]; name: string }[]
+] satisfies { href: RouterLinkProps["to"]; name: string }[];
 </script>
 
 <template>
-  <Disclosure as="nav" class="bg-emerald-600 dark:bg-emerald-950" v-slot="{ open }">
+  <Disclosure
+    as="nav"
+    class="bg-emerald-600 dark:bg-emerald-950"
+    v-slot="{ open }"
+  >
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex h-16 items-center justify-between">
         <MobileNav :common_navigation :open />
@@ -32,7 +36,11 @@ const common_navigation = [
         >
           <ProfileDropdown />
         </div>
-        <LoginWithGoogleBtn v-else @success="post_sign_in" @fail="console.error">
+        <LoginWithGoogleBtn
+          v-else
+          @success="post_sign_in"
+          @fail="console.error"
+        >
         </LoginWithGoogleBtn>
       </div>
     </div>
