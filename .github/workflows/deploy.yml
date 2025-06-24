@@ -16,16 +16,15 @@ jobs:
     steps:
       - uses: extractions/setup-just@v3
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.SUPER_GITHUB_TOKEN }}
       - uses: denoland/setup-deno@v2
         with:
           deno-version: canary
 
-      - name: Configure environment
-        run: >
-          echo """${{ secrets.DOTENV_FILE }}""" >> .env
+      - uses: kindkitchen/genv@v1.0.0
+        with:
+          content_from_secrets_include_pattern: "DOTENV_FILE"
 
+      - run: echo .env
       - uses: actions/setup-node@v4
       - run: just brickyard-disable
       - run: just install
@@ -34,11 +33,7 @@ jobs:
       - uses: denoland/deployctl@v1
         with:
           project: "seewe"
-          exclude: |
-            e2e
-            src
-            .github
-            .vscode
-            .git
-            .gitignore
+          include: |
+            dist
+            api
           entrypoint: api/mod.ts
