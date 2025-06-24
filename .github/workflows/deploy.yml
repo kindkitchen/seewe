@@ -22,6 +22,7 @@ jobs:
 
       - uses: kindkitchen/genv@v1.0.0
         with:
+          secrets_obj: ${{ toJson(secrets) }}
           content_from_secrets_include_pattern: "DOTENV_CONTENT"
 
       - run: cat .env
