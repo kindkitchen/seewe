@@ -9,7 +9,6 @@ export const SimpleLayout: FC = (props) => {
       <head>
         <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css"></link>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"></link>
-        <link rel="stylesheet" href="https://newcss.net/theme/night.css"></link>
         <style>
           {css`
             p, ul, ol, li, h3, h4, h5, h6 {
