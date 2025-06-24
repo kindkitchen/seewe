@@ -1,5 +1,3 @@
-import { html } from "hono/html"
-import { DOMParser, Element } from "jsr:@b-fuze/deno-dom"
 import { db } from "../db.ts"
 import { MdCv, MdCvEntity } from "../dto/md-cv.dto.ts"
 import { UserEntity } from "../dto/user.dto.ts"
@@ -162,23 +160,10 @@ const save = async (mdcv: MdCv, user: UserEntity) => {
         data: null,
       } as const
     }
-    /// TODO (css injection) make it clean and stable
-    const parser = new DOMParser()
-    let beauty = null as null | string
-    try {
-      const doc = parser.parseFromString(mdcv.html, "text/html")
-      const link = doc.createElement("link") as any
-      link.rel = "stylesheet"
-      link.href = "https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css"
-      doc.head?.appendChild(link)
-      beauty = doc?.documentElement?.outerHTML || null
-    } catch (err) {
-      console.error(err)
-    }
+
     const _id = unique_incremental_timestamp()
     const db_res = await db._dev_md_cv.add({
       ...mdcv,
-      html: beauty || mdcv.html,
       _id,
       as_regulary_by_name_username: [user.nik, mdcv.name],
     })
