@@ -6,7 +6,7 @@ alias format := fmt
 alias v := version
 
 default:
-    just fmt
+    just --list
 
 ls:
     just --choose
@@ -77,3 +77,6 @@ install:
 
 build:
     npm run build
+
+gen_jwt_keys_for_dotenv:
+    deno run -A api/utils/generate_crypto_keys.cli.util.ts
