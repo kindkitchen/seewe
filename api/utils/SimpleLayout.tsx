@@ -1,63 +1,64 @@
 import type { FC } from "hono/jsx"
 import { html } from "hono/html"
 
+const css = String.raw;
 export const SimpleLayout: FC = (props) => {
   const print_pdf = props.print_pfd ?? true
   return (
     <html>
       <head>
+        <link rel="stylesheet" href="https://newcss.net/theme/night.css"></link>
         <style>
-          {`\
-p, ul, ol, li, h3, h4, h5, h6 {
-  break-inside: avoid-page;
-  break-before: avoid-page;
-}
+          {
+            css`
+                p, ul, ol, li, h3, h4, h5, h6 {
+                  break-inside: avoid-page;
+                  break-before: avoid-page;
+                }
 
-p, ul, ol, li, h1, h2, h3, h4, h5, h6 {
-  break-after: avoid-page;
-}
+                p, ul, ol, li, h1, h2, h3, h4, h5, h6 {
+                  break-after: avoid-page;
+                }
 
-h1 {
-  text-align: center;
-}
+                h1 {
+                  text-align: center;
+                }
 
-h1, h2 {
-  text-wrap: pretty;
-  break-before: auto;
-}
+                h1, h2 {
+                  text-wrap: pretty;
+                  break-before: auto;
+                }
 
-hr {
-  border: none;
-  border-top: 1px dotted;
-  break-after: auto;
-  background-color: green;
-}
+                hr {
+                  border: none;
+                  border-top: 1px dotted;
+                  break-after: auto;
+                  background-color: green;
+                }
 
-body {
-  color: black;
-  padding-inline: 2rem;
-  padding-top: 2rem;
-}
-.water-mark:hover {
-  color: green;
-}
-.water-mark {
-  color: lightgray;
-  position: fixed;
-  top: 0;
-  right: 0;
-}
+                body {
+                  color: black;
+                  padding-inline: 2rem;
+                  padding-top: 2rem;
+                }
+                .water-mark:hover {
+                  color: green;
+                }
+                .water-mark {
+                  color: lightgray;
+                  position: fixed;
+                  top: 0;
+                  right: 0;
+                }
 
-@media print
-{    
-    .no-print, .no-print *
-    {
-        display: none !important;
-    }
-}
-
-\
-`}
+                @media print
+                {    
+                    .no-print, .no-print *
+                    {
+                        display: none !important;
+                    }
+                }
+          `}
         </style>
       </head>
       <body id="container">
