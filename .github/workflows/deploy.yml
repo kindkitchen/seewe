@@ -22,9 +22,9 @@ jobs:
 
       - uses: kindkitchen/genv@v1.0.0
         with:
-          content_from_secrets_include_pattern: "DOTENV_FILE"
+          content_from_secrets_include_pattern: "DOTENV_CONTENT"
 
-      - run: echo .env
+      - run: cat .env
       - uses: actions/setup-node@v4
       - run: just brickyard-disable
       - run: just install
