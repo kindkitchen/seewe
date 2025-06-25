@@ -20,27 +20,11 @@ export const SimpleLayout: FC = (props) => {
               break-after: avoid-page;
             }
 
-            h1 {
-              text-align: center;
-            }
-
             h1, h2 {
               text-wrap: pretty;
               break-before: auto;
             }
 
-            hr {
-              border: none;
-              border-top: 1px dotted;
-              break-after: auto;
-              background-color: green;
-            }
-
-            body {
-              color: black;
-              padding-inline: 2rem;
-              padding-top: 2rem;
-            }
             .water-mark:hover {
               color: green;
             }
