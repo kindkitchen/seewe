@@ -53,9 +53,12 @@ export const SimpleLayout: FC = (props) => {
             }
 
             @media print {
-              @page not(first) {
+              .water-mark {
+                display: none;
+              }
+              @page first {
                 .water-mark {
-                  display: none;
+                  display: inherit;
                 }
               }
               .no-print, .no-print * {
