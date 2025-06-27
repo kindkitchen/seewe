@@ -41,7 +41,6 @@ export const SimpleLayout: FC = (props) => {
             }
 
             .water-mark {
-              font-size: 0.6em;
               color: lightgray;
               position: fixed;
               top: 0;
@@ -53,13 +52,12 @@ export const SimpleLayout: FC = (props) => {
               margin: 0 1em 1em 0;
             }
 
-            @media print:not(first) {
-              .water-mark {
-                display: none;
-              }
-            }
-
             @media print {
+              @page not(first) {
+                .water-mark {
+                  display: none;
+                }
+              }
               .no-print, .no-print * {
                 display: none !important;
                 opacity: 0.5;
