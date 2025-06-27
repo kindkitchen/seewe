@@ -1,7 +1,8 @@
 import type { FC } from "hono/jsx"
 import { html } from "hono/html"
 
-const css = String.raw
+const css = String.raw;
+const javascript = String.raw;
 export const SimpleLayout: FC = (props) => {
   const print_pdf = props.print_pfd ?? true
   return (
@@ -56,17 +57,21 @@ export const SimpleLayout: FC = (props) => {
         </style>
       </head>
       <body id="container">
+      <script>
+      {javascript`
+        window.addEventListener("beforeprint", (event) => {
+          const all_details = document.getElementsByTagName("details");
+          for (const d of all_details) {
+            d.open = true
+          }
+        })
+      `}
+      </script>
         {print_pdf && (
           <a
             href="#"
             id="print"
             class={"no-print"}
-            onClick={() => {
-              const all_details = document.getElementsByTagName("details");
-              for (const d of all_details) {
-                d.open = true
-              }
-            }}
           >
             <button>Download as PDF</button>
           </a>
