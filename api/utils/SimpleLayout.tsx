@@ -59,7 +59,7 @@ export const SimpleLayout: FC = (props) => {
       <body id="container">
       <script>
       {javascript`
-        addEventListener("beforeprint", (event) => {
+        window.addEventListener("beforeprint", (event) => {
           const all_details = document.getElementsByTagName("details");
           for (const d of all_details) {
             d.open = true
