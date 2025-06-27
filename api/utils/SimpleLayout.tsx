@@ -7,8 +7,13 @@ export const SimpleLayout: FC = (props) => {
   return (
     <html>
       <head>
-        <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css"></link>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"></link>
+        <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+        </link>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
+        >
+        </link>
         <style>
           {css`
             p, ul, ol, li, h3, h4, h5, h6 {
@@ -28,6 +33,7 @@ export const SimpleLayout: FC = (props) => {
             .water-mark:hover {
               color: green;
             }
+
             .water-mark {
               color: lightgray;
               position: fixed;
@@ -35,9 +41,15 @@ export const SimpleLayout: FC = (props) => {
               right: 0;
             }
 
+            img {
+              float: left;
+              margin: 0 1em 1em 0;
+            }
+
             @media print {
               .no-print, .no-print * {
                 display: none !important;
+                opacity: 0.5
               }
             }
           `}
@@ -45,7 +57,17 @@ export const SimpleLayout: FC = (props) => {
       </head>
       <body id="container">
         {print_pdf && (
-          <a href="#" id="print" class={"no-print"}>
+          <a
+            href="#"
+            id="print"
+            class={"no-print"}
+            onClick={() => {
+              const all_details = document.getElementsByTagName("details");
+              for (const d of all_details) {
+                d.open = true
+              }
+            }}
+          >
             <button>Download as PDF</button>
           </a>
         )}
