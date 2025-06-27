@@ -53,15 +53,11 @@ export const SimpleLayout: FC = (props) => {
             }
 
             @media print {
-
-              @page :first {
-                .water-mark {
-                  display: inherit;
-                }
-              }
-
               .water-mark {
                 display: none;
+              }
+              .water-mark:first-of-type {
+                display: inline;
               }
 
               .no-print, .no-print * {
