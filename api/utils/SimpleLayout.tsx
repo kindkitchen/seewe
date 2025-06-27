@@ -53,6 +53,12 @@ export const SimpleLayout: FC = (props) => {
               margin: 0 1em 1em 0;
             }
 
+            @media print:not(first) {
+              .water-mark {
+                display: none;
+              }
+            }
+
             @media print {
               .no-print, .no-print * {
                 display: none !important;
