@@ -23,6 +23,11 @@
     "kv"
   ],
   "compilerOptions": {
+    "lib": [
+      "deno.window",
+      "dom",
+      "dom.iterable"
+    ],
     "jsx": "precompile",
     "jsxImportSource": "hono/jsx",
     "strict": true,
