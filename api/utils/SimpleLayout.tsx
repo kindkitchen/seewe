@@ -2,7 +2,6 @@ import type { FC } from "hono/jsx"
 import { html } from "hono/html"
 
 const css = String.raw
-const javascript = String.raw
 export const SimpleLayout: FC = (props) => {
   const print_pdf = props.print_pfd ?? true
   return (
@@ -17,6 +16,12 @@ export const SimpleLayout: FC = (props) => {
         </link>
         <style>
           {css`
+            #print {
+              position: absolute;
+              top: 1rem;
+              left: 1rem;
+            }
+
             p, ul, ol, li, h3, h4, h5, h6 {
               break-inside: avoid-page;
               break-before: avoid-page;
