@@ -1,8 +1,8 @@
 import type { FC } from "hono/jsx"
 import { html } from "hono/html"
 
-const css = String.raw;
-const javascript = String.raw;
+const css = String.raw
+const javascript = String.raw
 export const SimpleLayout: FC = (props) => {
   const print_pdf = props.print_pfd ?? true
   return (
@@ -50,23 +50,13 @@ export const SimpleLayout: FC = (props) => {
             @media print {
               .no-print, .no-print * {
                 display: none !important;
-                opacity: 0.5
+                opacity: 0.5;
               }
             }
           `}
         </style>
       </head>
       <body id="container">
-      <script>
-      {javascript`
-        window.addEventListener("beforeprint", (event) => {
-          const all_details = document.getElementsByTagName("details");
-          for (const d of all_details) {
-            d.open = true
-          }
-        })
-      `}
-      </script>
         {print_pdf && (
           <a
             href="#"
@@ -86,32 +76,38 @@ export const SimpleLayout: FC = (props) => {
         </div>
         {html`
           <script>
-          document.addEventListener(
-            "DOMContentLoaded",
-            () => {
-              let printLink = document.getElementById("print")
-              let container = document.getElementById("container")
+          window.addEventListener("beforeprint", (event) => {
+            const all_details = document.getElementsByTagName("details");
+            for (const d of all_details) {
+              d.open = true
+            }
+          });
+            document.addEventListener(
+              "DOMContentLoaded",
+              () => {
+                let printLink = document.getElementById("print")
+                let container = document.getElementById("container")
 
-              printLink.addEventListener(
-                "click",
-                (event) => {
-                  event.preventDefault()
-                  printLink.style.display = "none"
-                  window.print()
-                },
-                false,
-              )
+                printLink.addEventListener(
+                  "click",
+                  (event) => {
+                    event.preventDefault()
+                    printLink.style.display = "none"
+                    window.print()
+                  },
+                  false,
+                )
 
-              container.addEventListener(
-                "click",
-                (event) => {
-                  printLink.style.display = "flex"
-                },
-                false,
-              )
-            },
-            false,
-          )
+                container.addEventListener(
+                  "click",
+                  (event) => {
+                    printLink.style.display = "flex"
+                  },
+                  false,
+                )
+              },
+              false,
+            )
           </script>
         `}
       </body>
