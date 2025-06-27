@@ -41,6 +41,7 @@ export const SimpleLayout: FC = (props) => {
             }
 
             .water-mark {
+              font-size: 06em;
               color: lightgray;
               position: fixed;
               top: 0;
