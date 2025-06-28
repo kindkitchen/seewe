@@ -53,13 +53,12 @@ export const SimpleLayout: FC = (props) => {
             }
 
             @media print {
-              .water-mark {
-                display: block;
-              }
-              .water-mark::not(:first-of-type) {
+              #marketing {
                 display: none;
               }
-
+              #marketing:first-of-type {
+                display: block;
+              }
               .no-print, .no-print * {
                 display: none !important;
                 opacity: 0.5;
