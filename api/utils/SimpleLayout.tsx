@@ -55,6 +55,11 @@ export const SimpleLayout: FC = (props) => {
             }
 
             @media print {
+              .water-mark {
+                position: absolute;
+                top: 1px;
+                right: 1px;
+              }
               .no-print, .no-print * {
                 display: none !important;
                 opacity: 0.5;
