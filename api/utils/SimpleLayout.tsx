@@ -78,7 +78,7 @@ export const SimpleLayout: FC = (props) => {
           </a>
         )}
         {props.children}
-        <div class={"water-mark"}>
+        <div id={"marketing"} class={"water-mark"}>
           {props.link && (
             <a href={props.link}>See actual online version of this CV</a>
           )}
