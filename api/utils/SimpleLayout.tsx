@@ -57,7 +57,7 @@ export const SimpleLayout: FC = (props) => {
                 display: none;
               }
               .water-mark:first-of-type {
-                display: inline;
+                display: block;
               }
 
               .no-print, .no-print * {
