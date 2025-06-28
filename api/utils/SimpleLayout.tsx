@@ -41,6 +41,8 @@ export const SimpleLayout: FC = (props) => {
             }
 
             .water-mark {
+              opacity: 0.8;
+              z-index: -1;
               color: lightgray;
               position: fixed;
               top: 0;
@@ -53,12 +55,6 @@ export const SimpleLayout: FC = (props) => {
             }
 
             @media print {
-              .water-mark {
-                display: none;
-              }
-              #marketing:first-of-type {
-                display: block;
-              }
               .no-print, .no-print * {
                 display: none !important;
                 opacity: 0.5;
@@ -78,7 +74,7 @@ export const SimpleLayout: FC = (props) => {
           </a>
         )}
         {props.children}
-        <div id={"marketing"} class={"water-mark"}>
+        <div class={"water-mark"}>
           {props.link && (
             <a href={props.link}>See actual online version of this CV</a>
           )}
