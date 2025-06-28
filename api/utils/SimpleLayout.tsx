@@ -53,7 +53,7 @@ export const SimpleLayout: FC = (props) => {
             }
 
             @media print {
-              #marketing {
+              .water-mark {
                 display: none;
               }
               #marketing:first-of-type {
