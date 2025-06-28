@@ -61,7 +61,10 @@ export const spa_subserver = new OpenAPIHono()
     )
 
     if (happy_path_result?.value) {
-      const link = config.VITE_API_URL + "/" + username + "/" + cv_name
+      const link = config.VITE_API_URL + "/" + username + "/" + cv_name;
+
+      console.log(happy_path_result.vale.html);
+
       return ctx.html(
         <SimpleLayout link={link}>
           <div
