@@ -54,10 +54,10 @@ export const SimpleLayout: FC = (props) => {
 
             @media print {
               .water-mark {
-                display: none;
-              }
-              .water-mark:first-of-type {
                 display: block;
+              }
+              .water-mark::not(:first-of-type) {
+                display: none;
               }
 
               .no-print, .no-print * {
