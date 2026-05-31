@@ -3,7 +3,9 @@ import { html } from "hono/html"
 
 const css = String.raw
 export const SimpleLayout: FC = (props) => {
-  const print_pdf = props.print_pfd ?? true
+  const print_pdf = props.print_pdf ?? true
+  const auto_print = props.auto_print ?? false
+  const user_css = props.css ?? ""
   return (
     <html>
       <head>
@@ -54,6 +56,16 @@ export const SimpleLayout: FC = (props) => {
               margin: 0 1em 1em 0;
             }
 
+            /* raw content container: preserves the author's formatting and
+              is the main hook for user-provided css */
+            .cv {
+              white-space: pre-wrap;
+              word-wrap: break-word;
+              overflow-wrap: anywhere;
+              font: inherit;
+              margin: 0;
+            }
+
             @media print {
               .water-mark {
                 position: absolute;
@@ -67,6 +79,8 @@ export const SimpleLayout: FC = (props) => {
             }
           `}
         </style>
+        {/* user-provided css, applied last so it can override defaults */}
+        <style>{user_css}</style>
       </head>
       <body id="container">
         {print_pdf && (
@@ -122,6 +136,16 @@ export const SimpleLayout: FC = (props) => {
             )
           </script>
         `}
+        {auto_print &&
+          html`
+            <script>
+            window.addEventListener("load", () => {
+              const printLink = document.getElementById("print")
+              if (printLink) printLink.style.display = "none"
+              window.print()
+            })
+            </script>
+          `}
       </body>
     </html>
   )

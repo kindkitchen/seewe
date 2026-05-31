@@ -6,10 +6,19 @@ import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
 import { SimpleLayout } from "../utils/SimpleLayout.tsx"
 
+// A trailing `.pdf` on the last path segment means "serve the page and let the
+// browser print it to PDF". We strip the suffix and flip on auto_print.
+const parse_pdf = (raw: string) => {
+  const auto_print = raw.endsWith(".pdf")
+  return { value: auto_print ? raw.slice(0, -4) : raw, auto_print }
+}
+
 export const spa_subserver = new OpenAPIHono()
   .get("/id/:user_id", async (ctx) => {
-    const user_id_param = ctx.req.param("user_id")
-    const validation = z.number({ coerce: true }).safeParse(user_id_param)
+    const { value: user_id_raw, auto_print } = parse_pdf(
+      ctx.req.param("user_id"),
+    )
+    const validation = z.number({ coerce: true }).safeParse(user_id_raw)
 
     if (validation.error) {
       return ctx.notFound()
@@ -41,37 +50,28 @@ export const spa_subserver = new OpenAPIHono()
       return ctx.redirect("/" + cv.as_default_by_username)
     }
 
-    const { html, md, ...rest } = cv
     const link = config.VITE_API_URL + "/id/" + user_id
     return ctx.html(
-      <SimpleLayout link={link}>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: cv.html,
-          }}
-        />
+      <SimpleLayout link={link} css={cv.css} auto_print={auto_print}>
+        <pre class="cv">{cv.md}</pre>
       </SimpleLayout>,
     )
   })
   .get("/:username/:cv_name", async (ctx) => {
-    const { cv_name, username } = ctx.req.param()
+    const { username } = ctx.req.param()
+    const { value: cv_name, auto_print } = parse_pdf(ctx.req.param("cv_name"))
     const happy_path_result = await db._dev_md_cv.findByPrimaryIndex(
       "as_regulary_by_name_username",
       [username, cv_name],
     )
 
     if (happy_path_result?.value) {
+      const cv = happy_path_result.value
       const link = config.VITE_API_URL + "/" + username + "/" + cv_name
 
-      console.log(happy_path_result.value.html)
-
       return ctx.html(
-        <SimpleLayout link={link}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: happy_path_result.value.html,
-            }}
-          />
+        <SimpleLayout link={link} css={cv.css} auto_print={auto_print}>
+          <pre class="cv">{cv.md}</pre>
         </SimpleLayout>,
       )
     }
@@ -86,7 +86,9 @@ export const spa_subserver = new OpenAPIHono()
     return ctx.notFound()
   })
   .get("/:username", async (ctx) => {
-    const username = ctx.req.param("username")
+    const { value: username, auto_print } = parse_pdf(
+      ctx.req.param("username"),
+    )
     const happy_path_result = await db._dev_md_cv.findByPrimaryIndex(
       "as_default_by_username",
       username,
@@ -96,19 +98,13 @@ export const spa_subserver = new OpenAPIHono()
     if (happy) {
       const link = config.VITE_API_URL + "/" + username
       return ctx.html(
-        <SimpleLayout link={link}>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: happy.html,
-            }}
-          />
+        <SimpleLayout link={link} css={happy.css} auto_print={auto_print}>
+          <pre class="cv">{happy.md}</pre>
         </SimpleLayout>,
       )
     }
 
-    const db_user_res = await users_service.find_by_nik(
-      ctx.req.param("username"),
-    )
+    const db_user_res = await users_service.find_by_nik(username)
     const target_user = db_user_res.data
 
     if (target_user) {
