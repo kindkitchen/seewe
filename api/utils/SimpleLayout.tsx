@@ -56,14 +56,9 @@ export const SimpleLayout: FC = (props) => {
               margin: 0 1em 1em 0;
             }
 
-            /* raw content container: preserves the author's formatting and
-              is the main hook for user-provided css */
+            /* rendered markdown container; the main hook for user css */
             .cv {
-              white-space: pre-wrap;
-              word-wrap: break-word;
               overflow-wrap: anywhere;
-              font: inherit;
-              margin: 0;
             }
 
             @media print {

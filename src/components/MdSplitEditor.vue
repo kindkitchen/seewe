@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { cv_css_presets } from "@/utils/cv-css-presets";
+import { md_to_html } from "@/utils/md-to-html";
 import { tw } from "@/utils/tw.util";
 
 const md = defineModel<string>("md", { required: true });
@@ -11,23 +12,17 @@ const is_mobile = window.innerWidth < 700;
 const mobile_pane = ref<"content" | "preview">("content");
 const show_css = ref(false);
 
-const escape_html = (s: string) =>
-  s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-
 // Mirror what the server renders (api/utils/SimpleLayout.tsx + spa_subserver):
-// raw content inside `pre.cv`, base reset, then user css applied last.
+// markdown -> html inside `.cv`, then user css applied last.
 const preview_srcdoc = computed(
   () =>
     `<!doctype html><html><head><meta charset="utf-8">
 <style>
   html,body{margin:0;padding:0;}
-  .cv{white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere;font:inherit;margin:0;}
+  .cv{overflow-wrap:anywhere;}
 </style>
 <style>${css.value}</style>
-</head><body><pre class="cv">${escape_html(md.value)}</pre></body></html>`,
+</head><body><div class="cv">${md_to_html(md.value)}</div></body></html>`,
 );
 
 const apply_preset = (name: string) => {
@@ -67,7 +62,7 @@ const apply_preset = (name: string) => {
             "w-full min-h-[400px] resize-y rounded border border-gray-300 p-3",
             "font-mono text-sm leading-relaxed focus:outline-emerald-500",
           )'
-          placeholder="Write your CV here. Plain text — styled by your CSS."
+          placeholder="Write your CV in Markdown — rendered and styled by your CSS."
         ></textarea>
       </div>
 

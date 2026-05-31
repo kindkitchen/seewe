@@ -5,6 +5,7 @@ import { db } from "../db.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
 import { SimpleLayout } from "../utils/SimpleLayout.tsx"
+import { md_to_html } from "../utils/ui/utils/md-to-html.ts"
 
 // A trailing `.pdf` on the last path segment means "serve the page and let the
 // browser print it to PDF". We strip the suffix and flip on auto_print.
@@ -53,7 +54,10 @@ export const spa_subserver = new OpenAPIHono()
     const link = config.VITE_API_URL + "/id/" + user_id
     return ctx.html(
       <SimpleLayout link={link} css={cv.css} auto_print={auto_print}>
-        <pre class="cv">{cv.md}</pre>
+        <div
+          class="cv"
+          dangerouslySetInnerHTML={{ __html: md_to_html(cv.md) }}
+        />
       </SimpleLayout>,
     )
   })
@@ -71,7 +75,10 @@ export const spa_subserver = new OpenAPIHono()
 
       return ctx.html(
         <SimpleLayout link={link} css={cv.css} auto_print={auto_print}>
-          <pre class="cv">{cv.md}</pre>
+          <div
+            class="cv"
+            dangerouslySetInnerHTML={{ __html: md_to_html(cv.md) }}
+          />
         </SimpleLayout>,
       )
     }
@@ -99,7 +106,10 @@ export const spa_subserver = new OpenAPIHono()
       const link = config.VITE_API_URL + "/" + username
       return ctx.html(
         <SimpleLayout link={link} css={happy.css} auto_print={auto_print}>
-          <pre class="cv">{happy.md}</pre>
+          <div
+            class="cv"
+            dangerouslySetInnerHTML={{ __html: md_to_html(happy.md) }}
+          />
         </SimpleLayout>,
       )
     }
