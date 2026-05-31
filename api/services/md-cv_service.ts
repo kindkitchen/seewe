@@ -136,7 +136,7 @@ const toggle_default = async (is_default: boolean, {
   }
   const db_res = await db._dev_md_cv.updateByPrimaryIndex("_id", mdcv_id, {
     as_default_by_user_id: is_default ? user._id : undefined,
-    as_default_by_username: is_default ? user.name : undefined,
+    as_default_by_username: is_default ? user.nik : undefined,
   })
 
   if (db_res.ok) {

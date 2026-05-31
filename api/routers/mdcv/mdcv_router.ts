@@ -8,6 +8,7 @@ import { delete_mdcv } from "./delete_mdcv.ts"
 import { get_mdcv } from "./get_mdcv.ts"
 import { post_mdcv } from "./post_mdcv.ts"
 import { put_mdcv } from "./put_mdcv.ts"
+import { put_default } from "./put_default.ts"
 import { get_my_mdcvs } from "./get_my_mdcvs.ts"
 
 export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
@@ -66,6 +67,27 @@ export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
     const res = await mdCv_service.update(mdcv_id, update_data)
 
     return ctx.json(res)
+  }).openapi(put_default, async (ctx) => {
+    const user = ctx.get("user")
+    const { mdcv_id } = ctx.req.valid("param")
+    const { is_default } = ctx.req.valid("json")
+
+    if (!user.nik) {
+      throw new HTTPException(400, {
+        message: "User without username can only have a single default CV",
+      })
+    }
+
+    const res = await mdCv_service.toggle_default(is_default, {
+      mdcv_id,
+      user,
+    })
+
+    if (!res.ok) {
+      throw new HTTPException(404, { message: "CV not found" })
+    }
+
+    return ctx.json({ ok: true, data: null })
   }).openapi(get_mdcv, async (ctx) => {
     const user = ctx.get("user")
     const { mdcv_id } = ctx.req.valid("param")

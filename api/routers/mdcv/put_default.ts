@@ -1,17 +1,20 @@
 import { createRoute } from "@hono/zod-openapi"
-import { authenticated_only_wrapper } from "../../middlewares/authenticated_only.wrapper.ts"
 import { z } from "zod"
+import { authenticated_only_wrapper } from "../../middlewares/authenticated_only.wrapper.ts"
 
-export const post_add_nik = authenticated_only_wrapper(createRoute({
-  method: "post",
-  path: "/nik",
+export const put_default = authenticated_only_wrapper(createRoute({
+  method: "put",
+  path: "/:mdcv_id/default",
   request: {
+    params: z.object({
+      mdcv_id: z.number({ coerce: true }),
+    }),
     body: {
       required: true,
       content: {
         "application/json": {
           schema: z.object({
-            nik: z.string().regex(/^[\w-]{3,32}$/),
+            is_default: z.boolean(),
           }),
         },
       },
@@ -19,12 +22,12 @@ export const post_add_nik = authenticated_only_wrapper(createRoute({
   },
   responses: {
     200: {
-      description: "Successfully added nik to user to extend his possibilities",
+      description: "Default flag toggled for the CV",
       content: {
         "application/json": {
           schema: z.object({
             ok: z.boolean(),
-            data: z.union([z.null(), z.string()]),
+            data: z.null(),
           }),
         },
       },

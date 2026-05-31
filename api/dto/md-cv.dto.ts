@@ -3,7 +3,11 @@ import { z } from "zod"
 export const MdCvDto = z.object({
   user_id: z.number(),
   md: z.string(),
-  html: z.string(),
+  // free-form CSS provided by the user; applied as-is on the public page
+  css: z.string().optional(),
+  // vestigial: kept optional so legacy records still validate. Rendering now
+  // uses `md` + `css`, not pre-generated html.
+  html: z.string().optional(),
   _id: z.number().optional(),
   is_published: z.boolean(),
   // user with username can give names to own cv
