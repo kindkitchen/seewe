@@ -1,115 +1,99 @@
 <script setup lang="ts">
-import { post_add_nik } from "@/queries/post_add_nik.query";
+import AddNikForm from "@/forms/AddNikForm.vue";
 import { use_auth } from "@/stores/use_auth.store";
-import type { FormKitNode } from "@formkit/core";
-import { FormKit, setErrors } from "@formkit/vue";
 import Panel from "primevue/panel";
 import Tab from "primevue/tab";
 import TabList from "primevue/tablist";
 import TabPanel from "primevue/tabpanel";
 import TabPanels from "primevue/tabpanels";
 import Tabs from "primevue/tabs";
-import { useToast } from "primevue/usetoast";
-import AddNikForm from "@/forms/AddNikForm.vue";
 
 definePage({
   meta: {
     private: true,
   },
 });
-const { add } = useToast();
 const auth = use_auth();
-const handle_submit_visibility_options = async (
-  value: unknown,
-  node: FormKitNode,
-) => {
-  add({
-    severity: "warn",
-    summary: "Not implemented yet",
-    detail: "This feature is not implemented yet",
-    life: 2000,
-  });
-};
 </script>
 <template>
   <t-h>Settings</t-h>
-  <div class="min-h-[250px] bg-emerald-50">
+  <div class="min-h-[250px]">
     <Tabs :value='!auth.user?.nik ? "username" : "cv-visibility-options"'>
       <TabList>
         <Tab value="username">Username</Tab>
-        <Tab value="cv-visibility-options">CV visibility options</Tab>
+        <Tab value="cv-visibility-options">CV visibility</Tab>
       </TabList>
       <TabPanels>
         <TabPanel value="username">
           <t-h :n="5">Username</t-h>
+          <p v-if="auth.user?.nik" class="mb-2">
+            Your current username is
+            <strong>{{ auth.user.nik }}</strong>. Change it below — your
+            existing public links will be updated to the new username
+            automatically.
+          </p>
+          <p v-else class="mb-2">
+            You don't have a username yet. Set one to unlock named CVs and clean
+            public links.
+          </p>
           <AddNikForm />
-          <Panel
-            header="What benefits the 'username' is give me?"
-            toggleable
-            :collapsed="!!auth.user?.nik"
-          >
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui
-              facilis quos asperiores perspiciatis quidem quibusdam sequi error
-              consequatur minima minus necessitatibus, a quasi exercitationem
-              ducimus dignissimos hic? Id, consequuntur maxime.
-            </p>
+
+          <Panel header="What does a username give me?" toggleable class="mt-3">
+            <ul class="list-disc pl-5">
+              <li>Clean public links like <code>/your-name</code>.</li>
+              <li>
+                Multiple named CVs under one account (<code
+                >/your-name/backend</code>, <code>/your-name/design</code>).
+              </li>
+              <li>One CV can be marked as your default profile page.</li>
+            </ul>
           </Panel>
           <Panel
-            header="The real power of combining 'username' and CV 'name'"
+            header="Username + CV name"
             toggleable
             :collapsed="!auth.user?.nik"
+            class="mt-2"
           >
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui
-              facilis quos asperiores perspiciatis quidem quibusdam sequi error
-              consequatur minima minus necessitatibus, a quasi exercitationem
-              ducimus dignissimos hic? Id, consequuntur maxime.
+              Without a username you may keep a single default CV reachable by
+              an auto-generated id. With a username, each CV can have its own
+              name, and the pair (username, name) forms its unique public link.
             </p>
           </Panel>
-          <Panel header="The simple rules of 'username'" toggleable collapsed>
+          <Panel header="Rules" toggleable collapsed class="mt-2">
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui
-              facilis quos asperiores perspiciatis quidem quibusdam sequi error
-              consequatur minima minus necessitatibus, a quasi exercitationem
-              ducimus dignissimos hic? Id, consequuntur maxime.
+              3–32 characters; letters, numbers, <code>_</code> and <code
+              >-</code>
+              only. Usernames are unique across all accounts.
             </p>
           </Panel>
           <Panel
-            header="What I should to know before deleting or changing my username?"
+            header="Changing your username"
             toggleable
             collapsed
+            class="mt-2"
           >
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui
-              facilis quos asperiores perspiciatis quidem quibusdam sequi error
-              consequatur minima minus necessitatibus, a quasi exercitationem
-              ducimus dignissimos hic? Id, consequuntur maxime.
+              Renaming updates the links of all your CVs to the new username.
+              Anyone holding an old link will no longer reach your CV, so share
+              the updated links.
             </p>
           </Panel>
         </TabPanel>
+
         <TabPanel value="cv-visibility-options">
-          <t-h :n="5">Visibility options</t-h>
-          <FormKit
-            type="form"
-            id="settings::visibility-options"
-            #default="{ value }"
-            @submit="handle_submit_visibility_options"
-          >
-            <FormKit
-              type="checkbox"
-              label="Make all my public CV visible"
-              help="When you stop your job researches it is very simple to make your CV invisible to everyone in one click"
-              name="public-are-public"
-              :value="true"
-            />
-          </FormKit>
-          <Panel header="What is this?" toggleable>
+          <t-h :n="5">CV visibility</t-h>
+          <p>
+            Visibility is controlled per CV. Open your
+            <t-a to="/dashboard">Dashboard</t-a> and use the
+            <strong>Published</strong> toggle on each CV to make its public link
+            available or hidden, and the <strong>Default</strong> toggle to pick
+            the CV shown at <code>/{{ auth.user?.nik || "your-name" }}</code>.
+          </p>
+          <Panel header="What does 'Published' mean?" toggleable class="mt-3">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus,
-              amet perspiciatis at, placeat maiores saepe ipsam reiciendis
-              aliquid nihil aut cumque totam sequi. Alias consequatur excepturi
-              nostrum laudantium ipsum placeat.
+              A published CV is reachable through its public link and listed on
+              your profile page. Unpublishing hides it without deleting it.
             </p>
           </Panel>
         </TabPanel>

@@ -45,7 +45,22 @@ const handle_submit_add_nik = async (
 </script>
 
 <template>
-  <FormKit id="settings::add_nik" type="form" @submit="handle_submit_add_nik">
-    <FormKit type="text" name="nik" :value="auth.user?.nik" />
+  <FormKit
+    id="settings::add_nik"
+    type="form"
+    :submit-label='auth.user?.nik ? "Update username" : "Set username"'
+    @submit="handle_submit_add_nik"
+  >
+    <FormKit
+      type="text"
+      name="nik"
+      label="Username"
+      :value="auth.user?.nik"
+      validation="required|length:3,32|matches:/^[\w-]+$/"
+      :validation-messages='{
+        matches: "Only letters, numbers, _ and - are allowed.",
+      }'
+      help="3–32 chars. Used in your public links, e.g. /your-name."
+    />
   </FormKit>
 </template>
