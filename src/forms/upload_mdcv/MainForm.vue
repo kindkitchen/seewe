@@ -22,7 +22,7 @@ const emit = defineEmits<{
 const handle_submit = async (data: v1_.Req<"post", "/v1/mdcv">["body"]) => {
   try {
     const res = await post_mdcv_query(data);
-    md.edited_mdcv_id = res._id;
+    md.mark_saved({ _id: res._id, name: data.name });
     emit("done", true);
   } catch (err) {
     console.error(err);
@@ -71,7 +71,7 @@ const handle_submit = async (data: v1_.Req<"post", "/v1/mdcv">["body"]) => {
         <FormKit type="text" label="CV name" name="name" />
       </BlurGuardCmp>
       <FormKit type="hidden" name="md" :value="md.edited_str" />
-      <FormKit type="hidden" name="html" :value="md.html_str" />
+      <FormKit type="hidden" name="css" :value="md.css" />
       <FormKit
         type="checkbox"
         name="is_published"
