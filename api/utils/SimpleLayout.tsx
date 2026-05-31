@@ -1,5 +1,5 @@
 import type { FC } from "hono/jsx"
-import { html } from "hono/html"
+import { html, raw } from "hono/html"
 
 const css = String.raw
 export const SimpleLayout: FC = (props) => {
@@ -18,6 +18,12 @@ export const SimpleLayout: FC = (props) => {
         </link>
         <style>
           {css`
+            /* keep author colors/backgrounds when printing to PDF */
+            * {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
+
             #print {
               position: absolute;
               top: 1rem;
@@ -74,8 +80,11 @@ export const SimpleLayout: FC = (props) => {
             }
           `}
         </style>
-        {/* user-provided css, applied last so it can override defaults */}
-        <style>{user_css}</style>
+        {
+          /* user-provided css, applied last so it can override defaults;
+            rendered raw so selectors like `>` and quotes aren't html-escaped */
+        }
+        <style>{raw(user_css)}</style>
       </head>
       <body id="container">
         {print_pdf && (
