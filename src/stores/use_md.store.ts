@@ -55,6 +55,16 @@ export const use_md = defineStore("md", () => {
     }
   };
 
+  // plain functions: setup stores have no `this`, so actions reference these
+  const update_str = (str: string) => {
+    edited_str.value = str;
+    localStorage.setItem(LS.md, str);
+  };
+  const update_css = (value: string) => {
+    css.value = value;
+    localStorage.setItem(LS.css, value);
+  };
+
   return {
     edited_str,
     css,
@@ -62,18 +72,12 @@ export const use_md = defineStore("md", () => {
     edited_mdcv_name,
     is_dirty,
     is_editing_existing,
-    update_str(str: string) {
-      edited_str.value = str;
-      localStorage.setItem(LS.md, str);
-    },
-    update_css(value: string) {
-      css.value = value;
-      localStorage.setItem(LS.css, value);
-    },
+    update_str,
+    update_css,
     // start editing an existing CV (replaces current draft)
     load_cv(cv: LoadedCv) {
-      this.update_str(cv.md);
-      this.update_css(cv.css || default_cv_css);
+      update_str(cv.md);
+      update_css(cv.css || default_cv_css);
       edited_mdcv_id.value = cv._id;
       edited_mdcv_name.value = cv.name;
       original_md.value = edited_str.value;
@@ -82,8 +86,8 @@ export const use_md = defineStore("md", () => {
     },
     // start a fresh, unsaved draft
     reset() {
-      this.update_str("");
-      this.update_css(default_cv_css);
+      update_str("");
+      update_css(default_cv_css);
       edited_mdcv_id.value = undefined;
       edited_mdcv_name.value = undefined;
       original_md.value = "";

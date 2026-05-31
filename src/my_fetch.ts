@@ -112,20 +112,21 @@ export async function my_fetch<M extends v1_.Method, P extends v1_.Path>({
 
   if (res_as === "none") {
     return undefined as unknown as ApiCallRes<M, P>;
-  } else if (res_as === "text/plain") {
-    return res.text().catch(() => {
-      console.error("res.text() failed");
-      throw res;
-    }) as ApiCallRes<M, P>;
   }
 
-  return res.json().catch(async () => {
-    console.error("res.json() failed");
-    const err_text = await res.text();
-    console.warn(err_text);
+  // read the body exactly once: reading it twice (e.g. json() then text())
+  // throws "body stream already read" and masks the real response
+  const body_text = await res.text();
+  if (res_as === "text/plain") {
+    return body_text as unknown as ApiCallRes<M, P>;
+  }
 
-    throw err_text;
-  });
+  try {
+    return JSON.parse(body_text);
+  } catch {
+    console.error("res.json() failed", body_text);
+    throw body_text;
+  }
 }
 
 type ApiCallPayload<M extends v1_.Method, P extends v1_.Path> =
