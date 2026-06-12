@@ -18,6 +18,10 @@ const common_navigation = [
     name: "Markdown CV",
     href: "/md-cv",
   },
+  {
+    name: "New CV from PDF",
+    href: "/pdf-cv",
+  },
 ] satisfies { href: RouterLinkProps["to"]; name: string }[];
 </script>
 

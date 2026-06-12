@@ -72,7 +72,13 @@ export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
     }
 
     const update_data = ctx.req.valid("json")
-    const res = await mdCv_service.update(mdcv_id, update_data)
+    const res = await mdCv_service.update(mdcv_id, {
+      ...update_data,
+      // a named cv's public slug is [nik, name]; keep it in sync on rename
+      ...(update_data.name && user.nik && mdcv.as_regulary_by_name_username
+        ? { as_regulary_by_name_username: [user.nik, update_data.name] }
+        : {}),
+    })
 
     return ctx.json(res)
   }).openapi(put_default, async (ctx) => {

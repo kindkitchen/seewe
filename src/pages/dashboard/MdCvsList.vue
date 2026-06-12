@@ -2,7 +2,6 @@
 import { my_fetch } from "@/my_fetch";
 import { get_my_mdcvs_query } from "@/queries/get_my_mdcvs.query";
 import { remove_pdf_query, upload_pdf_query } from "@/queries/mdcv_pdf.query";
-import { post_mdcv_query } from "@/queries/post_mdcv.query";
 import { put_mdcv_query } from "@/queries/put_mdcv.query";
 import { use_auth } from "@/stores/use_auth.store";
 import { use_md } from "@/stores/use_md.store";
@@ -41,15 +40,13 @@ const mdcvs = ref<CvItem[]>(data.map((d) => ({ ...d, to: build_link(d) })));
 
 // undefined kind == legacy markdown cv
 const cv_kind = (cv: CvItem) => cv.kind ?? "md";
-// _id of the row being uploaded; NEW_CV_BUSY while creating a cv from a pdf
-const NEW_CV_BUSY = -1;
 const pdf_busy = ref<number | null>(null);
 
-// one shared picker; the button that opened it decides where the file goes
+// one shared picker; the row button that opened it decides where the file goes
 const pdf_input = ref<HTMLInputElement | null>(null);
-const pdf_target = ref<CvItem | "new" | null>(null);
+const pdf_target = ref<CvItem | null>(null);
 
-const open_pdf_picker = (target: CvItem | "new") => {
+const open_pdf_picker = (target: CvItem) => {
   pdf_target.value = target;
   pdf_input.value?.click();
 };
@@ -58,42 +55,13 @@ const handle_pdf_picked = async () => {
   const input = pdf_input.value;
   const file = input?.files?.[0];
   if (input) input.value = ""; // allow re-selecting the same file later
-  const target = pdf_target.value;
+  const cv = pdf_target.value;
   pdf_target.value = null;
-  if (!file || !target) return;
-  if (target === "new") {
-    await create_cv_from_pdf(file);
-  } else {
-    await upload_pdf_to_cv(target, file);
-  }
-};
-
-const upload_pdf_to_cv = async (cv: CvItem, file: File) => {
+  if (!file || !cv) return;
   pdf_busy.value = cv._id;
   try {
     await upload_pdf_query(cv._id, file);
     cv.kind = "pdf";
-  } catch (err) {
-    alert(err instanceof Error ? err.message : String(err));
-  } finally {
-    pdf_busy.value = null;
-  }
-};
-
-const create_cv_from_pdf = async (file: File) => {
-  pdf_busy.value = NEW_CV_BUSY;
-  try {
-    const res = await post_mdcv_query({
-      // named cvs require a username; otherwise the id-based link is used
-      name: auth.user?.nik ? file.name.replace(/\.pdf$/i, "") : undefined,
-      md: "",
-      is_published: true,
-      make_default: !auth.user?.nik,
-    });
-    await upload_pdf_query(res._id, file);
-    // re-fetch: the server owns the link fields (slug/default/id)
-    const fresh = await get_my_mdcvs_query();
-    mdcvs.value = fresh.map((d) => ({ ...d, to: build_link(d) }));
   } catch (err) {
     alert(err instanceof Error ? err.message : String(err));
   } finally {
@@ -116,7 +84,12 @@ const handle_remove_pdf = async (cv: CvItem) => {
 const is_default = (cv: (typeof mdcvs.value)[number]) =>
   !!cv.as_default_by_user_id || !!cv.as_default_by_username;
 
-const handle_edit = (cv: (typeof mdcvs.value)[number]) => {
+const handle_edit = (cv: CvItem) => {
+  // a pdf cv has nothing to edit in the markdown editor; manage its file
+  if (cv_kind(cv) === "pdf") {
+    router.push(`/pdf-cv?id=${cv._id}`);
+    return;
+  }
   if (
     md_store.is_dirty &&
     !confirm("Discard your current unsaved changes and edit this CV instead?")
@@ -199,10 +172,7 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
   />
 
   <div :class='tw("mb-4")'>
-    <t-btn
-      :disabled="pdf_busy !== null"
-      @click="() => open_pdf_picker('new')"
-    >{{ pdf_busy === NEW_CV_BUSY ? "Creating…" : "New CV from PDF" }}</t-btn>
+    <t-btn @click="() => router.push('/pdf-cv')">New CV from PDF</t-btn>
   </div>
 
   <ol :class='tw("flex flex-col gap-4")'>
@@ -265,9 +235,14 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
         >
           <ToggleSwitch
             :model-value="cv.is_published"
-            :class='tw("pointer-events-none")'
+            :class='tw("pointer-events-none shrink-0")'
           />
-          Published
+          <span :class='tw("flex flex-col leading-tight")'>
+            Published
+            <span :class='tw("text-xs text-gray-500")'>
+              public link {{ cv.is_published ? "works" : "is off" }}
+            </span>
+          </span>
         </div>
 
         <div
@@ -284,9 +259,14 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
         >
           <ToggleSwitch
             :model-value="is_default(cv)"
-            :class='tw("pointer-events-none")'
+            :class='tw("pointer-events-none shrink-0")'
           />
-          Default
+          <span :class='tw("flex flex-col leading-tight")'>
+            Default
+            <span :class='tw("text-xs text-gray-500")'>
+              shown at /{{ auth.user?.nik }}
+            </span>
+          </span>
         </div>
       </div>
     </li>

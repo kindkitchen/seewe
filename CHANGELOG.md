@@ -2,6 +2,21 @@
 
 ## 2026-06-12
 
+- New `/pdf-cv` page (linked from the header next to "Markdown CV"): without
+  `?id` it creates a CV from an uploaded PDF, with the name pre-filled from
+  the filename and editable before creating; with `?id=<mdcv_id>` it manages
+  an existing CV's PDF (replace file, rename, remove PDF to revert to
+  markdown).
+- Dashboard: "Edit" is now representation-aware — markdown CVs open the
+  markdown editor, PDF CVs open `/pdf-cv?id=...`; the "New CV from PDF" button
+  navigates to the new page instead of an inline picker.
+- Dashboard: the Published/Default switches carry small captions ("public
+  link works / is off", "shown at /username") so their effect is visible
+  without hovering.
+- `PUT /v1/mdcv/:mdcv_id` with a new `name` now also updates the public slug
+  (`as_regulary_by_name_username`) for named CVs, so renaming moves the link
+  instead of leaving it on the old name.
+
 - Dashboard: replace the bare Published/Default checkboxes with PrimeVue
   ToggleSwitch controls (Aura theme); each flip now asks for confirmation via
   an anchored ConfirmPopup before the request is sent, and the rows carry
