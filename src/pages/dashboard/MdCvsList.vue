@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { my_fetch } from "@/my_fetch";
 import { get_my_mdcvs_query } from "@/queries/get_my_mdcvs.query";
+import {
+  remove_pdf_query,
+  upload_pdf_query,
+} from "@/queries/mdcv_pdf.query";
 import { put_mdcv_query } from "@/queries/put_mdcv.query";
 import { use_auth } from "@/stores/use_auth.store";
 import { use_md } from "@/stores/use_md.store";
@@ -12,6 +16,13 @@ const auth = use_auth();
 const md_store = use_md();
 const router = useRouter();
 const data = await get_my_mdcvs_query();
+
+// `kind` is not in the generated client until gen-types is re-run; widen
+// locally so the template can react to the representation.
+type CvItem = (typeof data)[number] & {
+  kind?: "md" | "pdf";
+  to?: string;
+};
 
 const build_link = (d: (typeof data)[number]) => {
   const base = import.meta.env.VITE_API_URL;
@@ -25,7 +36,38 @@ const build_link = (d: (typeof data)[number]) => {
   return undefined;
 };
 
-const mdcvs = ref(data.map((d) => ({ ...d, to: build_link(d) })));
+const mdcvs = ref<CvItem[]>(data.map((d) => ({ ...d, to: build_link(d) })));
+
+// undefined kind == legacy markdown cv
+const cv_kind = (cv: CvItem) => cv.kind ?? "md";
+const pdf_busy = ref<number | null>(null);
+
+const handle_upload_pdf = async (cv: CvItem, input: HTMLInputElement) => {
+  const file = input.files?.[0];
+  input.value = ""; // allow re-selecting the same file later
+  if (!file) return;
+  pdf_busy.value = cv._id;
+  try {
+    await upload_pdf_query(cv._id, file);
+    cv.kind = "pdf";
+  } catch (err) {
+    alert(err instanceof Error ? err.message : String(err));
+  } finally {
+    pdf_busy.value = null;
+  }
+};
+
+const handle_remove_pdf = async (cv: CvItem) => {
+  pdf_busy.value = cv._id;
+  try {
+    await remove_pdf_query(cv._id);
+    cv.kind = "md";
+  } catch (err) {
+    alert(err instanceof Error ? err.message : String(err));
+  } finally {
+    pdf_busy.value = null;
+  }
+};
 
 const is_default = (cv: (typeof mdcvs.value)[number]) =>
   !!cv.as_default_by_user_id || !!cv.as_default_by_username;
@@ -93,6 +135,9 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
           v-if="is_default(cv)"
           :class='tw("rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700")'
         >default</span>
+        <span
+          :class='tw("rounded bg-sky-100 px-2 py-0.5 text-xs text-sky-700")'
+        >{{ cv_kind(cv) === "pdf" ? "PDF" : "MD" }}</span>
       </div>
 
       <template v-if="cv.to">
@@ -108,6 +153,27 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
       <div :class='tw("mt-2 flex flex-wrap items-center gap-3")'>
         <t-btn @click="() => handle_edit(cv)">Edit</t-btn>
         <t-btn @click="async () => await handle_delete(cv._id)">Delete</t-btn>
+
+        <label :class='tw("cursor-pointer text-sm underline")'>
+          <input
+            type="file"
+            accept="application/pdf"
+            :class='tw("hidden")'
+            :disabled="pdf_busy === cv._id"
+            @change="(e) => handle_upload_pdf(cv, e.target as HTMLInputElement)"
+          />
+          {{
+            pdf_busy === cv._id
+              ? "Uploading…"
+              : cv_kind(cv) === "pdf"
+                ? "Replace PDF"
+                : "Upload PDF"
+          }}
+        </label>
+        <t-btn
+          v-if="cv_kind(cv) === 'pdf'"
+          @click="async () => await handle_remove_pdf(cv)"
+        >Remove PDF</t-btn>
 
         <label :class='tw("flex items-center gap-1 text-sm")'>
           <input

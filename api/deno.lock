@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@nik-kita/brickyard@0.4.3": "0.4.3",
     "jsr:@olli/kvdex@*": "1.0.2",
+    "jsr:@olli/kvdex@1.0.2": "1.0.2",
     "jsr:@std/async@^1.0.0-rc.1": "1.0.2",
     "jsr:@std/bytes@0.220": "0.220.1",
     "jsr:@std/cli@~0.224.7": "0.224.7",

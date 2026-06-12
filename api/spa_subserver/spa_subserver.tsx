@@ -1,7 +1,9 @@
 import { OpenAPIHono } from "@hono/zod-openapi"
 import { z } from "zod"
+import type { Context } from "hono"
 import { config } from "../config.ts"
 import { db } from "../db.ts"
+import { mdCv_service } from "../services/md-cv_service.ts"
 import { users_service } from "../services/users_service.ts"
 import { serve_static } from "../utils/serve_static.ts"
 import { SimpleLayout } from "../utils/SimpleLayout.tsx"
@@ -12,6 +14,90 @@ import { md_to_html } from "../utils/ui/utils/md-to-html.ts"
 const parse_pdf = (raw: string) => {
   const auto_print = raw.endsWith(".pdf")
   return { value: auto_print ? raw.slice(0, -4) : raw, auto_print }
+}
+
+// the shape a resolved cv exposes to the serving helpers below.
+type ServableCv = {
+  _id?: number
+  kind?: "md" | "pdf"
+  pdf_version?: number
+  md?: string
+  css?: string
+}
+
+const open_pdf_cache = async () => {
+  try {
+    if (typeof caches === "undefined") return null
+    return await caches.open("seewe-pdf-v1")
+  } catch {
+    return null
+  }
+}
+
+const sanitize_filename = (name: string) => {
+  const base = name.replace(/\.pdf$/i, "").replace(/[^a-z0-9._-]/gi, "_")
+  return (base || "cv") + ".pdf"
+}
+
+// Serve the uploaded pdf for a "pdf"-kind cv. `auto_print` (the `.pdf` route)
+// downloads as an attachment; otherwise it is shown inline in the browser's
+// viewer. The response is read-through cached by `_id/pdf_version/variant`, so
+// a hit skips the chunked blob read and a re-upload (new pdf_version) orphans
+// the old entry. Returns null if the blob is missing (caller falls back to md).
+const serve_pdf = async (
+  cv: ServableCv,
+  auto_print: boolean,
+): Promise<Response | null> => {
+  const variant = auto_print ? "dl" : "inline"
+  const cache_key = `https://seewe.pdf-cache/${cv._id}/${
+    cv.pdf_version ?? 0
+  }/${variant}`
+  const cache = await open_pdf_cache()
+  if (cache) {
+    const hit = await cache.match(cache_key)
+    if (hit) return hit
+  }
+
+  const pdf = await mdCv_service.get_pdf(cv._id!)
+  if (!pdf) return null
+
+  const filename = sanitize_filename(pdf.filename || `cv-${cv._id}`)
+  const res = new Response(pdf.bytes, {
+    headers: {
+      "content-type": "application/pdf",
+      "content-disposition": auto_print
+        ? `attachment; filename="${filename}"`
+        : "inline",
+    },
+  })
+  if (cache) {
+    try {
+      await cache.put(cache_key, res.clone())
+    } catch { /* cache is best-effort */ }
+  }
+  return res
+}
+
+// Single entry point for serving a resolved cv: a "pdf" cv returns its file,
+// everything else renders markdown->html (with optional auto_print to pdf).
+const render_cv = async (
+  ctx: Context,
+  cv: ServableCv,
+  opts: { link: string; auto_print: boolean },
+): Promise<Response> => {
+  if ((cv.kind ?? "md") === "pdf") {
+    const pdf_res = await serve_pdf(cv, opts.auto_print)
+    if (pdf_res) return pdf_res
+    // marked pdf but blob is gone -> degrade to markdown rendering
+  }
+  return ctx.html(
+    <SimpleLayout link={opts.link} css={cv.css} auto_print={opts.auto_print}>
+      <div
+        class="cv"
+        dangerouslySetInnerHTML={{ __html: md_to_html(cv.md ?? "") }}
+      />
+    </SimpleLayout>,
+  )
 }
 
 export const spa_subserver = new OpenAPIHono()
@@ -52,14 +138,7 @@ export const spa_subserver = new OpenAPIHono()
     }
 
     const link = config.VITE_API_URL + "/id/" + user_id
-    return ctx.html(
-      <SimpleLayout link={link} css={cv.css} auto_print={auto_print}>
-        <div
-          class="cv"
-          dangerouslySetInnerHTML={{ __html: md_to_html(cv.md) }}
-        />
-      </SimpleLayout>,
-    )
+    return await render_cv(ctx, cv, { link, auto_print })
   })
   .get("/:username/:cv_name", async (ctx) => {
     const { username } = ctx.req.param()
@@ -73,14 +152,7 @@ export const spa_subserver = new OpenAPIHono()
       const cv = happy_path_result.value
       const link = config.VITE_API_URL + "/" + username + "/" + cv_name
 
-      return ctx.html(
-        <SimpleLayout link={link} css={cv.css} auto_print={auto_print}>
-          <div
-            class="cv"
-            dangerouslySetInnerHTML={{ __html: md_to_html(cv.md) }}
-          />
-        </SimpleLayout>,
-      )
+      return await render_cv(ctx, cv, { link, auto_print })
     }
 
     const db_user_res = await users_service.find_by_nik(username)
@@ -104,14 +176,7 @@ export const spa_subserver = new OpenAPIHono()
 
     if (happy) {
       const link = config.VITE_API_URL + "/" + username
-      return ctx.html(
-        <SimpleLayout link={link} css={happy.css} auto_print={auto_print}>
-          <div
-            class="cv"
-            dangerouslySetInnerHTML={{ __html: md_to_html(happy.md) }}
-          />
-        </SimpleLayout>,
-      )
+      return await render_cv(ctx, happy, { link, auto_print })
     }
 
     const db_user_res = await users_service.find_by_nik(username)

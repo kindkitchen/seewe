@@ -10,6 +10,14 @@ import { post_mdcv } from "./post_mdcv.ts"
 import { put_mdcv } from "./put_mdcv.ts"
 import { put_default } from "./put_default.ts"
 import { get_my_mdcvs } from "./get_my_mdcvs.ts"
+import { put_mdcv_pdf } from "./put_mdcv_pdf.ts"
+import { delete_mdcv_pdf } from "./delete_mdcv_pdf.ts"
+
+const MAX_PDF_BYTES = 5 * 1024 * 1024
+// %PDF- magic header
+const is_pdf = (b: Uint8Array) =>
+  b[0] === 0x25 && b[1] === 0x50 && b[2] === 0x44 && b[3] === 0x46 &&
+  b[4] === 0x2d
 
 export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
   .openapi(post_mdcv, async (ctx) => {
@@ -123,4 +131,50 @@ export const mdcv_router = new OpenAPIHono<AuthenticatedHono>()
     return ctx.json({
       items: mdcvs.result.map((mdcv) => mdcv.value as MdCvEntity),
     })
+  }).openapi(put_mdcv_pdf, async (ctx) => {
+    const user = ctx.get("user")
+    const { mdcv_id } = ctx.req.valid("param")
+    const mdcv_db_res = await db._dev_md_cv.findByPrimaryIndex("_id", mdcv_id)
+    const mdcv = mdcv_db_res?.value
+
+    if (!mdcv) {
+      throw new HTTPException(404, { message: "CV not found" })
+    } else if (mdcv.user_id !== user._id) {
+      throw new HTTPException(403, { message: "Forbidden" })
+    }
+
+    const bytes = new Uint8Array(await ctx.req.arrayBuffer())
+    if (bytes.byteLength === 0) {
+      throw new HTTPException(400, { message: "Empty body" })
+    } else if (bytes.byteLength > MAX_PDF_BYTES) {
+      throw new HTTPException(413, { message: "PDF too large (max 5MB)" })
+    } else if (!is_pdf(bytes)) {
+      throw new HTTPException(400, { message: "Not a PDF file" })
+    }
+
+    const res = await mdCv_service.set_pdf({
+      mdcv_id,
+      bytes,
+      filename: ctx.req.header("x-filename"),
+    })
+    if (!res.ok) {
+      throw new HTTPException(500, { message: "Failed to store PDF" })
+    }
+
+    return ctx.json({ ok: true })
+  }).openapi(delete_mdcv_pdf, async (ctx) => {
+    const user = ctx.get("user")
+    const { mdcv_id } = ctx.req.valid("param")
+    const mdcv_db_res = await db._dev_md_cv.findByPrimaryIndex("_id", mdcv_id)
+    const mdcv = mdcv_db_res?.value
+
+    if (!mdcv) {
+      throw new HTTPException(404, { message: "CV not found" })
+    } else if (mdcv.user_id !== user._id) {
+      throw new HTTPException(403, { message: "Forbidden" })
+    }
+
+    await mdCv_service.remove_pdf(mdcv_id)
+
+    return ctx.newResponse(null, 204)
   })
