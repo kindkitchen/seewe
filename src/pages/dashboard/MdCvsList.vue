@@ -2,10 +2,14 @@
 import { my_fetch } from "@/my_fetch";
 import { get_my_mdcvs_query } from "@/queries/get_my_mdcvs.query";
 import { remove_pdf_query, upload_pdf_query } from "@/queries/mdcv_pdf.query";
+import { post_mdcv_query } from "@/queries/post_mdcv.query";
 import { put_mdcv_query } from "@/queries/put_mdcv.query";
 import { use_auth } from "@/stores/use_auth.store";
 import { use_md } from "@/stores/use_md.store";
 import { tw } from "@/utils/tw.util";
+import ConfirmPopup from "primevue/confirmpopup";
+import ToggleSwitch from "primevue/toggleswitch";
+import { useConfirm } from "primevue/useconfirm";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -37,16 +41,59 @@ const mdcvs = ref<CvItem[]>(data.map((d) => ({ ...d, to: build_link(d) })));
 
 // undefined kind == legacy markdown cv
 const cv_kind = (cv: CvItem) => cv.kind ?? "md";
+// _id of the row being uploaded; NEW_CV_BUSY while creating a cv from a pdf
+const NEW_CV_BUSY = -1;
 const pdf_busy = ref<number | null>(null);
 
-const handle_upload_pdf = async (cv: CvItem, input: HTMLInputElement) => {
-  const file = input.files?.[0];
-  input.value = ""; // allow re-selecting the same file later
-  if (!file) return;
+// one shared picker; the button that opened it decides where the file goes
+const pdf_input = ref<HTMLInputElement | null>(null);
+const pdf_target = ref<CvItem | "new" | null>(null);
+
+const open_pdf_picker = (target: CvItem | "new") => {
+  pdf_target.value = target;
+  pdf_input.value?.click();
+};
+
+const handle_pdf_picked = async () => {
+  const input = pdf_input.value;
+  const file = input?.files?.[0];
+  if (input) input.value = ""; // allow re-selecting the same file later
+  const target = pdf_target.value;
+  pdf_target.value = null;
+  if (!file || !target) return;
+  if (target === "new") {
+    await create_cv_from_pdf(file);
+  } else {
+    await upload_pdf_to_cv(target, file);
+  }
+};
+
+const upload_pdf_to_cv = async (cv: CvItem, file: File) => {
   pdf_busy.value = cv._id;
   try {
     await upload_pdf_query(cv._id, file);
     cv.kind = "pdf";
+  } catch (err) {
+    alert(err instanceof Error ? err.message : String(err));
+  } finally {
+    pdf_busy.value = null;
+  }
+};
+
+const create_cv_from_pdf = async (file: File) => {
+  pdf_busy.value = NEW_CV_BUSY;
+  try {
+    const res = await post_mdcv_query({
+      // named cvs require a username; otherwise the id-based link is used
+      name: auth.user?.nik ? file.name.replace(/\.pdf$/i, "") : undefined,
+      md: "",
+      is_published: true,
+      make_default: !auth.user?.nik,
+    });
+    await upload_pdf_query(res._id, file);
+    // re-fetch: the server owns the link fields (slug/default/id)
+    const fresh = await get_my_mdcvs_query();
+    mdcvs.value = fresh.map((d) => ({ ...d, to: build_link(d) }));
   } catch (err) {
     alert(err instanceof Error ? err.message : String(err));
   } finally {
@@ -91,6 +138,28 @@ const handle_delete = async (id: number) => {
   if (md_store.edited_mdcv_id === id) md_store.reset();
 };
 
+const confirm_popup = useConfirm();
+
+// the switches are display-only; this popup is the single way to flip them,
+// so no request fires before the user explicitly confirms
+const confirm_toggle = (
+  event: MouseEvent,
+  message: string,
+  accept: () => Promise<void>,
+) => {
+  confirm_popup.require({
+    target: event.currentTarget as HTMLElement,
+    message,
+    rejectProps: { label: "Cancel", severity: "secondary", outlined: true },
+    acceptProps: { label: "Yes" },
+    accept: () => {
+      accept().catch((err) =>
+        alert(err instanceof Error ? err.message : String(err))
+      );
+    },
+  });
+};
+
 const toggle_published = async (cv: (typeof mdcvs.value)[number]) => {
   const next = !cv.is_published;
   await put_mdcv_query(cv._id, { is_published: next });
@@ -120,6 +189,22 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
 </script>
 
 <template>
+  <ConfirmPopup />
+  <input
+    ref="pdf_input"
+    type="file"
+    accept="application/pdf"
+    :class='tw("hidden")'
+    @change="handle_pdf_picked"
+  />
+
+  <div :class='tw("mb-4")'>
+    <t-btn
+      :disabled="pdf_busy !== null"
+      @click="() => open_pdf_picker('new')"
+    >{{ pdf_busy === NEW_CV_BUSY ? "Creating…" : "New CV from PDF" }}</t-btn>
+  </div>
+
   <ol :class='tw("flex flex-col gap-4")'>
     <li
       v-for="cv of mdcvs"
@@ -127,7 +212,7 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
       :class='tw("rounded border border-gray-200 p-3")'
     >
       <div :class='tw("flex items-center gap-2")'>
-        <t-h :n="4">{{ cv.name || cv.md.substring(0, 20) || "Untitled" }}</t-h>
+        <t-h :n="4">{{ cv.name || cv.md?.substring(0, 20) || "Untitled" }}</t-h>
         <span
           v-if="is_default(cv)"
           :class='tw("rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700")'
@@ -151,47 +236,58 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
         <t-btn @click="() => handle_edit(cv)">Edit</t-btn>
         <t-btn @click="async () => await handle_delete(cv._id)">Delete</t-btn>
 
-        <label :class='tw("cursor-pointer text-sm underline")'>
-          <input
-            type="file"
-            accept="application/pdf"
-            :class='tw("hidden")'
-            :disabled="pdf_busy === cv._id"
-            @change="(e) => handle_upload_pdf(cv, e.target as HTMLInputElement)"
-          />
-          {{
-            pdf_busy === cv._id
-            ? "Uploading…"
-            : cv_kind(cv) === "pdf"
-            ? "Replace PDF"
-            : "Upload PDF"
-          }}
-        </label>
+        <t-btn
+          :disabled="pdf_busy !== null"
+          @click="() => open_pdf_picker(cv)"
+        >{{
+          pdf_busy === cv._id
+          ? "Uploading…"
+          : cv_kind(cv) === "pdf"
+          ? "Replace PDF"
+          : "Upload PDF"
+        }}</t-btn>
         <t-btn
           v-if='cv_kind(cv) === "pdf"'
+          :disabled="pdf_busy !== null"
           @click="async () => await handle_remove_pdf(cv)"
         >Remove PDF</t-btn>
 
-        <label :class='tw("flex items-center gap-1 text-sm")'>
-          <input
-            type="checkbox"
-            :checked="cv.is_published"
-            @change="() => toggle_published(cv)"
+        <div
+          :class='tw("flex cursor-pointer items-center gap-2 text-sm")'
+          title="Public CVs can be opened by anyone with the link"
+          @click="(e) => confirm_toggle(
+            e,
+            cv.is_published
+              ? 'Hide this CV? Its public link will stop working.'
+              : 'Publish this CV? Anyone with the link will be able to open it.',
+            async () => await toggle_published(cv),
+          )"
+        >
+          <ToggleSwitch
+            :model-value="cv.is_published"
+            :class='tw("pointer-events-none")'
           />
           Published
-        </label>
+        </div>
 
-        <label
+        <div
           v-if="auth.user?.nik"
-          :class='tw("flex items-center gap-1 text-sm")'
+          :class='tw("flex cursor-pointer items-center gap-2 text-sm")'
+          title="The default CV is served from your plain username link"
+          @click="(e) => confirm_toggle(
+            e,
+            is_default(cv)
+              ? 'Remove default status from this CV?'
+              : 'Make this CV your default? It replaces the current default one.',
+            async () => await toggle_default(cv),
+          )"
         >
-          <input
-            type="checkbox"
-            :checked="is_default(cv)"
-            @change="() => toggle_default(cv)"
+          <ToggleSwitch
+            :model-value="is_default(cv)"
+            :class='tw("pointer-events-none")'
           />
           Default
-        </label>
+        </div>
       </div>
     </li>
   </ol>

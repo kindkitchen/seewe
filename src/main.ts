@@ -10,6 +10,7 @@ import { fkPlugin } from "@/plugins/formkit.plugin";
 import { primePlugin } from "@/plugins/primevue.plugin.vue";
 import { router } from "@/router/mod.router";
 import { createPinia } from "pinia";
+import ConfirmationService from "primevue/confirmationservice";
 import ToastService from "primevue/toastservice";
 import { DataLoaderPlugin } from "unplugin-vue-router/data-loaders";
 import { createApp } from "vue";
@@ -23,6 +24,7 @@ const app = createApp(App)
   .use(...bricks.google_sign_in_plugin())
   .use(...primePlugin)
   .use(ToastService)
+  .use(ConfirmationService)
   .use(...fkPlugin);
 
 app.component("t-h", TH);

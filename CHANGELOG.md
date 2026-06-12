@@ -2,6 +2,19 @@
 
 ## 2026-06-12
 
+- Dashboard: replace the bare Published/Default checkboxes with PrimeVue
+  ToggleSwitch controls (Aura theme); each flip now asks for confirmation via
+  an anchored ConfirmPopup before the request is sent, and the rows carry
+  tooltips explaining what each switch does. `ConfirmationService` is now
+  registered in `src/main.ts`.
+- Dashboard: add "New CV from PDF" button — creates a CV record (empty
+  markdown) and uploads the file in one flow, so a PDF-only CV no longer
+  requires going through the markdown editor first. No backend change:
+  `POST /v1/mdcv` + `PUT /v1/mdcv/:id/pdf`.
+- Dashboard: per-row Upload/Replace PDF is now a proper button (was an
+  underlined text link, easy to miss); all PDF controls share one hidden file
+  picker and disable while an upload is in flight.
+
 - Add uploadable PDF representation for CVs. A CV is now either `kind: "md"`
   (markdown rendered to HTML, the legacy default) or `kind: "pdf"` (an uploaded
   file). The two are mutually exclusive per slug, but the markdown is kept on

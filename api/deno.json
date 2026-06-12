@@ -5,15 +5,15 @@
   },
   "imports": {
     "@nik-kita/brickyard": "jsr:@nik-kita/brickyard@0.4.3",
-    "@hono/swagger-ui": "npm:@hono/swagger-ui@^0.4.0",
-    "@hono/zod-openapi": "npm:@hono/zod-openapi@^0.15.1",
+    "@hono/swagger-ui": "npm:@hono/swagger-ui@^0.4.1",
+    "@hono/zod-openapi": "npm:@hono/zod-openapi@^0.15.3",
     "@olli/kvdex": "jsr:@olli/kvdex@^1.0.2",
-    "@std/dotenv": "jsr:@std/dotenv@^0.225.0",
-    "@std/http": "jsr:@std/http@^1.0.0",
-    "@std/path": "jsr:@std/path@^1.0.2",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.7",
+    "@std/http": "jsr:@std/http@^1.1.1",
+    "@std/path": "jsr:@std/path@^1.1.5",
     "@wok/djwt": "jsr:@wok/djwt@^3.0.2",
-    "hono": "npm:hono@^4.5.1",
-    "zod": "npm:zod@^3.23.8"
+    "hono": "npm:hono@^4.12.25",
+    "zod": "npm:zod@^3.25.76"
   },
   "fmt": {
     "semiColons": false,
