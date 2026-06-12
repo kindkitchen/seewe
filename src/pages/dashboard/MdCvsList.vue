@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { my_fetch } from "@/my_fetch";
 import { get_my_mdcvs_query } from "@/queries/get_my_mdcvs.query";
-import {
-  remove_pdf_query,
-  upload_pdf_query,
-} from "@/queries/mdcv_pdf.query";
+import { remove_pdf_query, upload_pdf_query } from "@/queries/mdcv_pdf.query";
 import { put_mdcv_query } from "@/queries/put_mdcv.query";
 import { use_auth } from "@/stores/use_auth.store";
 import { use_md } from "@/stores/use_md.store";
@@ -164,14 +161,14 @@ const toggle_default = async (cv: (typeof mdcvs.value)[number]) => {
           />
           {{
             pdf_busy === cv._id
-              ? "Uploading…"
-              : cv_kind(cv) === "pdf"
-                ? "Replace PDF"
-                : "Upload PDF"
+            ? "Uploading…"
+            : cv_kind(cv) === "pdf"
+            ? "Replace PDF"
+            : "Upload PDF"
           }}
         </label>
         <t-btn
-          v-if="cv_kind(cv) === 'pdf'"
+          v-if='cv_kind(cv) === "pdf"'
           @click="async () => await handle_remove_pdf(cv)"
         >Remove PDF</t-btn>
 

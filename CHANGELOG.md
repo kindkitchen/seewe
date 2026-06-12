@@ -12,9 +12,9 @@
 - PDF bytes live in a separate serialized KV collection (`_dev_md_cv_pdf`,
   chunked via kvdex `serialize: "v8"`), keyed by CV id, so the blob is never
   read while rendering the CV record.
-- Public serving: for a `pdf` CV, `/slug` shows the file inline and
-  `/slug.pdf` downloads it; `md` CVs are unchanged (HTML render, `.pdf` still
-  triggers browser print-to-PDF as the fallback).
+- Public serving: for a `pdf` CV, `/slug` shows the file inline and `/slug.pdf`
+  downloads it; `md` CVs are unchanged (HTML render, `.pdf` still triggers
+  browser print-to-PDF as the fallback).
 - PDF responses are read-through cached via the Deno Web Cache API, keyed by
   `id/pdf_version/variant`, so hits skip the KV blob read and re-uploads orphan
   stale entries automatically.
@@ -29,8 +29,8 @@
 
 - Fix `deno check` (5 pre-existing type errors): openapi router now imports
   `DotenvFile` from the api-local `env.d.ts` instead of the root frontend one
-  (which pulls unresolvable `vite/client` types); add `deno.unstable` to the
-  api `lib` so `Deno.openKv` types resolve; `convert_crypto_key.util` returns
+  (which pulls unresolvable `vite/client` types); add `deno.unstable` to the api
+  `lib` so `Deno.openKv` types resolve; `convert_crypto_key.util` returns
   `Uint8Array<ArrayBuffer>` to satisfy `crypto.subtle.importKey`.
 
 ### Notes

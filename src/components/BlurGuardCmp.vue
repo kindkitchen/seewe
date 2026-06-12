@@ -15,12 +15,10 @@ const is_guard_active = defineModel<boolean>({ required: true });
 <template>
   <div>
     <div
-      :class='
-        tw({
-          "blur-sm": is_guard_active,
-          "pointer-events-none": is_guard_active,
-        })
-      '
+      :class='tw({
+        "blur-sm": is_guard_active,
+        "pointer-events-none": is_guard_active,
+      })'
     >
       <slot>
         <label for="test-checkbox">Is it ok?</label>

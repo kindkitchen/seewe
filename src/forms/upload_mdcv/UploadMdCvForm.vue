@@ -23,11 +23,9 @@ const show = defineModel<boolean>();
     </template>
     <template #buttons>
       <MainForm
-        @done="
-          (ok) => {
-            if (ok) show = false;
-          }
-        "
+        @done="(ok) => {
+          if (ok) show = false;
+        }"
       />
       <t-btn @click="() => (show = false)">Cancel</t-btn>
     </template>

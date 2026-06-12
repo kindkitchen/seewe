@@ -8,11 +8,9 @@ const attrs = useAttrs();
 
 <template>
   <FormKit
-    :classes="
-      {
-        input: tw(attrs.class as any),
-      }
-    "
+    :classes="{
+      input: tw(attrs.class as any),
+    }"
     type="button"
     ignore
   >
