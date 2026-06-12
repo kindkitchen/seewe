@@ -21,6 +21,18 @@
 - Dashboard CV list shows an MD/PDF badge and Upload/Replace/Remove PDF
   controls.
 
+- Add `just check`: type-checks frontend with `vue-tsc` and backend with
+  `deno check mod.ts`, each in its correct scope. Do not run `deno check .`
+  repo-wide — Deno cannot parse Vue SFCs (`primePlugin` loses its `as const`
+  tuple) and does not resolve `vite/client` ambient types (`import.meta.url`),
+  producing false errors on frontend files that `vue-tsc` checks correctly.
+
+- Fix `deno check` (5 pre-existing type errors): openapi router now imports
+  `DotenvFile` from the api-local `env.d.ts` instead of the root frontend one
+  (which pulls unresolvable `vite/client` types); add `deno.unstable` to the
+  api `lib` so `Deno.openKv` types resolve; `convert_crypto_key.util` returns
+  `Uint8Array<ArrayBuffer>` to satisfy `crypto.subtle.importKey`.
+
 ### Notes
 
 - Legacy CV records have no `kind`; they are read as `"md"` defensively, so no

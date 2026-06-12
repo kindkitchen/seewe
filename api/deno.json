@@ -25,6 +25,7 @@
   "compilerOptions": {
     "lib": [
       "deno.window",
+      "deno.unstable",
       "dom",
       "dom.iterable"
     ],

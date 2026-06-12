@@ -58,6 +58,10 @@ brickyard-disable:
     cp src/bricks.interceptor.example.ts src/bricks.interceptor.ts
     cp api/bricks.interceptor.example.ts api/bricks.interceptor.ts
 
+check:
+    npm run type-check
+    cd api && deno check mod.ts
+
 _dev_api:
     cd api && deno task start
 

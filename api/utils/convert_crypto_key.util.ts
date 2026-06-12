@@ -2,7 +2,7 @@ function rm_lines(str: string): string {
   return str.replace("\n", "")
 }
 
-function base64_to_arr_buff(b64: string): Uint8Array {
+function base64_to_arr_buff(b64: string): Uint8Array<ArrayBuffer> {
   const byteString = atob(b64)
   const byteArray = new Uint8Array(byteString.length)
   for (let i = 0; i < byteString.length; i++) {
@@ -14,7 +14,7 @@ function base64_to_arr_buff(b64: string): Uint8Array {
 function pem_to_arr_buff(
   pemKey: string,
   type: "PUBLIC" | "PRIVATE",
-): Uint8Array {
+): Uint8Array<ArrayBuffer> {
   const b64Lines = rm_lines(pemKey)
   const b64Prefix = b64Lines.replace(`-----BEGIN ${type} KEY-----`, "")
   const b64Final = b64Prefix.replace(`-----END ${type} KEY-----`, "")
